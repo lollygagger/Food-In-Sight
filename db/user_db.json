@@ -1,0 +1,70 @@
+{
+    "Users": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "username": {
+                        "S": "john_doe"
+                    },
+                    "password": {
+                        "S": "hashed_password_123"
+                    },
+                    "diets": {
+                        "L": [
+                            {
+                                "S": "vegan"
+                            },
+                            {
+                                "S": "gluten-free"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "username": {
+                        "S": "jane_smith"
+                    },
+                    "password": {
+                        "S": "hashed_password_456"
+                    },
+                    "diets": {
+                        "L": [
+                            {
+                                "S": "keto"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "username": {
+                        "S": "alice_walker"
+                    },
+                    "password": {
+                        "S": "hashed_password_789"
+                    },
+                    "diets": {
+                        "L": [
+                            {
+                                "S": "paleo"
+                            },
+                            {
+                                "S": "dairy-free"
+                            },
+                            {
+                                "S": "nut-free"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
