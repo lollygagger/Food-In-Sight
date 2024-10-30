@@ -3,13 +3,16 @@
         {
             "PutRequest": {
                 "Item": {
-                    "username": {
+                    "Id": {
+                        "N": "1"
+                    },
+                    "UserName": {
                         "S": "john_doe"
                     },
-                    "password": {
+                    "Password": {
                         "S": "hashed_password_123"
                     },
-                    "diets": {
+                    "Diets": {
                         "L": [
                             {
                                 "S": "vegan"
@@ -25,13 +28,16 @@
         {
             "PutRequest": {
                 "Item": {
-                    "username": {
+                    "Id": {
+                        "N": "2"
+                    },
+                    "UserName": {
                         "S": "jane_smith"
                     },
-                    "password": {
+                    "Password": {
                         "S": "hashed_password_456"
                     },
-                    "diets": {
+                    "Diets": {
                         "L": [
                             {
                                 "S": "keto"
@@ -44,13 +50,16 @@
         {
             "PutRequest": {
                 "Item": {
-                    "username": {
+                    "Id": {
+                        "N": "3"
+                    },
+                    "UserName": {
                         "S": "alice_walker"
                     },
-                    "password": {
+                    "Password": {
                         "S": "hashed_password_789"
                     },
-                    "diets": {
+                    "Diets": {
                         "L": [
                             {
                                 "S": "paleo"
