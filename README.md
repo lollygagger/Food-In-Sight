@@ -1,5 +1,3 @@
-There is another copy of this README file located on the AMI.
-
 # Food In Sight
 
 ## Setup:
