@@ -5,8 +5,9 @@
 - Create an EC2 instance using the AMI (Team 5 Food Insight AMI)
 - SSH into the “ec2-user” account on the EC2 instance
 - Run `aws configure` to login to your aws account from this instance using a security key pair if you do not already have a key pair follow [these instructions](#aws-configure) to create new ones.
+- Run `git clone git@github.com:SWEN-514-FALL-2024/term-project-2241-swen-514-05-team5.git`
 - Run `cd term-project-2241-swen-514-05-team5/`
-- Run `git pull` (This should be changed to a working commit tag on main that we want to grade instead of latest)
+- Run `git checkout <branch/commit>` (This should be changed to a working commit tag on main that we want to grade instead of latest)
   - If you are a developer at this point you can switch to your branch to test that branch instead
 - Run `cd deployment`
 - Use Vim/vi/nano or your text editor of choice to change the security key to match your account's
