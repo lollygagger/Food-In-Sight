@@ -23,7 +23,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_policy" {
 # Create Dependencies File
 resource "null_resource" "install_layer_dependencies" {
   provisioner "local-exec" {
-    command = "pip install -r layer/requirements.txt -t layer/python/lib/python3.11/site-packages"
+    command = "pip install -r ../src/lambda/requirements.txt -t layer/python/lib/python3.11/site-packages"
   }
   triggers = {
     trigger = timestamp()
