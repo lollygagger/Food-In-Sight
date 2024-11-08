@@ -3,22 +3,35 @@
         {
             "PutRequest": {
                 "Item": {
-                    "Id": {
-                        "N": "1"
-                    },
                     "UserName": {
-                        "S": "john_doe"
+                        "S": "vince"
                     },
                     "Password": {
-                        "S": "hashed_password_123"
+                        "S": "password"
+                    },
+                    "Diets": {
+                        "L": [
+                            {
+                                "S": "lactose intolerant"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "UserName": {
+                        "S": "max"
+                    },
+                    "Password": {
+                        "S": "password1"
                     },
                     "Diets": {
                         "L": [
                             {
                                 "S": "vegan"
-                            },
-                            {
-                                "S": "gluten-free"
                             }
                         ]
                     }
@@ -28,47 +41,16 @@
         {
             "PutRequest": {
                 "Item": {
-                    "Id": {
-                        "N": "2"
-                    },
                     "UserName": {
-                        "S": "jane_smith"
+                        "S": "jacob"
                     },
                     "Password": {
-                        "S": "hashed_password_456"
+                        "S": "password2"
                     },
                     "Diets": {
                         "L": [
                             {
-                                "S": "keto"
-                            }
-                        ]
-                    }
-                }
-            }
-        },
-        {
-            "PutRequest": {
-                "Item": {
-                    "Id": {
-                        "N": "3"
-                    },
-                    "UserName": {
-                        "S": "alice_walker"
-                    },
-                    "Password": {
-                        "S": "hashed_password_789"
-                    },
-                    "Diets": {
-                        "L": [
-                            {
-                                "S": "paleo"
-                            },
-                            {
-                                "S": "dairy-free"
-                            },
-                            {
-                                "S": "nut-free"
+                                "S": "peanut allergy"
                             }
                         ]
                     }
