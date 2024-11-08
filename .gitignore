@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#Terraform extras
+deployment/.terraform/
+deployment/layer/
+deployment/.terraform.lock.hcl
+deployment/zipped
+deployment/terraform.tfstate
+deployment/terraform.tfstate.backup
