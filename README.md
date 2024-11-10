@@ -12,6 +12,7 @@
 - Run `cd deployment`
 - Use Vim/vi/nano or your text editor of choice to change the security key to match your account's
   security key in "main.tf"
+- Use your text editor of choice to change the access_token in amplify.tf to your github access token
 - Run `terraform init`
 - Run `terraform plan`
 - Run `terraform apply`
