@@ -86,8 +86,8 @@ resource "aws_lambda_function" "process_file_function" {
 
   #These are required for referencing a lambda which is stored locally
   handler = "translate_lambda.handler"
-  filename = "lambda/translate_lambda.py"
-  source_code_hash = filebase64sha256("lambda/translate_lambda.py") #automatically grabs the hash of translate_lambda.py
+  filename = "lambda/translate_lambda.zip" #Must be a zip file
+  source_code_hash = filebase64sha256("lambda/translate_lambda.zip") #automatically grabs the hash of translate_lambda
 
 
   environment {
