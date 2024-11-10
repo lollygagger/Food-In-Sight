@@ -4,14 +4,8 @@ resource "aws_api_gateway_rest_api" "file_upload_api" {
   description = "API for uploading files to S3 and processing with Textract and Translate"
 }
 
-# Deploy the API Gateway
-resource "aws_api_gateway_deployment" "file_upload_deployment" {
-  rest_api_id = aws_api_gateway_rest_api.file_upload_api.id
-  stage_name  = "prod"
-}
 
-#TRANSLATE -------------------------------------------------------------------------------------------------------------
-
+#Translate -------------------------------------------------------------------------------------------------------------
 # Create a resource under the API for uploading files
 resource "aws_api_gateway_resource" "file_upload_resource" {
   rest_api_id = aws_api_gateway_rest_api.file_upload_api.id
@@ -42,10 +36,17 @@ resource "aws_lambda_permission" "api_gateway_permission" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.process_file_function.function_name
   principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.file_upload_api.execution_arn}/*/*"
+}
+#END Translate ---------------------------------------------------------------------------------------------------------
+
+# Deploy the API Gateway
+resource "aws_api_gateway_deployment" "file_upload_deployment" {
+  depends_on   = [aws_api_gateway_integration.upload_integration]
+  rest_api_id  = aws_api_gateway_rest_api.file_upload_api.id
+  stage_name   = "prod"
 }
 
 output "api_url" {
   value = "${aws_api_gateway_deployment.file_upload_deployment.invoke_url}/upload"
 }
-
-#END Translate ---------------------------------------------------------------------------------------------------------
