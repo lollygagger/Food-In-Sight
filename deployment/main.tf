@@ -4,5 +4,5 @@ provider "aws" {
 }
 
 locals {
-        aws_key = "JC_AWS_KEY" #CHANGE TO BE YOUR KEY
+        aws_key = "mainusa1" #CHANGE TO BE YOUR KEY
 }
