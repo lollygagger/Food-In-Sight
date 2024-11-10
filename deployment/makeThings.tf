@@ -113,7 +113,7 @@ resource "aws_apigatewayv2_api" "step_function_api" {
 resource "aws_apigatewayv2_integration" "step_function_integration" {
   api_id           = aws_apigatewayv2_api.step_function_api.id
   integration_type = "AWS_PROXY"
-  integration_uri  = aws_sfn_state_machine.lambda_state_machine2.arn
+  integration_uri  = "${aws_sfn_state_machine.lambda_state_machine.arn}:startExecution"
   payload_format_version = "2.0"
 
   credentials_arn = aws_iam_role.apigateway_stepfunction_role.arn
