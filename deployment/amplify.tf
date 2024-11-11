@@ -34,16 +34,6 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
         paths:
           - node_modules/**/*
   EOT
-
-  # Use the existing Cognito user pool ID
-  oauth {
-    domain = "your-oauth-domain"  # Set the appropriate OAuth domain if required
-    scope  = ["aws.cognito.signin.user.admin"]  # Adjust as needed
-    redirect_sign_in = "https://your-app.com"
-    redirect_sign_out = "https://your-app.com/logout"
-    user_pool_id = data.aws_cognito_user_pool.existing_user_pool.id
-    user_pool_client_id = data.aws_cognito_user_pool_client.existing_user_pool_client.id
-  }
 }
 
 # Outputs for user pool and client references
