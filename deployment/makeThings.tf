@@ -86,7 +86,14 @@ resource "aws_iam_role" "upload_image_lambda_exec_role" {
         Effect = "Allow"
         Principal = {
           Service = "lambda.amazonaws.com"
+        },
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = {
+          Service = "apigateway.amazonaws.com"  # This allows API Gateway to assume the role.
         }
+      }
       }
     ]
   })
@@ -357,6 +364,14 @@ resource "aws_iam_role_policy" "api_gateway_lambda_invoke_policy" {
     ]
   })
 }
+
+resource "aws_lambda_permission" "allow_apigateway_invoke" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.upload_image_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+}
+
 
 
 
