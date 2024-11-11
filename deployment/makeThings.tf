@@ -256,7 +256,13 @@ resource "aws_api_gateway_deployment" "deployment" {
   ]
 
   rest_api_id = aws_api_gateway_rest_api.my_api.id
-  stage_name  = "dev"
+}
+
+# Deployment name
+resource "aws_api_gateway_stage" "dev" {
+  rest_api_id = aws_api_gateway_rest_api.my_api.id
+  deployment_id = aws_api_gateway_deployment.deployment.id
+  stage_name = "dev"  # Specifies the stage name
 }
 
 # API Gateway IAM Role for Step Function
