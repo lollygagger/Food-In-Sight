@@ -344,7 +344,7 @@ resource "aws_iam_role_policy" "apigateway_policy" {
 
 resource "aws_iam_role_policy" "api_gateway_lambda_invoke_policy" {
   name   = "api_gateway_lambda_invoke_policy"
-  role   = aws_iam_role.api_gateway_role.id  # Ensure API Gateway role is correctly set here.
+  role   = aws_iam_role.apigateway_role.id  # Ensure API Gateway role is correctly set here.
   
   policy = jsonencode({
     Version = "2012-10-17"
