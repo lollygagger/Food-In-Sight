@@ -43,6 +43,11 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
         Resource = "*"
       },
       {
+        Action   = "s3:GetObject"
+        Effect   = "Allow"
+        Resource = "arn:aws:s3:::${aws_s3_bucket.image_bucket.bucket}/*"
+      },
+      {
         Action   = "logs:*"
         Effect   = "Allow"
         Resource = "*"
@@ -50,6 +55,56 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
     ]
   })
 }
+
+
+
+# Lambda Function to handle image upload to S3
+resource "aws_lambda_function" "upload_image_lambda" {
+  function_name = "UploadImageLambdaFunction"
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.12"
+  filename      = "upload_image_lambda.zip"  # Ensure this file is present in the same directory
+  role          = aws_iam_role.upload_image_lambda_exec_role.arn
+}
+
+# IAM Role for Image Upload Lambda
+resource "aws_iam_role" "upload_image_lambda_exec_role" {
+  name = "upload_image_lambda_exec_role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+# IAM Policy for Image Upload Lambda
+resource "aws_iam_role_policy" "upload_image_lambda_policy" {
+  name   = "upload_image_lambda_policy"
+  role   = aws_iam_role.upload_image_lambda_exec_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action   = "s3:PutObject"
+        Effect   = "Allow"
+        Resource = "arn:aws:s3:::${aws_s3_bucket.image_bucket.bucket}/*"
+      },
+      {
+        Action   = "logs:*"
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 
 # IAM Role for Step Function
 resource "aws_iam_role" "step_function_role2" {
@@ -78,7 +133,10 @@ resource "aws_iam_role_policy" "step_function_policy" {
       {
         Action = "lambda:InvokeFunction"
         Effect = "Allow"
-        Resource = aws_lambda_function.rekognition_lambda.arn
+        Resource = [
+          aws_lambda_function.rekognition_lambda.arn,
+          aws_lambda_function.upload_image_lambda.arn
+        ]
       }
     ]
   })
@@ -90,16 +148,38 @@ resource "aws_sfn_state_machine" "lambda_state_machine2" {
   role_arn = aws_iam_role.step_function_role2.arn
 
   definition = jsonencode({
-    StartAt = "HelloState",
+    StartAt = "InvokeRekognitionLambda",
     States = {
-      HelloState = {
+      InvokeRekognitionLambda = {
         Type       = "Task",
         Resource   = aws_lambda_function.rekognition_lambda.arn,
+        Parameters = {
+          image_url = "$.image_url"
+        },
         End        = true
       }
     }
+    #States = {
+    #   InvokeRekognitionLambda = {
+    #     Type       = "Task",
+    #     Resource   = aws_lambda_function.rekognition_lambda.arn,
+    #     Parameters = {
+    #       image_url = "$.image_url"
+    #     },
+    #     Next = "InvokeAnotherLambda"  # Next state after Rekognition
+    #   },
+    #   InvokeAnotherLambda = {
+    #     Type       = "Task",
+    #     Resource   = aws_lambda_function.another_lambda.arn,
+    #     Parameters = {
+    #       data = "$.rekognition_data"
+    #     },
+    #     End        = true
+    #   }
+    # }
   })
 }
+
 
 # API Gateway and Integration
 resource "aws_api_gateway_rest_api" "my_api" {
@@ -164,6 +244,45 @@ resource "aws_api_gateway_integration_response" "proxy" {
   ]
 }
 
+
+#API resources for image upload
+resource "aws_api_gateway_resource" "upload_image" {
+  rest_api_id = aws_api_gateway_rest_api.my_api.id
+  parent_id   = aws_api_gateway_rest_api.my_api.root_resource_id
+  path_part   = "uploadimage"
+}
+
+resource "aws_api_gateway_method" "upload_image_method" {
+  rest_api_id   = aws_api_gateway_rest_api.my_api.id
+  resource_id   = aws_api_gateway_resource.upload_image.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "upload_image_integration" {
+  rest_api_id             = aws_api_gateway_rest_api.my_api.id
+  resource_id             = aws_api_gateway_resource.upload_image.id
+  http_method             = aws_api_gateway_method.upload_image_method.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = aws_lambda_function.upload_image_lambda.invoke_arn
+}
+
+resource "aws_api_gateway_method_response" "upload_image_response" {
+  rest_api_id = aws_api_gateway_rest_api.my_api.id
+  resource_id = aws_api_gateway_resource.upload_image.id
+  http_method = aws_api_gateway_method.upload_image_method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_integration_response" "upload_image_integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.my_api.id
+  resource_id = aws_api_gateway_resource.upload_image.id
+  http_method = aws_api_gateway_method.upload_image_method.http_method
+  status_code = aws_api_gateway_method_response.upload_image_response.status_code
+}
+
+
 # Deploy API Gateway
 resource "aws_api_gateway_deployment" "deployment" {
   depends_on = [
@@ -205,4 +324,11 @@ resource "aws_iam_role_policy" "apigateway_policy" {
       }
     ]
   })
+}
+
+
+
+resource "aws_s3_bucket" "image_bucket" {
+  bucket = "imagebucketuniquename123123089658970"
+  acl    = "private"
 }
