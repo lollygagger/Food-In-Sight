@@ -1,0 +1,56 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-foodinsight-dev-50b22-authRole",
+      "UnauthRoleArn": "arn:aws:iam::779846783519:role/amplify-foodinsight-dev-50b22-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::779846783519:role/amplify-foodinsight-dev-50b22-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-foodinsight-dev-50b22-deployment",
+      "UnauthRoleName": "amplify-foodinsight-dev-50b22-unauthRole",
+      "StackName": "amplify-foodinsight-dev-50b22",
+      "StackId": "arn:aws:cloudformation:us-east-1:779846783519:stack/amplify-foodinsight-dev-50b22/ab6760a0-9fc4-11ef-ad03-0affebcf0045",
+      "AmplifyAppId": "d1c2naelj7l2nf"
+    }
+  },
+  "auth": {
+    "foodinsight672a3249": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-foodinsight-dev-50b22-deployment/amplify-cfn-templates/auth/foodinsight672a3249-cloudformation-template.json",
+        "logicalId": "authfoodinsight672a3249"
+      },
+      "lastPushTimeStamp": "2024-11-11T00:36:24.785Z",
+      "output": {
+        "UserPoolId": "us-east-1_ThHadgoKx",
+        "AppClientIDWeb": "26h3p878ul4me04toa7t0k1mk",
+        "AppClientID": "6d07cpsuel7nv597repkouh2bf",
+        "IdentityPoolId": "us-east-1:e54d110d-be8c-44b9-9962-b34e78535ea8",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:779846783519:userpool/us-east-1_ThHadgoKx",
+        "IdentityPoolName": "foodinsight672a3249_identitypool_672a3249__dev",
+        "UserPoolName": "foodinsight672a3249_userpool_672a3249"
+      },
+      "lastPushDirHash": "H5hNxQRQmGoYhWJ5FgSVxqX9zwI="
+    }
+  }
+}
