@@ -102,7 +102,7 @@ resource "aws_iam_role_policy" "upload_image_lambda_policy" {
       {
         Action   = "s3:PutObject"
         Effect   = "Allow"
-        Resource = "${data.aws_s3_bucket.image_bucket.arn}/*"
+        Resource = "${aws_s3_bucket.image_bucket.arn}/*"
       },
        {
         Action   = "states:StartExecution"
