@@ -167,7 +167,9 @@ resource "aws_sfn_state_machine" "lambda_state_machine2" {
         Type       = "Task",
         Resource   = aws_lambda_function.rekognition_lambda.arn,
         Parameters = {
-          image_url = "$.image_url"
+          "Payload": {
+            "image_url.$": "$.image_url"  # Use ".$" to pass the image_url from input dynamically
+          }
         },
         End        = true
       }
