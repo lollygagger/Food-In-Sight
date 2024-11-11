@@ -5,16 +5,7 @@ def lambda_handler(event, context):
     rekognition = boto3.client('rekognition')
     
     # Get the S3 image URL from the event input
-    s3_url = event.get('image_url', "")
-
-    return {
-            'statusCode': 400,
-            'body': json.dumps({
-                'message':  'S3 URL format.',
-                'provided_url': s3_url,
-                'event': event
-            })
-        }
+    s3_url = event.get('Payload', {}).get('image_url', "")
     
     # Check if URL has enough segments
     url_segments = s3_url.split("/")
