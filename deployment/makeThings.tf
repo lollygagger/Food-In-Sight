@@ -131,7 +131,7 @@ resource "aws_api_gateway_integration" "step_function_integration" {
     {
       "input": "$util.escapeJavaScript($input.body)",
       "stateMachineArn": "${aws_sfn_state_machine.lambda_state_machine2.arn}",
-      "name": "MyExecution"
+      "name": "Execution-$context.requestId"
     }
     EOF
   }
