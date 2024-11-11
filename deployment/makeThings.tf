@@ -61,9 +61,9 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
 # Lambda Function to handle image upload to S3
 resource "aws_lambda_function" "upload_image_lambda" {
   function_name = "UploadImageLambdaFunction"
-  handler       = "upload_image_lambda.lambda_handler"
+  handler       = "upload_image_function.lambda_handler"
   runtime       = "python3.12"
-  filename      = "upload_image_lambda.zip"
+  filename      = "upload_image_function.zip"
   role          = aws_iam_role.upload_image_lambda_exec_role.arn
 
   environment {
