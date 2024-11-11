@@ -135,7 +135,6 @@ resource "aws_iam_role_policy" "step_function_policy" {
         Effect = "Allow"
         Resource = [
           aws_lambda_function.rekognition_lambda.arn,
-          aws_lambda_function.upload_image_lambda.arn
         ]
       }
     ]
@@ -280,6 +279,10 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
   resource_id = aws_api_gateway_resource.upload_image.id
   http_method = aws_api_gateway_method.upload_image_method.http_method
   status_code = aws_api_gateway_method_response.upload_image_response.status_code
+
+  depends_on = [
+    aws_api_gateway_integration.upload_image_integration
+  ]
 }
 
 
