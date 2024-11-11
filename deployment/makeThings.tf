@@ -130,6 +130,7 @@ resource "aws_api_gateway_integration" "step_function_integration" {
     "application/json" = <<EOF
     {
       "input": "$util.escapeJavaScript($input.body)",
+      "stateMachineArn": "${aws_sfn_state_machine.lambda_state_machine2.arn}",
       "name": "MyExecution"
     }
     EOF
