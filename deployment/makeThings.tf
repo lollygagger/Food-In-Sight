@@ -88,14 +88,6 @@ resource "aws_iam_role" "upload_image_lambda_exec_role" {
           Service = "lambda.amazonaws.com"
         }
       },
-      {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
-        Principal = {
-          Service = "apigateway.amazonaws.com"  # This allows API Gateway to assume the role.
-        }
-      }
-      
     ]
   })
 }
@@ -110,7 +102,7 @@ resource "aws_iam_role_policy" "upload_image_lambda_policy" {
       {
         Action   = "s3:PutObject"
         Effect   = "Allow"
-        Resource = "arn:aws:s3:::${aws_s3_bucket.image_bucket.bucket}/*"
+        Resource = "${data.aws_s3_bucket.image_bucket.arn}/*"
       },
        {
         Action   = "states:StartExecution"
@@ -210,60 +202,6 @@ resource "aws_api_gateway_rest_api" "my_api" {
   }
 }
 
-resource "aws_api_gateway_resource" "root" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  parent_id   = aws_api_gateway_rest_api.my_api.root_resource_id
-  path_part   = "mypath"
-}
-
-resource "aws_api_gateway_method" "proxy" {
-  rest_api_id   = aws_api_gateway_rest_api.my_api.id
-  resource_id   = aws_api_gateway_resource.root.id
-  http_method   = "POST"
-  authorization = "NONE"
-}
-
-# API Gateway Integration with Step Function
-resource "aws_api_gateway_integration" "step_function_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.my_api.id
-  resource_id             = aws_api_gateway_resource.root.id
-  http_method             = aws_api_gateway_method.proxy.http_method
-  integration_http_method = "POST"
-  type                    = "AWS"
-  uri                     = "arn:aws:apigateway:${var.region}:states:action/StartExecution"
-  credentials             = aws_iam_role.apigateway_role.arn
-
-  request_templates = {
-    "application/json" = <<EOF
-    {
-      "input": "$util.escapeJavaScript($input.body)",
-      "stateMachineArn": "${aws_sfn_state_machine.lambda_state_machine2.arn}",
-      "name": "Execution-$context.requestId"
-    }
-    EOF
-  }
-}
-
-# Method and Integration Responses
-resource "aws_api_gateway_method_response" "proxy" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.root.id
-  http_method = aws_api_gateway_method.proxy.http_method
-  status_code = "200"
-}
-
-resource "aws_api_gateway_integration_response" "proxy" {
-  rest_api_id = aws_api_gateway_rest_api.my_api.id
-  resource_id = aws_api_gateway_resource.root.id
-  http_method = aws_api_gateway_method.proxy.http_method
-  status_code = aws_api_gateway_method_response.proxy.status_code
-
-  depends_on = [
-    aws_api_gateway_method.proxy,
-    aws_api_gateway_integration.step_function_integration
-  ]
-}
-
 
 #API resources for image upload
 resource "aws_api_gateway_resource" "upload_image" {
@@ -310,8 +248,10 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
 # Deploy API Gateway
 resource "aws_api_gateway_deployment" "deployment" {
   depends_on = [
-    aws_api_gateway_integration.step_function_integration,
-    aws_api_gateway_method_response.proxy,
+    aws_api_gateway_integration.upload_image_integration,
+    aws_api_gateway_method.upload_image_method,
+    aws_api_gateway_method_response.upload_image_response,
+    aws_api_gateway_integration_response.upload_image_integration_response
   ]
 
   rest_api_id = aws_api_gateway_rest_api.my_api.id
