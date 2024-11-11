@@ -1,6 +1,6 @@
 # Reference the existing Cognito User Pool using a data source
 data "aws_cognito_user_pool" "existing_user_pool" {
-  id = "us-east-1_ThHadgoKx"  # Use the ID from aws-exports.js
+  user_pool_id = "us-east-1_ThHadgoKx"  # Use the ID from aws-exports.js
 }
 
 # Reference the existing Cognito User Pool Client using a data source
