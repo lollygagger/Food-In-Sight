@@ -328,6 +328,7 @@ resource "aws_lambda_permission" "allow_apigateway_invoke" {
 
 resource "aws_s3_bucket" "image_bucket" {
   bucket = "imagebucketuniquename123123089658970"
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_ownership_controls" "image_bucket_controls" {
