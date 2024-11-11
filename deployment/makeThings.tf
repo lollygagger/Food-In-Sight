@@ -2,7 +2,7 @@
 # Lambda Function to send image to rekognition
 resource "aws_lambda_function" "rekognition_lambda" {
   function_name = "RekognitionLambdaFunction"
-  handler       = "rekognition_lambda_funtion.lambda_handler"
+  handler       = "rekog_lambda_funtion.lambda_handler"
   runtime       = "python3.12"
   filename      = "rekog_lambda_function.zip"  # Ensure this file is present in the same directory
   role          = aws_iam_role.rekog_lambda_exec_role.arn
