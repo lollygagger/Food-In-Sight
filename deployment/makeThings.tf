@@ -65,6 +65,7 @@ resource "aws_lambda_function" "upload_image_lambda" {
   runtime       = "python3.12"
   filename      = "upload_image_function.zip"
   role          = aws_iam_role.upload_image_lambda_exec_role.arn
+  timeout       = 10
 
   environment {
     variables = {
