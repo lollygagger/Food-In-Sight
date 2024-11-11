@@ -59,3 +59,33 @@ resource "aws_dynamodb_table" "user_table" {
         type = "S"
     }
 }
+
+# Load the Swagger specification from the local file
+data "local_file" "api_swagger_spec" {
+    filename = "${path.module}/usersApiDoc.yaml"  # Ensure this matches your actual Swagger file path
+}
+
+# Create an API Gateway from the Swagger specification
+resource "aws_api_gateway_rest_api" "user_api" {
+    name        = "UserAPI"
+    description = "API Gateway created from Swagger file with Lambda proxy integration"
+
+    body = data.local_file.api_swagger_spec.content
+}
+
+# Deploy the API Gateway
+resource "aws_api_gateway_deployment" "user_api_deployment" {
+    depends_on = [aws_api_gateway_rest_api.user_api]  # Ensure this only deploys once API is created
+    rest_api_id = aws_api_gateway_rest_api.user_api.id
+    stage_name  = "prod"  # Adjust stage name as needed
+}
+
+# Integrate each Lambda function with API Gateway methods if required
+# Automatically set up with Swagger but use these configurations if needed for additional permissions
+resource "aws_lambda_permission" "api_gateway_invoke" {
+    statement_id  = "AllowAPIGatewayInvoke"
+    action        = "lambda:InvokeFunction"
+    function_name = aws_lambda_function.user_processing_lambda.function_name
+    principal     = "apigateway.amazonaws.com"
+    source_arn    = "${aws_api_gateway_rest_api.user_api.execution_arn}/*/*"  # Allow all stages and methods
+}
