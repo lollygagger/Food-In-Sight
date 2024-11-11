@@ -86,7 +86,8 @@ resource "aws_iam_role" "upload_image_lambda_exec_role" {
         Effect = "Allow"
         Principal = {
           Service = "lambda.amazonaws.com"
-        },
+        }
+      },
       {
         Action    = "sts:AssumeRole"
         Effect    = "Allow"
@@ -94,7 +95,7 @@ resource "aws_iam_role" "upload_image_lambda_exec_role" {
           Service = "apigateway.amazonaws.com"  # This allows API Gateway to assume the role.
         }
       }
-      }
+      
     ]
   })
 }
