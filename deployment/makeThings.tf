@@ -1,16 +1,16 @@
 
-# Lambda Function
-resource "aws_lambda_function" "hello_function2" {
-  function_name = "HelloFunction2"
-  handler       = "index.handler"
-  runtime       = "nodejs18.x"
-  filename      = "hello_function.zip"  # Ensure this file is present in the same directory
-  role          = aws_iam_role.lambda_exec2.arn
+# Lambda Function to send image to rekognition
+resource "aws_lambda_function" "rekognition_lambda" {
+  function_name = "RekognitionLambdaFunction"
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.12"
+  filename      = "rekog_lambda_function.zip"  # Ensure this file is present in the same directory
+  role          = aws_iam_role.rekog_lambda_exec_role.arn
 }
 
 # IAM Role for Lambda
-resource "aws_iam_role" "lambda_exec2" {
-  name = "lambda_exec_role2"
+resource "aws_iam_role" "rekog_lambda_exec_role" {
+  name = "rekognition_lambda_exec_role"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -26,17 +26,24 @@ resource "aws_iam_role" "lambda_exec2" {
 }
 
 # IAM Policy for Lambda
-resource "aws_iam_role_policy" "lambda_policy" {
-  name   = "lambda_policy"
-  role   = aws_iam_role.lambda_exec2.id
+resource "aws_iam_role_policy" "rekognition_lambda_policy" {
+  name   = "rekognition_lambda_policy"
+  role   = aws_iam_role.rekog_lambda_exec_role.id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
         Action = [
-          "logs:*",
-          "lambda:*"
+          "rekognition:DetectLabels",
+          "rekognition:DetectFaces",
+          "rekognition:IndexFaces",
+          "rekognition:ListFaces"
         ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action   = "logs:*"
         Effect   = "Allow"
         Resource = "*"
       }
@@ -71,7 +78,7 @@ resource "aws_iam_role_policy" "step_function_policy" {
       {
         Action = "lambda:InvokeFunction"
         Effect = "Allow"
-        Resource = aws_lambda_function.hello_function2.arn
+        Resource = aws_lambda_function.rekognition_lambda.arn
       }
     ]
   })
@@ -87,7 +94,7 @@ resource "aws_sfn_state_machine" "lambda_state_machine2" {
     States = {
       HelloState = {
         Type       = "Task",
-        Resource   = aws_lambda_function.hello_function2.arn,
+        Resource   = aws_lambda_function.rekognition_lambda.arn,
         End        = true
       }
     }
