@@ -63,9 +63,16 @@ resource "aws_lambda_function" "upload_image_lambda" {
   function_name = "UploadImageLambdaFunction"
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.12"
-  filename      = "upload_image_lambda.zip"  # Ensure this file is present in the same directory
+  filename      = "upload_image_lambda.zip"
   role          = aws_iam_role.upload_image_lambda_exec_role.arn
+
+  environment {
+    variables = {
+      STEP_FUNCTION_ARN = aws_sfn_state_machine.lambda_state_machine2.arn
+    }
+  }
 }
+
 
 # IAM Role for Image Upload Lambda
 resource "aws_iam_role" "upload_image_lambda_exec_role" {
@@ -95,6 +102,11 @@ resource "aws_iam_role_policy" "upload_image_lambda_policy" {
         Action   = "s3:PutObject"
         Effect   = "Allow"
         Resource = "arn:aws:s3:::${aws_s3_bucket.image_bucket.bucket}/*"
+      },
+       {
+        Action   = "states:StartExecution"
+        Effect   = "Allow"
+        Resource = aws_sfn_state_machine.lambda_state_machine2.arn
       },
       {
         Action   = "logs:*"
