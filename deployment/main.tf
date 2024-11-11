@@ -7,5 +7,5 @@ provider "aws" {
 data "aws_region" "current" {}
 
 locals {
-        aws_key = "mainusa1" #CHANGE TO BE YOUR KEY
+        aws_key = var.aws_key
 }

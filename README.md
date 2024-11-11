@@ -10,9 +10,8 @@
 - Run `git checkout <branch/commit>` (This should be changed to a working commit tag on main that we want to grade instead of latest)
   - If you are a developer at this point you can switch to your branch to test that branch instead
 - Run `cd deployment`
-- Use Vim/vi/nano or your text editor of choice to change the security key to match your account's
-  security key in "main.tf"
-- Use your text editor of choice to change the access_token in amplify.tf to your github access token
+- Use Vim/vi/nano or your text editor of choice to change the security key and github token to match your account's
+  security key and your github access token in `terraform.tfvars`
 - Run `terraform init`
 - Run `terraform plan`
 - Run `terraform apply`
