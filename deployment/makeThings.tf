@@ -2,7 +2,7 @@
 # Lambda Function to send image to rekognition
 resource "aws_lambda_function" "rekognition_lambda" {
   function_name = "RekognitionLambdaFunction"
-  handler       = "lambda_function.lambda_handler"
+  handler       = "rekognition_lambda.lambda_handler"
   runtime       = "python3.12"
   filename      = "rekog_lambda_function.zip"  # Ensure this file is present in the same directory
   role          = aws_iam_role.rekog_lambda_exec_role.arn
@@ -61,7 +61,7 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
 # Lambda Function to handle image upload to S3
 resource "aws_lambda_function" "upload_image_lambda" {
   function_name = "UploadImageLambdaFunction"
-  handler       = "lambda_function.lambda_handler"
+  handler       = "upload_image_lambda.lambda_handler"
   runtime       = "python3.12"
   filename      = "upload_image_lambda.zip"
   role          = aws_iam_role.upload_image_lambda_exec_role.arn
