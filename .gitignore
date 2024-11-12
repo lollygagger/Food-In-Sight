@@ -30,3 +30,4 @@ deployment/.terraform.lock.hcl
 deployment/zipped
 deployment/terraform.tfstate
 deployment/terraform.tfstate.backup
+deployment/.terraform.tfstate.lock.info
