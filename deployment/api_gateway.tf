@@ -16,6 +16,7 @@ resource "aws_api_gateway_resource" "upload_image" {
   path_part   = "uploadimage"
 }
 
+#API resources for image upload...
 resource "aws_api_gateway_method" "upload_image_method" {
   rest_api_id   = aws_api_gateway_rest_api.my_api.id
   resource_id   = aws_api_gateway_resource.upload_image.id
@@ -23,6 +24,7 @@ resource "aws_api_gateway_method" "upload_image_method" {
   authorization = "NONE"
 }
 
+#API resources for image upload...
 resource "aws_api_gateway_integration" "upload_image_integration" {
   rest_api_id             = aws_api_gateway_rest_api.my_api.id
   resource_id             = aws_api_gateway_resource.upload_image.id
@@ -32,6 +34,7 @@ resource "aws_api_gateway_integration" "upload_image_integration" {
   uri                     = aws_lambda_function.upload_image_lambda.invoke_arn
 }
 
+#API resources for image upload...
 resource "aws_api_gateway_method_response" "upload_image_response" {
   rest_api_id = aws_api_gateway_rest_api.my_api.id
   resource_id = aws_api_gateway_resource.upload_image.id
@@ -39,6 +42,7 @@ resource "aws_api_gateway_method_response" "upload_image_response" {
   status_code = "200"
 }
 
+#API resources for image upload...
 resource "aws_api_gateway_integration_response" "upload_image_integration_response" {
   rest_api_id = aws_api_gateway_rest_api.my_api.id
   resource_id = aws_api_gateway_resource.upload_image.id
@@ -49,6 +53,7 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
     aws_api_gateway_integration.upload_image_integration
   ]
 }
+
 
 
 # Deploy API Gateway
@@ -70,6 +75,11 @@ resource "aws_api_gateway_stage" "dev" {
   stage_name = "dev"  # Specifies the stage name
 }
 
+
+
+
+# Permissions
+
 # API Gateway IAM Role for Step Function
 resource "aws_iam_role" "apigateway_role" {
   name = "apigateway_step_function_role"
@@ -87,24 +97,26 @@ resource "aws_iam_role" "apigateway_role" {
   })
 }
 
-resource "aws_iam_role_policy" "apigateway_policy" {
-  name = "apigateway_step_function_policy"
-  role = aws_iam_role.apigateway_role.id
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "states:StartExecution"
-        Effect = "Allow"
-        Resource = aws_sfn_state_machine.lambda_state_machine2.arn
-      }
-    ]
-  })
-}
+# #Allows apigateway to invoke step func
+# resource "aws_iam_role_policy" "apigateway_policy" {
+#   name = "apigateway_step_function_policy"
+#   role = aws_iam_role.apigateway_role.id
+#   policy = jsonencode({
+#     Version = "2012-10-17"
+#     Statement = [
+#       {
+#         Action = "states:StartExecution"
+#         Effect = "Allow"
+#         Resource = aws_sfn_state_machine.lambda_state_machine2.arn
+#       }
+#     ]
+#   })
+# }
 
+#Policy apigateway to invoke upload image lambda
 resource "aws_iam_role_policy" "api_gateway_lambda_invoke_policy" {
   name   = "api_gateway_lambda_invoke_policy"
-  role   = aws_iam_role.apigateway_role.id  # Ensure API Gateway role is correctly set here.
+  role   = aws_iam_role.apigateway_role.id
   
   policy = jsonencode({
     Version = "2012-10-17"
@@ -118,6 +130,7 @@ resource "aws_iam_role_policy" "api_gateway_lambda_invoke_policy" {
   })
 }
 
+#Allows apigateway to invoke upload image lambda
 resource "aws_lambda_permission" "allow_apigateway_invoke" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
