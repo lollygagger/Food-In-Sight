@@ -4,7 +4,18 @@ import requests
 
 def lambda_handler(event, context):
     # Get the search term from the event
-    food_name = event.get("food_name", "")
+    body = json.loads(event.get("body", ""))
+    labels = body.get("rekognition_labels", "")
+
+    if (labels == "" or len(labels) == 0): return {
+        "statusCode": 422,
+        "body": json.dumps("No Recognition Labels Recieved")
+    }
+    
+    most_confident_label = max(labels, key=lambda obj: obj["Confidence"])
+    
+    food_name = most_confident_label["Name"]
+    
     if (food_name == ""): return {
         "statusCode": 422,
         "body": json.dumps("No food name provided.")
@@ -12,6 +23,7 @@ def lambda_handler(event, context):
     
     res =  request_food_data_central_api(food_name)
     if res['statusCode'] < 200 or res['statusCode'] > 299: res = request_open_food_facts_api(food_name)
+    res['rekognition_confidence'] = most_confident_label["Confidence"]
         
     return res
 

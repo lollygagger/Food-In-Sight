@@ -1,6 +1,6 @@
 # Step Function
-resource "aws_sfn_state_machine" "lambda_state_machine" {
-  name     = "LambdaStateMachine"
+resource "aws_sfn_state_machine" "identify_food_lambda_state_machine" {
+  name     = "IdentifyFoodStateMachine"
   role_arn = aws_iam_role.step_function_role.arn
 
   definition = jsonencode({
@@ -14,30 +14,22 @@ resource "aws_sfn_state_machine" "lambda_state_machine" {
             "image_url.$": "$.image_url"  # Use ".$" to pass the image_url from input dynamically
           }
         },
-        End        = true
+        Next        = "FoodAPILambda"
+      }
+      FoodAPILambda = {
+        Type          = "Task",
+        Resource      = aws_lambda_function.food_api_lambda.arn,
+        Next          = "DetermineUserRestrictionsLambda"  
+      },
+      DetermineUserRestrictionsLambda = {
+        Type          = "Task",
+        Resource      = aws_lambda_function.determine_user_restrictions_lambda.arn,
+        # Parameters  = {
+        #   data = "USER.ID"
+        # },
+        End           = true
       }
     }
-
-    #### For adding another step (not for using the rekognition lambda) (remove End   = true from above adding another)
-
-    #States = {
-    #   InvokeRekognitionLambda = {
-    #     Type       = "Task",
-    #     Resource   = aws_lambda_function.rekognition_lambda.arn,
-    #     Parameters = {
-    #       image_url = "$.image_url"
-    #     },
-    #     Next = "InvokeAnotherLambda"  # Next state after Rekognition
-    #   },
-    #   InvokeAnotherLambda = {
-    #     Type       = "Task",
-    #     Resource   = aws_lambda_function.another_lambda.arn,
-    #     Parameters = {
-    #       data = "$.rekognition_data"
-    #     },
-    #     End        = true
-    #   }
-    # }
   })
 }
 
@@ -74,6 +66,8 @@ resource "aws_iam_role_policy" "step_function_policy" {
         Effect = "Allow"
         Resource = [
           aws_lambda_function.rekognition_lambda.arn,
+          aws_lambda_function.food_api_lambda.arn,
+          aws_lambda_function.determine_user_restrictions_lambda.arn
         ]
       }
     ]

@@ -25,7 +25,7 @@ dist-ssr
 
 #Terraform extras
 deployment/.terraform/
-deployment/layer/
+deployment/layers/
 deployment/.terraform.lock.hcl
 deployment/zipped
 deployment/terraform.tfstate
