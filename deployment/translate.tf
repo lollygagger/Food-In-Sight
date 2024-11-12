@@ -3,6 +3,12 @@ resource "aws_s3_bucket" "file_upload_bucket" {
   bucket = "food-in-sight-translation-files"
 }
 
+data "archive_file" "translate_lambda_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/lambda/translate_lambda.py"
+  output_path = "${path.module}/lambda/translate_lambda.zip"
+}
+
 # IAM role for Lambda to interact with S3, Textract, and Translate
 resource "aws_iam_role" "lambda_execution_role" {
   name = "LambdaExecutionRole"
@@ -60,7 +66,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
 resource "aws_lambda_function" "process_file_function" {
   function_name = "process_file_function"
   role          = aws_iam_role.lambda_execution_role.arn
-  runtime       = "python3.8"
+  runtime       = "python3.11"
 
   # These are required for referencing a lambda which is stored locally
   handler         = "translate_lambda.handler"
