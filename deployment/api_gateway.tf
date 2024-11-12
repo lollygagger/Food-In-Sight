@@ -1,6 +1,6 @@
 
 # API Gateway and Integration
-resource "aws_api_gateway_rest_api" "Food-In-Sight-API" {
+resource "aws_api_gateway_rest_api" "my_api" {
   name        = "Food-In-Sight-API"
   description = "My API Gateway"
   endpoint_configuration {
