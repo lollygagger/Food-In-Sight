@@ -10,7 +10,7 @@ resource "aws_lambda_function" "upload_image_lambda" {
 
   environment {
     variables = {
-      STEP_FUNCTION_ARN = aws_sfn_state_machine.lambda_state_machine2.arn,
+      STEP_FUNCTION_ARN = aws_sfn_state_machine.lambda_state_machine.arn,
       IMAGE_BUCKET_NAME = aws_s3_bucket.image_bucket.bucket
     }
   }
@@ -51,7 +51,7 @@ resource "aws_iam_role_policy" "upload_image_lambda_policy" {
        {
         Action   = "states:StartExecution"
         Effect   = "Allow"
-        Resource = aws_sfn_state_machine.lambda_state_machine2.arn
+        Resource = aws_sfn_state_machine.lambda_state_machine.arn
       },
       {
         Action   = "logs:*"
