@@ -6,6 +6,7 @@ resource "aws_lambda_function" "rekognition_lambda" {
   runtime       = "python3.12"
   filename      = "rekog_lambda_function.zip"  # Ensure this file is present in the same directory
   role          = aws_iam_role.rekog_lambda_exec_role.arn
+  timeout       = 10
 }
 
 # IAM Role for Lambda
