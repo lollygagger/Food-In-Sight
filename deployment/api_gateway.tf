@@ -97,25 +97,10 @@ resource "aws_iam_role" "apigateway_role" {
   })
 }
 
-# #Allows apigateway to invoke step func
-# resource "aws_iam_role_policy" "apigateway_policy" {
-#   name = "apigateway_step_function_policy"
-#   role = aws_iam_role.apigateway_role.id
-#   policy = jsonencode({
-#     Version = "2012-10-17"
-#     Statement = [
-#       {
-#         Action = "states:StartExecution"
-#         Effect = "Allow"
-#         Resource = aws_sfn_state_machine.lambda_state_machine2.arn
-#       }
-#     ]
-#   })
-# }
 
-#Policy apigateway to invoke upload image lambda
-resource "aws_iam_role_policy" "api_gateway_lambda_invoke_policy" {
-  name   = "api_gateway_lambda_invoke_policy"
+#Policy for apigateway to invoke upload image lambda
+resource "aws_iam_role_policy" "api_gateway_upload_image_lambda_invoke_policy" {
+  name   = "api_gateway_upload_image_lambda_invoke_policy"
   role   = aws_iam_role.apigateway_role.id
   
   policy = jsonencode({
@@ -131,7 +116,7 @@ resource "aws_iam_role_policy" "api_gateway_lambda_invoke_policy" {
 }
 
 #Allows apigateway to invoke upload image lambda
-resource "aws_lambda_permission" "allow_apigateway_invoke" {
+resource "aws_lambda_permission" "allow_apigateway_invoke_lambda" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.upload_image_lambda.function_name

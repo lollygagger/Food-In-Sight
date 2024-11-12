@@ -17,6 +17,8 @@ resource "aws_lambda_function" "upload_image_lambda" {
 }
 
 
+# Permissions
+
 # IAM Role for Image Upload Lambda
 resource "aws_iam_role" "upload_image_lambda_exec_role" {
   name = "upload_image_lambda_exec_role"

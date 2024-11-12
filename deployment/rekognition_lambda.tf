@@ -9,6 +9,10 @@ resource "aws_lambda_function" "rekognition_lambda" {
   timeout       = 10
 }
 
+
+
+# Permissions
+
 # IAM Role for Lambda
 resource "aws_iam_role" "rekog_lambda_exec_role" {
   name = "rekognition_lambda_exec_role"
@@ -33,6 +37,7 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
+      #rekognition access
       {
         Action = [
           "rekognition:DetectLabels",
@@ -41,8 +46,9 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
           "rekognition:ListFaces"
         ]
         Effect   = "Allow"
-        Resource = "*"
+        Resource = "*" #TODO specify?
       },
+      #image bucket
       {
         Action   = "s3:GetObject"
         Effect   = "Allow"
