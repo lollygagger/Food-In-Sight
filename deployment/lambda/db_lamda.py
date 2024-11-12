@@ -4,7 +4,8 @@ from decimal import Decimal
 
 # Initialize DynamoDB resource
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('foodUsers')
+table_name = os.environ['DYNAMODB_TABLE']
+table = dynamodb.Table(table_name)
 
 # Custom JSON encoder to handle Decimal objects
 class DecimalEncoder(json.JSONEncoder):
