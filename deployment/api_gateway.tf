@@ -1,7 +1,7 @@
 
 # API Gateway and Integration
-resource "aws_api_gateway_rest_api" "my_api" {
-  name        = "my-api"
+resource "aws_api_gateway_rest_api" "Food-In-Sight-API" {
+  name        = "Food-In-Sight-API"
   description = "My API Gateway"
   endpoint_configuration {
     types = ["REGIONAL"]
