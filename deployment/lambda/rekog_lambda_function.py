@@ -38,15 +38,16 @@ def lambda_handler(event, context):
     
     # Call Rekognition to detect labels
     try:
-        response = rekognition.detect_labels(
+        response = rekognition.detect_custom_labels(
             Image={
                 'S3Object': {
                     'Bucket': bucket_name,
                     'Name': key
                 }
             },
-            MaxLabels=10,
-            MinConfidence=70
+            MaxResults=10,
+            MinConfidence=70,
+            ProjectVersionArn:"arn:aws:rekognition:us-east-1:559050203586:project/FoodInSight/version/FoodInSight.2024-11-11T12.31.51/1731346311117"
         )
     except Exception as e:
         return {
