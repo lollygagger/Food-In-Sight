@@ -141,25 +141,3 @@ resource "null_resource" "stop_model_trigger" {
 
   depends_on = [aws_lambda_function.stop_model]
 }
-
-# Trigger Lambda function to start model after the lambda function is created
-resource "null_resource" "start_model_trigger" {
-  provisioner "local-exec" {
-    command = "aws lambda invoke --function-name ${aws_lambda_function.start_model.function_name} output.txt"
-  }
-
-  depends_on = [aws_lambda_function.detect_food_lambda, aws_lambda_function.start_model]
-}
-
-# Trigger Lambda function to stop model when resources are destroyed
-resource "null_resource" "stop_model_trigger" {
-  provisioner "local-exec" {
-    command = "aws lambda invoke --function-name ${aws_lambda_function.stop_model.function_name} output.txt"
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-
-  depends_on = [aws_lambda_function.stop_model]
-}
