@@ -28,7 +28,19 @@ resource "null_resource" "install_rekognition_lambda_layer_dependencies" {
     trigger = timestamp()
   }
 }
+# Lambda function to start the model
+data "archive_file" "start_model_zip" {
+  type        = "zip"
+  source_file = "../src/lambda/start_model.py"  # Path to the start model script
+  output_path = "zipped/start_model.zip"
+}
 
+# Lambda function to stop the model
+data "archive_file" "stop_model_zip" {
+  type        = "zip"
+  source_file = "../src/lambda/stop_model.py"  # Path to the stop model script
+  output_path = "zipped/stop_model.zip"
+}
 # Zip Dependencies
 data "archive_file" "rekognition_lambda_layer_zip" {
   type        = "zip"
@@ -84,10 +96,14 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
           "rekognition:DetectLabels",
           "rekognition:DetectFaces",
           "rekognition:IndexFaces",
-          "rekognition:ListFaces"
+          "rekognition:ListFaces",
+          "rekognition:DetectCustomLabels",
+          "rekognition:CreateProjectVersion",
+          "rekognition:StartProjectVersion",
+          "rekognition:StopProjectVersion"
         ]
         Effect   = "Allow"
-        Resource = "*" #TODO specify?
+        Resource =  "arn:aws:rekognition:us-east-1:559050203586:project/FoodInSight/version/FoodInSight.2024-11-11T12.31.51/1731346311117" #TODO specify?
       },
       #image bucket
       {
@@ -102,4 +118,48 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
       }
     ]
   })
+}
+
+# Trigger Lambda function to start model after the lambda function is created
+resource "null_resource" "start_model_trigger" {
+  provisioner "local-exec" {
+    command = "aws lambda invoke --function-name ${aws_lambda_function.start_model.function_name} output.txt"
+  }
+
+  depends_on = [aws_lambda_function.detect_food_lambda, aws_lambda_function.start_model]
+}
+
+# Trigger Lambda function to stop model when resources are destroyed
+resource "null_resource" "stop_model_trigger" {
+  provisioner "local-exec" {
+    command = "aws lambda invoke --function-name ${aws_lambda_function.stop_model.function_name} output.txt"
+  }
+
+  lifecycle {
+    prevent_destroy = false
+  }
+
+  depends_on = [aws_lambda_function.stop_model]
+}
+
+# Trigger Lambda function to start model after the lambda function is created
+resource "null_resource" "start_model_trigger" {
+  provisioner "local-exec" {
+    command = "aws lambda invoke --function-name ${aws_lambda_function.start_model.function_name} output.txt"
+  }
+
+  depends_on = [aws_lambda_function.detect_food_lambda, aws_lambda_function.start_model]
+}
+
+# Trigger Lambda function to stop model when resources are destroyed
+resource "null_resource" "stop_model_trigger" {
+  provisioner "local-exec" {
+    command = "aws lambda invoke --function-name ${aws_lambda_function.stop_model.function_name} output.txt"
+  }
+
+  lifecycle {
+    prevent_destroy = false
+  }
+
+  depends_on = [aws_lambda_function.stop_model]
 }
