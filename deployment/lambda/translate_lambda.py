@@ -18,7 +18,7 @@ def handler(event, context):
 
         # Parse the request body to retrieve the file key
         try:
-            body = json.loads(event['body']git)
+            body = json.loads(event['body'])
             file_key = body.get('file_key')
             if not file_key:
                 raise ValueError("File key not provided in the request body.")
