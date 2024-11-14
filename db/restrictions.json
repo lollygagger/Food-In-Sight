@@ -1,0 +1,162 @@
+{
+    "Restrictions": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "Restriction": {
+                        "S": "celiac"
+                    },
+                    "Ingredients": {
+                        "L": [
+                            {
+                                "S": "gluten"
+                            },
+                            {
+                                "S": "wheat"
+                            },
+                            {
+                                "S": "rye"
+                            },
+                            {
+                                "S": "barley"
+                            },
+                            {
+                                "S": "brewer's yeast"
+                            },
+                            {
+                                "S": "malt"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Restriction": {
+                        "S": "lactose intolerant"
+                    },
+                    "Ingredients": {
+                        "L": [
+                            {
+                                "S": "milk"
+                            },
+                            {
+                                "S": "whey"
+                            },
+                            {
+                                "S": "lactose"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Restriction": {
+                        "S": "soy allergy"
+                    },
+                    "Ingredients": {
+                        "L": [
+                            {
+                                "S": "soy"
+                            },
+                            {
+                                "S": "lecithin"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Restriction": {
+                        "S": "diabetes"
+                    },
+                    "Ingredients": {
+                        "L": [
+                            {
+                                "S": "high fructose corn syrup"
+                            },
+                            {
+                                "S": "sugar"
+                            },
+                            {
+                                "S": "maltose"
+                            },
+                            {
+                                "S": "agave nectar"
+                            },
+                            {
+                                "S": "barley malt"
+                            },
+                            {
+                                "S": "brown rice syrup"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Restriction": {
+                        "S": "vegan"
+                    },
+                    "Ingredients": {
+                        "L": [
+                            {
+                                "S": "egg"
+                            },
+                            {
+                                "S": "dairy"
+                            },
+                            {
+                                "S": "milk"
+                            },
+                            {
+                                "S": "casein"
+                            },
+                            {
+                                "S": "ghee"
+                            },
+                            {
+                                "S": "lactose"
+                            },
+                            {
+                                "S": "lard"
+                            },
+                            {
+                                "S": "gelatin"
+                            },
+                            {
+                                "S": "butter"
+                            },
+                            {
+                                "S": "chicken"
+                            },
+                            {
+                                "S": "pork"
+                            },
+                            {
+                                "S": "beef"
+                            },
+                            {
+                                "S": "fish"
+                            },
+                            {
+                                "S": "anchovy"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

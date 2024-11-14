@@ -1,6 +1,6 @@
-import os
 import boto3
 import json
+import os
 from decimal import Decimal
 
 # Initialize DynamoDB resource
