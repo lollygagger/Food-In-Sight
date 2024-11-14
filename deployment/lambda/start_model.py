@@ -30,6 +30,6 @@ def start_model(project_arn, model_arn, version_name, min_inference_units):
         
     print('Done...')
     
-def lambda_handler():
+def lambda_handler(event,context):
     
     start_model(project_arn, model_arn, version_name, min_inference_units)

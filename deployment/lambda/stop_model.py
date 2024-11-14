@@ -21,7 +21,6 @@ def stop_model(model_arn):
 
     print('Done...')
     
-def lambda_handler():
-    
+def lambda_handler(event, context):
     model_arn='arn:aws:rekognition:us-east-1:559050203586:project/FoodInSight/version/FoodInSight.2024-11-11T12.31.51/1731346311117'
     stop_model(model_arn)

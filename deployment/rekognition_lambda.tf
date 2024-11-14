@@ -96,7 +96,7 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      # Rekognition access
+      # Custom Rekognition access
       {
         Action = [
           "rekognition:DetectLabels",
@@ -111,6 +111,17 @@ resource "aws_iam_role_policy" "rekognition_lambda_policy" {
         Effect   = "Allow"
         Resource = "arn:aws:rekognition:us-east-1:559050203586:project/FoodInSight/version/FoodInSight.2024-11-11T12.31.51/1731346311117"
       },
+      #General Rekognition access
+      {
+      Action = [
+        "rekognition:DetectLabels",
+        "rekognition:DetectFaces",
+        "rekognition:IndexFaces",
+        "rekognition:ListFaces"
+      ]
+      Effect   = "Allow"
+      Resource = "*"
+    },
       # S3 image bucket access
       {
         Action   = "s3:GetObject"
@@ -144,13 +155,17 @@ resource "null_resource" "start_model_trigger" {
 # Lambda function to stop the model
 resource "null_resource" "stop_model_trigger" {
   provisioner "local-exec" {
+    when = "destroy"
     command = "aws lambda invoke --function-name ${aws_lambda_function.stop_model.function_name} output.txt"
   }
 
   # Stop model on destroy
   lifecycle {
     prevent_destroy = false  # Allow destruction to invoke stop_model
+    create_before_destroy = true
+
   }
+
 
   depends_on = [aws_lambda_function.stop_model]
 }

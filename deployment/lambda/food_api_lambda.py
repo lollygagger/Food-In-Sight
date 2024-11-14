@@ -11,8 +11,8 @@ def lambda_handler(event, context):
         "statusCode": 422,
         "body": json.dumps("No Recognition Labels Recieved")
     }
-    
-    most_confident_label = max(labels, key=lambda obj: obj["Confidence"])
+
+    most_confident_label = labels[0] if len(labels) == 1 else max(labels, key=lambda obj: obj["Confidence"])
     
     food_name = most_confident_label["Name"]
     
@@ -45,18 +45,24 @@ def request_food_data_central_api(food_name):
         data = response.json()
         
         # Right now we just get the first item... There should be a way to make it more accurate, if not we could average out key metrics for food on first 100 items
-        food_item = data['foods'][0] 
+        if 'foods' in data and data['foods']:
+            food_item = data['foods'][0]  # Get the first item if available
 
-        return {
-            "statusCode": 200,
-            "body": json.dumps({"source" : "FoodDataCentral", "food_info" : food_item})
-        }
-
+            return {
+                "statusCode": 200,
+                "body": json.dumps({"source": "FoodDataCentral", "food_info": food_item})
+            }
+        else:
+            return {
+                "statusCode": 404,
+                "body": json.dumps({"error": "No matching food item found in FoodDataCentral."})
+            }
     except requests.exceptions.RequestException as e:
         return {
             "statusCode": 500,
             "body": json.dumps({"error": str(e)})
-        } 
+        }
+
 
 def request_open_food_facts_api(food_name):
     url = f"https://world.openfoodfacts.org/cgi/search.pl?search_terms={food_name}&search_simple=1&action=process&json=1"
