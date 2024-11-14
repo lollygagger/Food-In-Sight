@@ -55,6 +55,12 @@ data "archive_file" "stop_model_zip" {
   output_path = "zipped/stop_model.zip"
 }
 
+# Archive Lambda Layer (dependencies for Rekognition)
+data "archive_file" "rekognition_lambda_layer_zip" {
+  type        = "zip"
+  source_dir  = "layers/rekognition_lambda_layer"
+  output_path = "zipped/rekognition_lambda_layer.zip"
+}
 # Create Lambda layer with dependencies
 resource "aws_lambda_layer_version" "rekognition_lambda_layer" {
   filename            = data.archive_file.rekognition_lambda_layer_zip.output_path
@@ -65,12 +71,7 @@ resource "aws_lambda_layer_version" "rekognition_lambda_layer" {
   depends_on = [data.archive_file.rekognition_lambda_layer_zip]
 }
 
-# Archive Lambda Layer (dependencies for Rekognition)
-data "archive_file" "rekognition_lambda_layer_zip" {
-  type        = "zip"
-  source_dir  = "layers/rekognition_lambda_layer"
-  output_path = "zipped/rekognition_lambda_layer.zip"
-}
+
 
 # IAM Role for Lambda
 resource "aws_iam_role" "rekog_lambda_exec_role" {
@@ -155,17 +156,15 @@ resource "null_resource" "start_model_trigger" {
 # Lambda function to stop the model
 resource "null_resource" "stop_model_trigger" {
   provisioner "local-exec" {
-    when = "destroy"
-    command = "aws lambda invoke --function-name ${aws_lambda_function.stop_model.function_name} output.txt"
+    when    = destroy  # Only during the destroy phase
+    command = "aws lambda invoke --function-name ${self.triggers.function_name} output.txt"
+    on_failure = "continue"  # Continue if the command fails
   }
 
-  # Stop model on destroy
-  lifecycle {
-    prevent_destroy = false  # Allow destruction to invoke stop_model
-    create_before_destroy = true
-
+  triggers = {
+    function_name = aws_lambda_function.stop_model.function_name
   }
-
-
-  depends_on = [aws_lambda_function.stop_model]
 }
+
+# Lambda function to stop the model
+
