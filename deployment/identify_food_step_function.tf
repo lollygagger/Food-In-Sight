@@ -31,6 +31,7 @@ resource "aws_sfn_state_machine" "identify_food_lambda_state_machine" {
       }
     }
   })
+
 }
 
 
@@ -67,7 +68,9 @@ resource "aws_iam_role_policy" "step_function_policy" {
         Resource = [
           aws_lambda_function.rekognition_lambda.arn,
           aws_lambda_function.food_api_lambda.arn,
-          aws_lambda_function.determine_user_restrictions_lambda.arn
+          aws_lambda_function.determine_user_restrictions_lambda.arn,
+          aws_lambda_function.start_model.arn,
+          aws_lambda_function.stop_model.arn
         ]
       }
     ]
