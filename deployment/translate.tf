@@ -47,14 +47,24 @@ resource "aws_iam_role_policy" "lambda_policy" {
         Effect   = "Allow"
         Action   = [
           "textract:StartDocumentTextDetection",
-          "textract:GetDocumentTextDetection"
+          "textract:GetDocumentTextDetection",
+          "textract:DetectDocumentText", #For synchronous
+          "StartDocumentTextDetection" #For asynchronous
         ]
         Resource = "*"
       },
       {
         Effect   = "Allow"
         Action   = [
-          "translate:TranslateText"
+          "translate:TranslateText",
+          "translate:TranslateDocument"
+        ]
+        Resource = "*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = [
+          "comprehend:DetectDominantLanguage"
         ]
         Resource = "*"
       }

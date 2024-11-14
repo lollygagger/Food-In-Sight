@@ -2,9 +2,9 @@ import json
 import boto3
 import os
 
-textract = boto3.client('textract')
-translate = boto3.client('translate')
-s3 = boto3.client('s3')
+textract = boto3.client('textract', region_name='us-east-1')
+translate = boto3.client('translate', region_name='us-east-1')
+s3 = boto3.client('s3', region_name='us-east-1')
 
 def handler(event, context):
     try:
@@ -30,7 +30,7 @@ def handler(event, context):
 
         # Call Textract to extract text from the image
         try:
-            response = textract.detect_text(
+            response = textract.detect_document_text(
                 Document={'S3Object': {'Bucket': bucket_name, 'Name': file_key}}
             )
         except textract.exceptions.InvalidS3ObjectException as e:
