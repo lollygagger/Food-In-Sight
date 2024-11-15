@@ -1,6 +1,8 @@
+resource "random_uuid" "bucket_uuid" {}
+
 #Bucket to store images for rekognition
 resource "aws_s3_bucket" "image_bucket" {
-  bucket = "imagebucketuniquename123123089658970"
+  bucket = "imagebucket-${random_uuid.bucket_uuid.result}"
   force_destroy = true
 }
 
