@@ -4,6 +4,7 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
+    "allowJs": true,
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -26,5 +27,8 @@
       "aws-exports": ["src/aws-exports.js"]  // Resolve aws-exports to the correct path
     }
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "src/aws-exports.d.ts"
+  ]
 }
