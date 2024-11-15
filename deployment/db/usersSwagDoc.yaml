@@ -1,4 +1,3 @@
----
 swagger: "2.0"
 info:
   version: "2024-11-09T00:16:28Z"
@@ -6,17 +5,17 @@ info:
 host: "5cvrxwcpog.execute-api.us-east-1.amazonaws.com"
 basePath: "/prod"
 schemes:
-- "https"
+  - "https"
 paths:
   /user:
     get:
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "username"
-        in: "query"
-        required: true
-        type: "string"
+        - name: "username"
+          in: "query"
+          required: true
+          type: "string"
       responses:
         "200":
           description: "200 response"
@@ -25,9 +24,14 @@ paths:
           headers:
             Access-Control-Allow-Origin:
               type: "string"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
     post:
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "200 response"
@@ -36,11 +40,16 @@ paths:
           headers:
             Access-Control-Allow-Origin:
               type: "string"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
     options:
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "200 response"
@@ -56,12 +65,12 @@ paths:
   /user/diets:
     get:
       produces:
-      - "application/json"
+        - "application/json"
       parameters:
-      - name: "username"
-        in: "query"
-        required: true
-        type: "string"
+        - name: "username"
+          in: "query"
+          required: true
+          type: "string"
       responses:
         "200":
           description: "200 response"
@@ -70,9 +79,14 @@ paths:
           headers:
             Access-Control-Allow-Origin:
               type: "string"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${diet_lambda_arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
     post:
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "200 response"
@@ -81,9 +95,14 @@ paths:
           headers:
             Access-Control-Allow-Origin:
               type: "string"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${diet_lambda_arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
     delete:
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "200 response"
@@ -92,11 +111,16 @@ paths:
           headers:
             Access-Control-Allow-Origin:
               type: "string"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${diet_lambda_arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
     options:
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "200 response"
@@ -112,7 +136,7 @@ paths:
   /users:
     get:
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "200 response"
@@ -121,11 +145,16 @@ paths:
           headers:
             Access-Control-Allow-Origin:
               type: "string"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
     options:
       consumes:
-      - "application/json"
+        - "application/json"
       produces:
-      - "application/json"
+        - "application/json"
       responses:
         "200":
           description: "200 response"

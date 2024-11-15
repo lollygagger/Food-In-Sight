@@ -19,7 +19,11 @@ def lambda_handler(event, context):
             })
         }
     
-    most_confident_label = max(labels, key=lambda obj: obj["Confidence"])
+    # Filter out obviously bad labels like 'Food'
+    specific_labels = [label for label in labels if label["Name"].lower() != "food"]
+    
+    #Choose most confident specific label
+    most_confident_label = max(specific_labels, key=lambda obj: obj["Confidence"])
     food_name = most_confident_label["Name"]
     
     if not food_name:
@@ -34,9 +38,9 @@ def lambda_handler(event, context):
     # Add the most confident label's confidence to the payload
     step_function_payload['rekognition_confidence'] = most_confident_label["Confidence"]
 
-    res = request_food_data_central_api(food_name)
+    res = request_open_food_facts_api(food_name)
     if res['statusCode'] < 200 or res['statusCode'] > 299:
-        res = request_open_food_facts_api(food_name)
+        res = request_food_data_central_api(food_name)
 
     # Return Step Function Payload in the response
     res["step_function_payload"] = step_function_payload
@@ -98,3 +102,11 @@ def request_open_food_facts_api(food_name):
             "statusCode": 500,
             "body": json.dumps({"error": str(e)})
         }
+
+# # Test Events    
+# event = {
+#   "statusCode": 200,
+#   "body": "{\"message\": \"Image processed successfully and Step Function triggered.\", \"rekognition_labels\": [{\"Name\": \"Food\", \"Confidence\": 99.9979248046875, \"Instances\": [], \"Parents\": [], \"Aliases\": [], \"Categories\": [{\"Name\": \"Food and Beverage\"}]}, {\"Name\": \"Peanut Butter\", \"Confidence\": 99.9979248046875, \"Instances\": [], \"Parents\": [{\"Name\": \"Food\"}], \"Aliases\": [], \"Categories\": [{\"Name\": \"Food and Beverage\"}]}, {\"Name\": \"Can\", \"Confidence\": 85.29634094238281, \"Instances\": [{\"BoundingBox\": {\"Width\": 0.5947438478469849, \"Height\": 0.9982008337974548, \"Left\": 0.1990254521369934, \"Top\": 0.0017990911146625876}, \"Confidence\": 85.29634094238281}], \"Parents\": [{\"Name\": \"Tin\"}], \"Aliases\": [], \"Categories\": [{\"Name\": \"Food and Beverage\"}]}, {\"Name\": \"Tin\", \"Confidence\": 85.29634094238281, \"Instances\": [], \"Parents\": [], \"Aliases\": [], \"Categories\": [{\"Name\": \"Materials\"}]}], \"step_function_payload\": {\"image_url\": \"s3://imagebucket-1548f9d6-a06e-09fa-be0b-46cdfd5f7685/images/bccbac49-a06a-4e61-a1b2-cbf6481c1be2.jpg\", \"username\": \"jacob_canedy\"}}"
+# }
+# event_next = lambda_handler(event, {})
+# print()

@@ -29,7 +29,7 @@ resource "aws_sfn_state_machine" "identify_food_lambda_state_machine" {
       }
     }
   })
-  # type = "EXPRESS"
+  type = "EXPRESS"
 }
 
 

@@ -72,7 +72,7 @@ paths:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,x-correlation-id'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
-          application/json: "{\"statusCode\": 200}"
+          application/json: '{"statusCode": 200}'
         passthroughBehavior: "when_no_match"
         type: "mock"
 
@@ -156,7 +156,7 @@ paths:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,x-correlation-id'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
-          application/json: "{\"statusCode\": 200}"
+          application/json: '{"statusCode": 200}'
         passthroughBehavior: "when_no_match"
         type: "mock"
 
@@ -173,7 +173,7 @@ paths:
             Access-Control-Allow-Origin:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${lambda_arn}/invocations
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations
         httpMethod: "POST"
         type: "aws_proxy"
         passthroughBehavior: "when_no_match"
@@ -203,10 +203,10 @@ paths:
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,Authorization,x-correlation-id'"
               method.response.header.Access-Control-Allow-Origin: "'*'"
         requestTemplates:
-          application/json: "{\"statusCode\": 200}"
+          application/json: '{"statusCode": 200}'
         passthroughBehavior: "when_no_match"
         type: "mock"
-  
+
   /diets:
     get:
       produces:
@@ -224,7 +224,7 @@ paths:
         httpMethod: "POST"
         type: "aws_proxy"
         passthroughBehavior: "when_no_match"
-  
+
   /diet:
     get:
       produces:

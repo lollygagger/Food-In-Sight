@@ -1,12 +1,6 @@
-provider "aws" {
-    region = "us-east-1"
-}
-
 locals {
-    aws_key = "schwartz514" #CHANGE TO BE YOUR KEY
-
     # Users table data
-    users_json = jsondecode(file("${path.module}/users_db.json"))
+    users_json = jsondecode(file("${path.module}/db/users_db.json"))
     users_transformed = {
         for idx, user in local.users_json.users : idx => {
             UserName = { S = user.UserName }
@@ -16,7 +10,7 @@ locals {
     }
 
     # Diets table data
-    diets_json = jsondecode(file("${path.module}/diets_db.json"))
+    diets_json = jsondecode(file("${path.module}/db/diets_db.json"))
     diets_transformed = {
         for idx, diet in local.diets_json.diets : idx => {
             Restriction = { S = diet.Restriction }
@@ -166,7 +160,7 @@ resource "aws_lambda_permission" "api_gateway_diet_invoke" {
 
 # ---------- FILES ----------
 data "local_file" "api_swagger_spec" {
-    filename = "${path.module}/usersApiDoc.yaml"  # Ensure this matches your actual Swagger file path
+    filename = "${path.module}/db/usersApiDoc.yaml"  # Ensure this matches your actual Swagger file path
 }
 
 # Update the template file data source to include both Lambda ARNs
@@ -180,12 +174,12 @@ data "template_file" "swagger_with_lambda_arn" {
 
 data "archive_file" "user_zip_python" {
     type        = "zip"
-    source_file = "${path.module}/users_lambda.py"  # Ensure this matches the path to your Python file
-    output_path = "${path.module}/users_lambda.zip"
+    source_file = "${path.module}/lambda/users_lambda.py"  # Ensure this matches the path to your Python file
+    output_path = "${path.module}/zipped/users_lambda.zip"
 }
 
 data "archive_file" "diet_zip_python" {
     type        = "zip"
-    source_file = "${path.module}/diets_lambda.py"
-    output_path = "${path.module}/diets_lambda.zip"
+    source_file = "${path.module}/lambda/diets_lambda.py"
+    output_path = "${path.module}/zipped/diets_lambda.zip"
 }

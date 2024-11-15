@@ -1,0 +1,172 @@
+{
+  "diets": [
+    {
+      "Restriction": "lactose-intolerant",
+      "Ingredients": [
+        "milk",
+        "lactose",
+        "whey",
+        "dairy",
+        "casein",
+        "cream",
+        "cheese"
+      ]
+    },
+    {
+      "Restriction": "soy-allergy",
+      "Ingredients": [
+        "soy",
+        "soy protein",
+        "soy sauce",
+        "soybean oil",
+        "lecithin"
+      ]
+    },
+    {
+      "Restriction": "peanut-allergy",
+      "Ingredients": ["peanuts", "peanut", "peanut butter", "peanut oil"]
+    },
+    {
+      "Restriction": "tree-nut-allergy",
+      "Ingredients": [
+        "almonds",
+        "cashews",
+        "walnuts",
+        "pecans",
+        "pistachios",
+        "hazelnuts"
+      ]
+    },
+    {
+      "Restriction": "gluten-intolerant",
+      "Ingredients": [
+        "wheat",
+        "barley",
+        "rye",
+        "triticale",
+        "malt",
+        "wheat starch"
+      ]
+    },
+    {
+      "Restriction": "celiac-disease",
+      "Ingredients": ["wheat", "barley", "rye", "malt", "brewer's yeast"]
+    },
+    {
+      "Restriction": "shellfish-allergy",
+      "Ingredients": ["shrimp", "crab", "lobster", "crawfish", "prawns"]
+    },
+    {
+      "Restriction": "fish-allergy",
+      "Ingredients": ["salmon", "tuna", "cod", "anchovies", "tilapia"]
+    },
+    {
+      "Restriction": "egg-allergy",
+      "Ingredients": ["egg whites", "egg yolks", "albumin", "mayonnaise"]
+    },
+    {
+      "Restriction": "vegan",
+      "Ingredients": [
+        "meat",
+        "fish",
+        "poultry",
+        "eggs",
+        "dairy",
+        "honey",
+        "gelatin"
+      ]
+    },
+    {
+      "Restriction": "vegetarian",
+      "Ingredients": ["meat", "fish", "poultry", "gelatin", "rennet"]
+    },
+    {
+      "Restriction": "sesame-allergy",
+      "Ingredients": ["sesame seeds", "tahini", "sesame oil"]
+    },
+    {
+      "Restriction": "mustard-allergy",
+      "Ingredients": ["mustard seeds", "mustard powder", "mustard oil"]
+    },
+    {
+      "Restriction": "sulfite-sensitivity",
+      "Ingredients": [
+        "sulfites",
+        "sulfur dioxide",
+        "potassium bisulfite",
+        "wine",
+        "dried fruits"
+      ]
+    },
+    {
+      "Restriction": "nightshade-sensitivity",
+      "Ingredients": [
+        "tomatoes",
+        "potatoes",
+        "eggplants",
+        "bell peppers",
+        "paprika"
+      ]
+    },
+    {
+      "Restriction": "histamine-intolerance",
+      "Ingredients": [
+        "aged cheese",
+        "fermented foods",
+        "wine",
+        "cured meats",
+        "avocado"
+      ]
+    },
+    {
+      "Restriction": "FODMAP-intolerance",
+      "Ingredients": ["wheat", "onions", "garlic", "beans", "apples", "honey"]
+    },
+    {
+      "Restriction": "corn-allergy",
+      "Ingredients": ["corn", "cornstarch", "corn syrup", "popcorn"]
+    },
+    {
+      "Restriction": "citrus-allergy",
+      "Ingredients": ["oranges", "lemons", "limes", "grapefruits"]
+    },
+    {
+      "Restriction": "banana-allergy",
+      "Ingredients": ["bananas", "banana extract"]
+    },
+    {
+      "Restriction": "apple-allergy",
+      "Ingredients": ["apples", "apple cider", "apple juice"]
+    },
+    {
+      "Restriction": "garlic-allergy",
+      "Ingredients": ["garlic", "garlic powder", "garlic extract"]
+    },
+    {
+      "Restriction": "onion-allergy",
+      "Ingredients": ["onions", "onion powder"]
+    },
+    {
+      "Restriction": "legume-allergy",
+      "Ingredients": [
+        "lentils",
+        "peas",
+        "chickpeas",
+        "black beans",
+        "kidney beans"
+      ]
+    },
+    {
+      "Restriction": "red-meat-allergy",
+      "Ingredients": ["beef", "pork", "lamb", "venison"]
+    },
+    {
+      "Restriction": "allium-sensitivity",
+      "Ingredients": ["garlic", "onions", "shallots", "leeks", "chives"]
+    },
+    {
+      "Restriction": "alcohol-intolerance",
+      "Ingredients": ["alcohol", "wine", "beer", "liquor"]
+    }
+  ]
+}

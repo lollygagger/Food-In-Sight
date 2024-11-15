@@ -5,7 +5,12 @@ resource "aws_lambda_function" "determine_user_restrictions_lambda" {
   role          = aws_iam_role.lambda_execution_role.arn
   handler       = "determine_user_restrictions_lambda.lambda_handler"  
   runtime       = "python3.11"
-  depends_on    = [data.archive_file.determine_user_restrictions_lambda_zip, aws_lambda_layer_version.determine_user_restrictions_lambda_layer]
+  depends_on    = [
+    data.archive_file.determine_user_restrictions_lambda_zip, 
+    aws_lambda_layer_version.determine_user_restrictions_lambda_layer, 
+    aws_api_gateway_deployment.api_deployment
+  ]
+  
   layers = [
     aws_lambda_layer_version.determine_user_restrictions_lambda_layer.arn
   ]
@@ -16,9 +21,7 @@ resource "aws_lambda_function" "determine_user_restrictions_lambda" {
 
   environment {
     variables = {
-      # Un-Comment this once merge w/ db
-      # API_ENDPOINT = "${aws_api_gateway_rest_api.user_api.execution_arn}/prod"
-      API_ENDPOINT = "https://uyhbnwdm70.execute-api.us-east-1.amazonaws.com/prod"
+      API_ENDPOINT = "${aws_api_gateway_deployment.api_deployment.invoke_url}"
     }
   }
 }

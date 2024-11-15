@@ -99,7 +99,7 @@ def lambda_handler(event, context):
 
     # Trigger Step Function execution
     try:
-        step_response = step_functions_client.start_execution(
+        step_response = step_functions_client.start_sync_execution(
             stateMachineArn=step_function_arn,
             input=json.dumps(step_function_payload)
         )
@@ -107,8 +107,9 @@ def lambda_handler(event, context):
             "statusCode": 200,
             "body": json.dumps({
                 "message": "Image uploaded to S3 and Step Function triggered.",
+                "image_url": image_url,
                 "result":step_response['output'],
-                # "step_function_execution_arn": step_response['executionArn']
+                "step_function_execution_arn": step_response['executionArn']
             })
         }
     except Exception as e:

@@ -96,8 +96,7 @@ resource "aws_iam_role_policy" "upload_image_lambda_policy" {
         Resource = "${aws_s3_bucket.image_bucket.arn}/*"
       },
        {
-        # Action   = "states:StartSyncExecution"
-        Action   = "states:StartExecution"
+        Action   = "states:StartSyncExecution"
         Effect   = "Allow"
         Resource = aws_sfn_state_machine.identify_food_lambda_state_machine.arn
       },
