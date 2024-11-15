@@ -1,9 +1,11 @@
 #Configure the AWS provider
 provider "aws" {
-  region = "us-east-1"
+  region = var.region
 }
 
-#possibly needed for easy reference of
+data "aws_caller_identity" "current" {}
+
+#possibly needed for easy reference of region
 data "aws_region" "current" {}
 
 locals {
