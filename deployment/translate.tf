@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "file_upload_bucket" {
 
 data "archive_file" "translate_lambda_zip" {
   type        = "zip"
-  source_dir  = "${path.module}/lambda/translate_lambda.py"
+  source_file = "${path.module}/lambda/translate_lambda.py"
   output_path = "${path.module}/lambda/translate_lambda.zip"
 }
 
