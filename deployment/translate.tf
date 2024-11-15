@@ -1,6 +1,7 @@
 # Define the S3 Bucket to store uploaded files
 resource "aws_s3_bucket" "file_upload_bucket" {
-  bucket = "food-in-sight-translation-files"
+  bucket = "translation-files-${uuid()}"
+  force_destroy = true
 }
 
 data "archive_file" "translate_lambda_zip" {
@@ -9,7 +10,7 @@ data "archive_file" "translate_lambda_zip" {
   output_path = "${path.module}/lambda/translate_lambda.zip"
 }
 
-# IAM role for Lambda to interact with S3, Textract, and Translate
+# IAM role for Lambda for S3, Textract, and Translate
 resource "aws_iam_role" "lambda_execution_role" {
   name = "LambdaExecutionRole"
 
@@ -27,7 +28,7 @@ resource "aws_iam_role" "lambda_execution_role" {
   })
 }
 
-# Attach a policy to allow S3, Textract, and Translate access for the Lambda role
+# Attach policy to Lambda
 resource "aws_iam_role_policy" "lambda_policy" {
   name = "LambdaS3TextractTranslatePolicy"
   role = aws_iam_role.lambda_execution_role.id
@@ -72,7 +73,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
   })
 }
 
-# Define a Lambda function for processing the file (to invoke Textract and Translate)
+
 resource "aws_lambda_function" "process_file_function" {
   function_name = "process_file_function"
   role          = aws_iam_role.lambda_execution_role.arn
