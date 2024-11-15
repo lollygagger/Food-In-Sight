@@ -145,14 +145,15 @@ resource "aws_api_gateway_deployment" "deployment" {
   ]
 
   rest_api_id  = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  stage_name = "prod"
 }
 
 # Deployment name
-resource "aws_api_gateway_stage" "dev" {
-  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
-  deployment_id = aws_api_gateway_deployment.deployment.id
-  stage_name = "dev"  # Specifies the stage name
-}
+# resource "aws_api_gateway_stage" "dev" {
+#   rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+#   deployment_id = aws_api_gateway_deployment.deployment.id
+#   stage_name = "dev"  # Specifies the stage name
+# }
 
 output "api_url" {
   value = "${aws_api_gateway_deployment.deployment.invoke_url}/upload"

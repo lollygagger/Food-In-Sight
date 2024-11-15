@@ -19,6 +19,12 @@ const LandingPage= () => {
                     <input type="text" placeholder="Search for ingredients..." />
                     <button className="search-button">Search</button>
                 </section>
+
+                <section>
+                    <h2>Translate A Label</h2>
+                    <input type="file" accept="image/*" />
+                    <button className="translate-label">Translate text in image</button>
+                </section>
             </main>
         </div>
     );
