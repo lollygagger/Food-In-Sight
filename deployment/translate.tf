@@ -11,7 +11,7 @@ data "archive_file" "translate_lambda_zip" {
 }
 
 # IAM role for Lambda for S3, Textract, and Translate
-resource "aws_iam_role" "lambda_execution_role" {
+resource "aws_iam_role" "translate_lambda_execution_role" {
   name = "LambdaExecutionRole"
 
   assume_role_policy = jsonencode({
@@ -31,7 +31,7 @@ resource "aws_iam_role" "lambda_execution_role" {
 # Attach policy to Lambda
 resource "aws_iam_role_policy" "lambda_policy" {
   name = "LambdaS3TextractTranslatePolicy"
-  role = aws_iam_role.lambda_execution_role.id
+  role = aws_iam_role.translate_lambda_execution_role.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -76,7 +76,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
 
 resource "aws_lambda_function" "process_file_function" {
   function_name = "process_file_function"
-  role          = aws_iam_role.lambda_execution_role.arn
+  role          = aws_iam_role.translate_lambda_execution_role.arn
   runtime       = "python3.11"
 
   # These are required for referencing a lambda which is stored locally
