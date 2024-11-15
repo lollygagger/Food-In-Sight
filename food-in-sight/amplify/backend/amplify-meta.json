@@ -40,7 +40,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-foodinsight-dev-50b22-deployment/amplify-cfn-templates/auth/foodinsight672a3249-cloudformation-template.json",
         "logicalId": "authfoodinsight672a3249"
       },
-      "lastPushTimeStamp": "2024-11-11T00:36:24.785Z",
+      "lastPushTimeStamp": "2024-11-15T03:35:58.238Z",
       "output": {
         "UserPoolId": "us-east-1_ThHadgoKx",
         "AppClientIDWeb": "26h3p878ul4me04toa7t0k1mk",
