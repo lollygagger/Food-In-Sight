@@ -66,6 +66,10 @@ def handler(event, context):
                 TargetLanguageCode='en'
             )
             translated_text = translated.get('TranslatedText', '')
+
+            # After processing, delete the image from the S3 bucket
+            s3.delete_object(Bucket=bucket_name, Key=file_key)
+
         except Exception as e:
             print(f"Translate error: {e}")
             return {

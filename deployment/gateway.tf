@@ -1,21 +1,24 @@
 # Define the API Gateway REST API
-resource "aws_api_gateway_rest_api" "file_upload_api" {
-  name        = "Food-In-Sight"
-  description = "API for uploading files to S3 and processing with Textract and Translate"
+resource "aws_api_gateway_rest_api" "food_in_sight_api" {
+  name        = "Food-In-Sight-API"
+  description = "API Gateway handling the requests for the Food-in-Sight App"
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
 }
 
 
 #Translate -------------------------------------------------------------------------------------------------------------
 # Create a resource under the API for uploading files
 resource "aws_api_gateway_resource" "file_upload_resource" {
-  rest_api_id = aws_api_gateway_rest_api.file_upload_api.id
-  parent_id   = aws_api_gateway_rest_api.file_upload_api.root_resource_id
+  rest_api_id = aws_api_gateway_rest_api.food_in_sight_api.id
+  parent_id   = aws_api_gateway_rest_api.food_in_sight_api.root_resource_id
   path_part   = "upload"
 }
 
 # Define the PUT method for the file upload endpoint
 resource "aws_api_gateway_method" "put_upload_method" {
-  rest_api_id   = aws_api_gateway_rest_api.file_upload_api.id
+  rest_api_id   = aws_api_gateway_rest_api.food_in_sight_api.id
   resource_id   = aws_api_gateway_resource.file_upload_resource.id
   http_method   = "PUT"
   authorization = "NONE"
@@ -23,7 +26,7 @@ resource "aws_api_gateway_method" "put_upload_method" {
 
 # Integrate the PUT method with the Lambda function
 resource "aws_api_gateway_integration" "upload_integration" {
-  rest_api_id             = aws_api_gateway_rest_api.file_upload_api.id
+  rest_api_id             = aws_api_gateway_rest_api.food_in_sight_api.id
   resource_id             = aws_api_gateway_resource.file_upload_resource.id
   http_method             = aws_api_gateway_method.put_upload_method.http_method
   integration_http_method = "POST"
@@ -36,17 +39,23 @@ resource "aws_lambda_permission" "api_gateway_permission" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.process_file_function.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.file_upload_api.execution_arn}/*/*"
+  source_arn    = "${aws_api_gateway_rest_api.food_in_sight_api.execution_arn}/*/*"
 }
 #END Translate ---------------------------------------------------------------------------------------------------------
 
 # Deploy the API Gateway
-resource "aws_api_gateway_deployment" "file_upload_deployment" {
+resource "aws_api_gateway_deployment" "deployment" {
   depends_on   = [aws_api_gateway_integration.upload_integration]
-  rest_api_id  = aws_api_gateway_rest_api.file_upload_api.id
-  stage_name   = "prod"
+  rest_api_id  = aws_api_gateway_rest_api.food_in_sight_api.id
+}
+
+# Deployment name
+resource "aws_api_gateway_stage" "dev" {
+  rest_api_id = aws_api_gateway_rest_api.food_in_sight_api.id
+  deployment_id = aws_api_gateway_deployment.deployment.id
+  stage_name = "dev"  # Specifies the stage name
 }
 
 output "api_url" {
-  value = "${aws_api_gateway_deployment.file_upload_deployment.invoke_url}/upload"
+  value = "${aws_api_gateway_deployment.deployment.invoke_url}/upload"
 }
