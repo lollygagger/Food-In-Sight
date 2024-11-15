@@ -49,7 +49,7 @@ resource "aws_iam_role_policy" "lambda_policy" {
           "textract:StartDocumentTextDetection",
           "textract:GetDocumentTextDetection",
           "textract:DetectDocumentText", #For synchronous
-          "StartDocumentTextDetection" #For asynchronous
+          "textract:StartDocumentTextDetection" #For asynchronous
         ]
         Resource = "*"
       },
