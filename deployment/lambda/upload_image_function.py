@@ -108,7 +108,10 @@ def lambda_handler(event, context):
             "statusCode": 200,
             "body": json.dumps({
                 "message": "Image uploaded to S3 and Step Function triggered.",
-                "image_url": image_url,
+                "Step_Function_Payload": {
+                    "username": username,
+                    "image_url": image_url
+                },
                 "step_function_execution_arn": step_response['executionArn']
             })
         }

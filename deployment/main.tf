@@ -10,5 +10,5 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 locals {
-        aws_key = "PC_US_EAST_1" #CHANGE TO BE YOUR KEY
+        aws_key = "JC_AWS_KEY" #CHANGE TO BE YOUR KEY
 }

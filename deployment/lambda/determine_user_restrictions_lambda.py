@@ -1,9 +1,12 @@
 import json
 import requests
+import os
 
 def get_dietary_restrictions(username):
     # Making a call to the Swagger API's diets endpoint
-    response = requests.get(f"https://5cvrxwcpog.execute-api.us-east-1.amazonaws.com/prod/user/diets?username={username}")
+    api_endpoint = os.environ['API_ENDPOINT']
+    print(api_endpoint)
+    response = requests.get(f"{api_endpoint}user/diets?username={username}")
     
     if response.status_code == 200:
         return response.json()
@@ -12,6 +15,11 @@ def get_dietary_restrictions(username):
         return {}
 
 def lambda_handler(event, context):
+    # Extract the Step Function Payload
+    step_function_payload = event.get('Step_Function_Payload', {})
+    username = step_function_payload.get("username", "")
+    image_url = step_function_payload.get("image_url", "")
+    
     status_code = event.get("statusCode", "")
     
     if status_code == 200:
@@ -21,7 +29,6 @@ def lambda_handler(event, context):
         allergens = food_info.get("allergens", [])
         
         # Assuming 'username' is passed in the event for the Swagger API call
-        username = event.get("username", "default_user")
         diet_restrictions = get_dietary_restrictions(username)
         
         # Analyzing and comparing dietary restrictions
@@ -50,7 +57,8 @@ def lambda_handler(event, context):
         
         return {
             "statusCode": 200,
-            "body": json.dumps({"currated_user_results": currated_user_results})
+            "body": json.dumps({"currated_user_results": currated_user_results}),
+            "Step_Function_Payload" : step_function_payload
         }
     
     return {

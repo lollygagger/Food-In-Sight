@@ -8,6 +8,14 @@ resource "aws_lambda_function" "determine_user_restrictions_lambda" {
   depends_on    = [data.archive_file.determine_user_restrictions_lambda_zip]
 
   filename = data.archive_file.determine_user_restrictions_lambda_zip.output_path  
+
+  environment {
+    variables = {
+      # Un-Comment this once merge w/ db
+      # API_ENDPOINT = "${aws_api_gateway_rest_api.user_api.execution_arn}/prod"
+      API_ENDPOINT = "https://uyhbnwdm70.execute-api.us-east-1.amazonaws.com/prod"
+    }
+  }
 }
 
 #Zipped Python Lambda / Dependencies

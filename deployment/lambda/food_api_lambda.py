@@ -3,32 +3,45 @@ import os
 import requests
 
 def lambda_handler(event, context):
-    # Get the search term from the event
-    body = json.loads(event.get("body", ""))
-    labels = body.get("rekognition_labels", "")
+    # Extract the Step Function Payload
+    step_function_payload = event.get('Step_Function_Payload', {})
+    labels = step_function_payload.get("image_labels", [])
+    username = step_function_payload.get("username", "")
+    image_url = step_function_payload.get("image_url", "")
 
-    if (labels == "" or len(labels) == 0): return {
-        "statusCode": 422,
-        "body": json.dumps("No Recognition Labels Recieved")
-    }
+    if not labels:
+        return {
+            "statusCode": 422,
+            "body": json.dumps({
+                "message": "No Recognition Labels Received",
+                "Step_Function_Payload": step_function_payload
+            })
+        }
     
     most_confident_label = max(labels, key=lambda obj: obj["Confidence"])
-    
     food_name = most_confident_label["Name"]
     
-    if (food_name == ""): return {
-        "statusCode": 422,
-        "body": json.dumps("No food name provided.")
-    }
+    if not food_name:
+        return {
+            "statusCode": 422,
+            "body": json.dumps({
+                "message": "No food name provided.",
+                "Step_Function_Payload": step_function_payload
+            })
+        }
     
-    res =  request_food_data_central_api(food_name)
-    if res['statusCode'] < 200 or res['statusCode'] > 299: res = request_open_food_facts_api(food_name)
-    res['rekognition_confidence'] = most_confident_label["Confidence"]
-        
+    # Add the most confident label's confidence to the payload
+    step_function_payload['rekognition_confidence'] = most_confident_label["Confidence"]
+
+    res = request_food_data_central_api(food_name)
+    if res['statusCode'] < 200 or res['statusCode'] > 299:
+        res = request_open_food_facts_api(food_name)
+
+    # Return Step Function Payload in the response
+    res["Step_Function_Payload"] = step_function_payload
+    
     return res
 
-    
-        
 def request_food_data_central_api(food_name):
     api_key = os.getenv("FOOD_DATA_API_KEY")
     if not api_key:
@@ -36,7 +49,7 @@ def request_food_data_central_api(food_name):
             "statusCode": 500,
             "body": json.dumps({"error": "API key not found."})
         }
-        
+    
     url = f"https://api.nal.usda.gov/fdc/v1/foods/search?query={food_name}&api_key={api_key}"
     
     try:
@@ -44,12 +57,12 @@ def request_food_data_central_api(food_name):
         response.raise_for_status() 
         data = response.json()
         
-        # Right now we just get the first item... There should be a way to make it more accurate, if not we could average out key metrics for food on first 100 items
+        # Get the first item
         food_item = data['foods'][0] 
 
         return {
             "statusCode": 200,
-            "body": json.dumps({"source" : "FoodDataCentral", "food_info" : food_item})
+            "body": json.dumps({"source": "FoodDataCentral", "food_info": food_item})
         }
 
     except requests.exceptions.RequestException as e:
