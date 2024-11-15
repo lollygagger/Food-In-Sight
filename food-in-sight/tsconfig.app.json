@@ -18,7 +18,13 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Path Aliases */
+    "baseUrl": ".",  // Set the base URL to the project root
+    "paths": {
+      "aws-exports": ["src/aws-exports.js"]  // Resolve aws-exports to the correct path
+    }
   },
   "include": ["src"]
 }

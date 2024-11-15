@@ -2,5 +2,5 @@
 
 declare module 'aws-exports' {
     const awsmobile: any;
-    export = awsmobile;
+    export default awsmobile;
 }
