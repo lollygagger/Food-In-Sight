@@ -24,9 +24,6 @@ resource "aws_sfn_state_machine" "identify_food_lambda_state_machine" {
       DetermineUserRestrictionsLambda = {
         Type          = "Task",
         Resource      = aws_lambda_function.determine_user_restrictions_lambda.arn,
-        # Parameters  = {
-        #   data = "USER.ID"
-        # },
         End           = true
       }
     }

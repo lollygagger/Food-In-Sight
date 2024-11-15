@@ -3,9 +3,9 @@ import boto3
 
 def lambda_handler(event, context):
     rekognition = boto3.client('rekognition')
-    
+        
     # Get the image URL and username from the Step Function Payload
-    step_function_payload = event.get('Step_Function_Payload', {})
+    step_function_payload = event.get('Payload', {})
     image_url = step_function_payload.get('image_url', "")
     username = step_function_payload.get('username', "")
     
