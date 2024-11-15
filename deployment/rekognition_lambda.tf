@@ -60,6 +60,9 @@ data "archive_file" "rekognition_lambda_layer_zip" {
   type        = "zip"
   source_dir  = "layers/rekognition_lambda_layer"
   output_path = "zipped/rekognition_lambda_layer.zip"
+  depends_on = [
+    null_resource.install_food_api_lambda_layer_dependencies
+  ]
 }
 # Create Lambda layer with dependencies
 resource "aws_lambda_layer_version" "rekognition_lambda_layer" {
