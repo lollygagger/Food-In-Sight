@@ -1,4 +1,3 @@
-import { React } from 'react';
 import { Amplify } from 'aws-amplify';
 
 import { Authenticator } from '@aws-amplify/ui-react';
@@ -13,9 +12,15 @@ export default function App() {
         <Authenticator>
             {({ signOut, user }) => (
                 <main>
-                    <p> Hello {user.username} </p>
-                    <LandingPage />
-                    <button onClick={signOut}>Sign Out</button>
+                    {user ? (
+                        <>
+                            <p> Hello {user.username} </p>
+                            <LandingPage/>
+                            <button onClick={signOut}>Sign Out</button>
+                        </>
+                    ) : (
+                        <p>Loading</p>
+                    )}
                 </main>
             )}
         </Authenticator>
