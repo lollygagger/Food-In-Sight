@@ -26,7 +26,7 @@ paths:
             Access-Control-Allow-Origin:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${lambda_arn}/invocations
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations
         httpMethod: "POST"
         type: "aws_proxy"
         passthroughBehavior: "when_no_match"
@@ -42,7 +42,7 @@ paths:
             Access-Control-Allow-Origin:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${lambda_arn}/invocations
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations
         httpMethod: "POST"
         type: "aws_proxy"
         passthroughBehavior: "when_no_match"
@@ -94,7 +94,7 @@ paths:
             Access-Control-Allow-Origin:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${lambda_arn}/invocations
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations
         httpMethod: "POST"
         type: "aws_proxy"
         passthroughBehavior: "when_no_match"
@@ -110,7 +110,7 @@ paths:
             Access-Control-Allow-Origin:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${lambda_arn}/invocations
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations
         httpMethod: "POST"
         type: "aws_proxy"
         passthroughBehavior: "when_no_match"
@@ -126,7 +126,7 @@ paths:
             Access-Control-Allow-Origin:
               type: "string"
       x-amazon-apigateway-integration:
-        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${lambda_arn}/invocations
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${user_lambda_arn}/invocations
         httpMethod: "POST"
         type: "aws_proxy"
         passthroughBehavior: "when_no_match"
@@ -206,6 +206,70 @@ paths:
           application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
         type: "mock"
+  
+  /diets:
+    get:
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${diet_lambda_arn}/invocations
+        httpMethod: "POST"
+        type: "aws_proxy"
+        passthroughBehavior: "when_no_match"
+  
+  /diet:
+    get:
+      produces:
+        - "application/json"
+      parameters:
+        - name: "restriction"
+          in: "query"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${diet_lambda_arn}/invocations
+        httpMethod: "POST"
+        type: "aws_proxy"
+        passthroughBehavior: "when_no_match"
+
+  /diet/ingredients:
+    get:
+      produces:
+        - "application/json"
+      parameters:
+        - name: "restriction"
+          in: "query"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+      x-amazon-apigateway-integration:
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/${diet_lambda_arn}/invocations
+        httpMethod: "POST"
+        type: "aws_proxy"
+        passthroughBehavior: "when_no_match"
 
 definitions:
   Empty:

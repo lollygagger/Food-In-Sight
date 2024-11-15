@@ -1,0 +1,12 @@
+{
+    "diets": [
+        {
+            "Restriction": "lactose intolerant",
+            "Ingredients": ["milk, lactose, whey, dairy"]
+        },
+        {
+            "Restriction": "soy allergy",
+            "Ingredients": ["soy", "lecithin"]
+        }
+    ]
+}
