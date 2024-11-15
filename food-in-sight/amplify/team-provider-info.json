@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-foodinsight-dev-50b22-authRole",
+      "UnauthRoleArn": "arn:aws:iam::779846783519:role/amplify-foodinsight-dev-50b22-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::779846783519:role/amplify-foodinsight-dev-50b22-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-foodinsight-dev-50b22-deployment",
+      "UnauthRoleName": "amplify-foodinsight-dev-50b22-unauthRole",
+      "StackName": "amplify-foodinsight-dev-50b22",
+      "StackId": "arn:aws:cloudformation:us-east-1:779846783519:stack/amplify-foodinsight-dev-50b22/ab6760a0-9fc4-11ef-ad03-0affebcf0045",
+      "AmplifyAppId": "d1c2naelj7l2nf"
+    },
+    "categories": {
+      "auth": {
+        "foodinsight672a3249": {}
+      }
+    }
+  }
+}

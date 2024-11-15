@@ -6,5 +6,5 @@ variable "aws_key" {
 
 variable "github_token"{
   type = string
-  description = "This is your Github Access Token that amplify uses to "
+  description = "This is your Github Access Token that amplify uses to pull the repo"
 }
