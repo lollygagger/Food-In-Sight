@@ -92,16 +92,14 @@ def lambda_handler(event, context):
 
     # Prepare the input for the Step Function, including username if present
     step_function_payload = {
-        "image_url": image_url
+        "image_url": image_url,
+        "username": username if username else "",  # Add username even if empty
     }
-    
-    if username:
-        step_function_payload["username"] = username
         
 
     # Trigger Step Function execution
     try:
-        step_response = step_functions_client.start_sync_execution(
+        step_response = step_functions_client.start_execution(
             stateMachineArn=step_function_arn,
             input=json.dumps(step_function_payload)
         )
@@ -110,7 +108,7 @@ def lambda_handler(event, context):
             "body": json.dumps({
                 "message": "Image uploaded to S3 and Step Function triggered.",
                 "result":step_response['output'],
-                "step_function_execution_arn": step_response['executionArn']
+                # "step_function_execution_arn": step_response['executionArn']
             })
         }
     except Exception as e:

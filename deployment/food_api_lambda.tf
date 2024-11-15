@@ -4,7 +4,7 @@ resource "aws_lambda_function" "food_api_lambda" {
   role          = aws_iam_role.lambda_execution_role.arn
   handler       = "food_api_lambda.lambda_handler" 
   runtime       = "python3.11" 
-    layers = [
+  layers = [
     aws_lambda_layer_version.food_api_lambda_layer.arn
   ]
   depends_on = [

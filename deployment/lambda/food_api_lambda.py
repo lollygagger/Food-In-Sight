@@ -4,8 +4,9 @@ import requests
 
 def lambda_handler(event, context):
     # Extract the Step Function Payload
-    step_function_payload = event.get('Step_Function_Payload', {})
-    labels = step_function_payload.get("image_labels", [])
+    body = json.loads(event.get('body', {}))
+    step_function_payload = body.get('step_function_payload', {})
+    labels = body.get("rekognition_labels", [])
     username = step_function_payload.get("username", "")
     image_url = step_function_payload.get("image_url", "")
 
@@ -14,7 +15,7 @@ def lambda_handler(event, context):
             "statusCode": 422,
             "body": json.dumps({
                 "message": "No Recognition Labels Received",
-                "Step_Function_Payload": step_function_payload
+                "step_function_payload": step_function_payload
             })
         }
     
@@ -26,7 +27,7 @@ def lambda_handler(event, context):
             "statusCode": 422,
             "body": json.dumps({
                 "message": "No food name provided.",
-                "Step_Function_Payload": step_function_payload
+                "step_function_payload": step_function_payload
             })
         }
     
@@ -38,7 +39,7 @@ def lambda_handler(event, context):
         res = request_open_food_facts_api(food_name)
 
     # Return Step Function Payload in the response
-    res["Step_Function_Payload"] = step_function_payload
+    res["step_function_payload"] = step_function_payload
     
     return res
 

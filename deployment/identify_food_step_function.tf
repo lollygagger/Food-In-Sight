@@ -12,6 +12,7 @@ resource "aws_sfn_state_machine" "identify_food_lambda_state_machine" {
         Parameters = {
           "Payload": {
             "image_url.$": "$.image_url"  # Use ".$" to pass the image_url from input dynamically
+            "username.$": "$.username"  # Use ".$" to pass the image_url from input dynamically
           }
         },
         Next        = "FoodAPILambda"
@@ -28,7 +29,7 @@ resource "aws_sfn_state_machine" "identify_food_lambda_state_machine" {
       }
     }
   })
-  type = "EXPRESS"
+  # type = "EXPRESS"
 }
 
 

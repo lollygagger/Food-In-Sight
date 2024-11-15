@@ -65,6 +65,6 @@ def lambda_handler(event, context):
         'body': json.dumps({
             'message': 'Image processed successfully and Step Function triggered.',
             'rekognition_labels': response['Labels'],
-            'Step_Function_Payload': step_function_payload
+            'step_function_payload': step_function_payload
         })
     }
