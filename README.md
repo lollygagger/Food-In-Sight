@@ -1,11 +1,6 @@
-
 # Food In Sight
 
-  
-
 ## Setup:
-
-  
 
 - Create an EC2 instance using the AMI (Team 5 Food Insight AMI)
 
@@ -38,21 +33,24 @@ security key in "main.tf"
 - To shutdown the instance started by terraform run `terraform destroy`
 
 ## Testing on API-Step-Lambda branch
+
 - After building with `terraform apply` you can test in the API Gateway console
 - Go to the API Gateway console and find `Food-In-Sight-API`
 - Select `POST` then `Test`
 - In `Request body` type:
-`{
-	"image_data": "<base64>"
+  `{
+	"image_data": "<base64>",
+	"username" : "<username[optional]>
 }`
 - And replace `<base64>` with the base64 code of a small (<500kb) image
 
-	- You can get the base64 string of an image here: https://base64.guru/converter/encode
+  - You can get the base64 string of an image here: https://base64.guru/converter/encode
 
-	 - For `Datatype` select `Local File`
-	 - And `Output Format` select `Plain text -- just the Base64 value`
- - Select `Test` to run the test
- - The Response body should say "Image uploaded to S3 and Step Function triggered."
+  - For `Datatype` select `Local File`
+  - And `Output Format` select `Plain text -- just the Base64 value`
+
+- Select `Test` to run the test
+- The Response body should say "Image uploaded to S3 and Step Function triggered."
 
 - Now go to your Step Functions
 - Click `LambdaStateMachine`
@@ -62,11 +60,7 @@ security key in "main.tf"
 
 ## Aws Configure:
 
-  
-
 To get the necessary key and secret after running aws configure in the ec2 instance
-
-  
 
 1. Run `aws configure` in ec2 instance, if you do not have the credentials do the following
 
