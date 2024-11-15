@@ -33,6 +33,8 @@ def lambda_handler(event, context):
         }
 
     image_data = body.get("image_data")
+    username = body.get("username")
+
     if not image_data:
         return {
             "statusCode": 400,
@@ -88,10 +90,13 @@ def lambda_handler(event, context):
             "body": json.dumps("Step Function ARN is not configured in environment variables")
         }
 
-    # Prepare the input for the Step Function (you can modify this based on your need)
+    # Prepare the input for the Step Function, including username if present
     step_function_input = {
-        "image_url": image_url  # pass the S3 URL of the uploaded image
+        "image_url": image_url
     }
+    
+    if username:
+        step_function_input["username"] = username
 
     # Trigger Step Function execution
     try:
