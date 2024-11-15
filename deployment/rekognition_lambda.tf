@@ -5,7 +5,7 @@ resource "aws_lambda_function" "rekognition_lambda" {
   runtime       = "python3.12"
   filename      = data.archive_file.rekognition_lambda_zip.output_path
   role          = aws_iam_role.rekog_lambda_exec_role.arn
-  timeout       = 10
+  timeout       = 30
 
   depends_on = [data.archive_file.rekognition_lambda_zip]
 }
