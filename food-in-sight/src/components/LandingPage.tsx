@@ -1,7 +1,7 @@
 // import './LandingPage.css';
 
 const LandingPage= () => {
-    console.log("landing page rendered called!")
+    // console.log("landing page rendered called!")
     return (
         <div className="landing-container">
             <header className="header">
