@@ -5,7 +5,7 @@ resource "aws_lambda_function" "upload_image_lambda" {
   runtime       = "python3.12"
   filename      = data.archive_file.upload_image_lambda_zip.output_path
   role          = aws_iam_role.upload_image_lambda_exec_role.arn
-  timeout       = 10
+  timeout       = 30
   layers = [aws_lambda_layer_version.upload_image_function_lambda_layer.arn]
 
   depends_on = [ data.archive_file.upload_image_lambda_zip,  aws_lambda_layer_version.upload_image_function_lambda_layer]

@@ -29,22 +29,9 @@ def get_dietary_restrictions_ingredients(username):
             return list(dietary_restrictions_ingredients)
         
         else:
-            return {}
+            return []
     except:
-        return {}
-    
-def clean_string(s):
-    # Convert to lowercase first
-    text = str(s).lower()
-    
-    # Remove parentheses but keep their contents
-    no_parentheses = text.replace('(', ' ').replace(')', ' ')
-    
-    # Split on commas, periods, spaces
-    words = re.split(r'[,.\s]+', no_parentheses)
-    
-    # Clean up empty strings and duplicates
-    return list(dict.fromkeys([word for word in words if word]))    
+        return []  
         
 
 def lambda_handler(event, context):
@@ -59,28 +46,24 @@ def lambda_handler(event, context):
     if status_code == 200:
         # Parse the food information from food_api_lambda.py's response
         food_info = json.loads(event.get("body", {})).get("food_info", {})
-        ingredients = clean_string(food_info.get("ingredients", ""))
-        allergens = clean_string(food_info.get("allergens", ""))
         
         # Assuming 'username' is passed in the event for the Swagger API call
         dietary_restrictions_ingredients = get_dietary_restrictions_ingredients(username)
         
         # Analyzing and comparing dietary restrictions
-        flagged_items = {
-            "restricted_ingredients": [],
-            "restricted_allergens": []
-        }
+        flagged_restrictions = set()
         
-        for ingredient in ingredients:
-            if ingredient in dietary_restrictions_ingredients:
-                flagged_items["restricted_ingredients"].append(ingredient)
-        
-        for allergen in allergens:
-            if allergen in dietary_restrictions_ingredients:
-                flagged_items["restricted_allergens"].append(allergen)
-        
+
+        # Get ingredients text and convert to lowercase for consistent matching
+        food_info_text = str(food_info)
+
+        for restricted_ingredient in dietary_restrictions_ingredients:
+            if restricted_ingredient.lower() in food_info_text.lower():
+                flagged_restrictions.add(restricted_ingredient)
+
+        # Convert set to list for JSON serialization
         food_insight = {
-            "flagged_items": flagged_items,
+            "flagged_restrictions": list(flagged_restrictions),
             "diet_restrictions": dietary_restrictions_ingredients
         }
         
