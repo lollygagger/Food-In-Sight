@@ -65,7 +65,7 @@ def handler(event, context):
                 SourceLanguageCode='auto',
                 TargetLanguageCode='en'
             )
-            translated_text = translated.get('TranslatedText', '')
+            translated_text = translated.get('TranslatedText')
 
             # After processing, delete the image from the S3 bucket
             s3.delete_object(Bucket=bucket_name, Key=file_key)
