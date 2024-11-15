@@ -1,0 +1,19 @@
+{
+    "users": [
+        {
+            "UserName": "john_doe",
+            "Password": "securepass123",
+            "Diets": [
+                "vegan",
+                "gluten-free"
+            ]
+        },
+        {
+            "UserName": "jane_smith",
+            "Password": "password456",
+            "Diets": [
+                "vegetarian"
+            ]
+        }
+    ]
+}
