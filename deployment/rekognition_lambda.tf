@@ -35,7 +35,7 @@ data "archive_file" "rekognition_lambda_layer_zip" {
   source_dir  = "layers/rekognition_lambda_layer"
   output_path = "zipped/rekognition_lambda_layer.zip"
   depends_on = [
-    null_resource.install_food_api_lambda_layer_dependencies
+    null_resource.install_rekognition_lambda_layer_dependencies
   ]
 }
 
