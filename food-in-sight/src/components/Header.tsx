@@ -1,18 +1,28 @@
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "./Header.css";
 import { useAuthenticator } from '@aws-amplify/ui-react';
 
 const Header = () => {
     const { user, signOut } = useAuthenticator((context) => [context.user]);
 
+    const navigate = useNavigate();
+
+    const handleProfileRedir = () => {
+        navigate('/profile');
+    };
+
+    const handleHomeRedir = () => {
+        navigate('/');
+    }
+
     return (
         <header>
             <nav className="nav-menu">
-                <button className="nav-button">
-                    <Link to="/" className="nav-link">Home</Link>
+                <button onClick={handleHomeRedir} className="nav-button">
+                    Home
                 </button>
-                <button className="nav-button">
-                    <Link to="/profile" className="nav-link">Profile</Link>
+                <button onClick={handleProfileRedir} className="nav-button">
+                    Profile
                 </button>
 
                 <p className="welcome-text">Welcome {user.username}</p>

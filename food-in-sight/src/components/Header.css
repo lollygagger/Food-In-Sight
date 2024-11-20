@@ -7,7 +7,7 @@ header {
     height: 8%;
     background-color: #AAB396; /* Primary color */
     color: #ffffff;
-    padding: 10px 20px;
+    padding: 0.3vw 1vw;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
@@ -16,16 +16,17 @@ header {
 .nav-menu {
     display: flex; /* Align buttons horizontally */
     gap: 15px; /* Increase spacing between buttons */
+    padding: 0.3vw 1vw;
 }
 
 /* Button styling */
 .nav-button {
     background-color: #AAB396;
     color: #000000;
-    border: 2px solid #AAB396;
+    border: 2px solid #674636;
     border-radius: 8px;
-    padding: 15px 20px;
-    font-size: 16px;
+    padding: 0.3vw 1vw;
+    font-size: 1.2rem;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -48,8 +49,8 @@ header {
 .logout-button {
     background-color: #674636;
     color: #F7EED3;
-    padding: 15px 20px;
-    font-size: 16px;
+    padding: .7vw;
+    font-size: 1rem;
     margin-left: auto;
 }
 
