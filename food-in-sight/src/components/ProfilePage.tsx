@@ -29,6 +29,7 @@ const ProfilePage= () => {
 
             <div className="user-info-box">
                 <div className="user-info">
+                    <h2>Diet Information</h2>
 
                 </div>
             </div>
