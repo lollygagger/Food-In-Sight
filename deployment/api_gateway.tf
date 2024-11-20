@@ -89,6 +89,39 @@ resource "aws_lambda_permission" "api_gateway_permission" {
 }
 #END Translate ---------------------------------------------------------------------------------------------------------
 
+#Translate S3 Signed URL -----------------------------------------------------------------------------------------------
+
+resource "aws_api_gateway_resource" "translate_presigned_url" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  parent_id   = aws_api_gateway_rest_api.Food-In-Sight-API.root_resource_id
+  path_part   = "presigned-url"
+}
+
+resource "aws_api_gateway_method" "get_translate_presigned_url" {
+  rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id   = aws_api_gateway_resource.translate_presigned_url.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "translate_signed_integration" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.translate_presigned_url.id
+  http_method = aws_api_gateway_method.get_translate_presigned_url.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.generate_translate_presigned_url.arn}/invocations"
+}
+
+resource "aws_lambda_permission" "allow_api_gateway_translate_presign" {
+  action        = "lambda:InvokeFunction"
+  principal     = "apigateway.amazonaws.com"
+  function_name = aws_lambda_function.generate_translate_presigned_url.function_name
+  source_arn    = "${aws_api_gateway_rest_api.Food-In-Sight-API.execution_arn}/*/*"
+}
+
+
+# END Translate S3 Signed URL ------------------------------------------------------------------------------------------
 # Permissions
 
 # API Gateway IAM Role for Step Function
@@ -113,7 +146,7 @@ resource "aws_iam_role" "apigateway_role" {
 resource "aws_iam_role_policy" "api_gateway_upload_image_lambda_invoke_policy" {
   name   = "api_gateway_upload_image_lambda_invoke_policy"
   role   = aws_iam_role.apigateway_role.id
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
