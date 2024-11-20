@@ -4,10 +4,8 @@ const LandingPage= () => {
     // console.log("landing page rendered called!")
     return (
         <div className="landing-container">
-            <header className="header">
-                <h1>Welcome to Food-in-Sight</h1>
-                <p>Your go-to app for food and ingredient insights.</p>
-            </header>
+            <h1>Welcome to Food-in-Sight</h1>
+            <p>Your go-to app for food and ingredient insights.</p>
             <main className="main-content">
                 <section className="upload-section">
                     <h2>Upload Food Images</h2>

@@ -19,17 +19,14 @@ export default function App() {
                 <Router> {/* Wrap everything with Router */}
                     {user ? (
                         <main>
-                            <Header />
-                            <p>Hello {user.username}</p>
+                            <Header user={user} signOut={signOut}/>
 
-                            {/* Define the Routes for each page */}
                             <Routes>
                                 <Route path="/" element={<LandingPage />} />
                                 <Route path="/profile" element={<ProfilePage />} />
                                 <Route path="/results" element={<ResultsPage />} />
                             </Routes>
 
-                            <button onClick={signOut}>Sign Out</button>
                         </main>
                     ) : (
                         <p>Loading</p>

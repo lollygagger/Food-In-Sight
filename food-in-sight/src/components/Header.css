@@ -1,0 +1,59 @@
+/* General header styling */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #AAB396; /* Primary color */
+    color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+/* Navigation menu styling */
+.nav-menu {
+    display: flex; /* Align buttons horizontally */
+    gap: 15px; /* Increase spacing between buttons */
+}
+
+/* Button styling */
+.nav-button {
+    background-color: #AAB396;
+    color: #000000;
+    border: 2px solid #AAB396;
+    border-radius: 8px;
+    padding: 15px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Link styling */
+.nav-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+/* Hover and focus states */
+.nav-button:hover, .nav-button:focus {
+    background-color: #F7EED3;
+    color: #000000;
+}
+
+.logout-button {
+    background-color: #674636;
+    color: #F7EED3;
+    padding: 15px 20px;
+    font-size: 12px;
+    margin-left: auto;
+}
+
+.welcome-text {
+    font-size: 16px;
+    color: #F7EED3;
+    margin-left: auto;
+}

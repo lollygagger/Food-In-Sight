@@ -1,20 +1,20 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import "./Header.css"; // Make sure your CSS file is imported
+import { AuthUser } from "aws-amplify/auth/cognito";
 
-const Header= () => {
+const Header = ({ user, signOut }: { user: AuthUser; signOut: () => void }) => {
     return (
         <header>
-            <h1>This will be the header</h1>
-
             <nav className="nav-menu">
-                <ul>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/profile">Profile</Link>
-                    </li>
+                <button className="nav-button">
+                    <Link to="/" className="nav-link">Home</Link>
+                </button>
+                <button className="nav-button">
+                    <Link to="/profile" className="nav-link">Profile</Link>
+                </button>
 
-                </ul>
+                <p className="welcome-text">Welcome {user.username}</p>
+                <button className="logout-button" onClick={signOut}>Sign Out</button>
             </nav>
         </header>
     );
