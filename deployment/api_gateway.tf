@@ -59,7 +59,7 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
 resource "aws_api_gateway_resource" "file_upload_resource" {
   rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
   parent_id   = aws_api_gateway_rest_api.Food-In-Sight-API.root_resource_id
-  path_part   = "upload"
+  path_part   = "translate"
 }
 
 # Define the PUT method for the file upload endpoint
@@ -94,7 +94,7 @@ resource "aws_lambda_permission" "api_gateway_permission" {
 resource "aws_api_gateway_resource" "translate_presigned_url" {
   rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
   parent_id   = aws_api_gateway_rest_api.Food-In-Sight-API.root_resource_id
-  path_part   = "presigned-url"
+  path_part   = "presign-translate"
 }
 
 resource "aws_api_gateway_method" "get_translate_presigned_url" {
