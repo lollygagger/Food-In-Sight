@@ -5,7 +5,7 @@ export default defineConfig({
   resolve: {
     alias: {
       // Correct the alias path relative to the project root
-      'aws-exports': './src/aws-exports.js'
+      'aws-exports': '/src/aws-exports.js'
     }
   },
   build: {
