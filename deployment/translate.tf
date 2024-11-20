@@ -114,12 +114,6 @@ resource "aws_lambda_function" "generate_translate_presigned_url" {
   source_code_hash = data.archive_file.translate_lambda_presign_zip.output_base64sha256
 }
 
-resource "aws_lambda_permission" "allow_api_gateway_translate_presign" {
-  action        = "lambda:InvokeFunction"
-  principal     = "apigateway.amazonaws.com"
-  function_name = aws_lambda_function.generate_translate_presigned_url.function_name
-}
-
 
 output "s3_bucket_name" {
   value = aws_s3_bucket.file_upload_bucket.bucket
