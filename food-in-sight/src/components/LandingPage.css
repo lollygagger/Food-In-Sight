@@ -9,21 +9,7 @@ body {
     align-items: center;
     padding: 20px;
     background-color: #f8f9fa;
-}
-
-.header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.header h1 {
-    font-size: 2.5em;
-    color: #333;
-}
-
-.header p {
-    font-size: 1.2em;
-    color: #555;
+    padding-top: 4%;
 }
 
 .main-content {

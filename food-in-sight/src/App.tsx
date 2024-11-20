@@ -1,5 +1,5 @@
 import { Amplify } from 'aws-amplify';
-import { Authenticator } from '@aws-amplify/ui-react';
+import { Authenticator, ThemeProvider} from '@aws-amplify/ui-react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import Router and Route
 import '@aws-amplify/ui-react/styles.css';
 
@@ -14,25 +14,48 @@ Amplify.configure(awsmobile);
 
 export default function App() {
     return (
-        <Authenticator>
-            {({ signOut, user }) => (
-                <Router> {/* Wrap everything with Router */}
-                    {user ? (
-                        <main>
-                            <Header user={user} signOut={signOut}/>
+        <ThemeProvider theme={foodtheme}>
+            <Authenticator>
+                {({user }) => (
 
-                            <Routes>
-                                <Route path="/" element={<LandingPage />} />
-                                <Route path="/profile" element={<ProfilePage />} />
-                                <Route path="/results" element={<ResultsPage />} />
-                            </Routes>
+                        <Router> {/* Wrap everything with Router */}
+                            {user ? (
+                                <main>
+                                    <Header/>
 
-                        </main>
-                    ) : (
-                        <p>Loading</p>
-                    )}
-                </Router>
-            )}
-        </Authenticator>
+                                    <Routes>
+                                        <Route path="/" element={<LandingPage />} />
+                                        <Route path="/profile" element={<ProfilePage />} />
+                                        <Route path="/results" element={<ResultsPage />} />
+                                    </Routes>
+
+                                </main>
+                            ) : (
+                                <p>Loading</p>
+                            )}
+                        </Router>
+                )}
+            </Authenticator>
+        </ThemeProvider>
     );
 }
+
+
+const foodtheme = {
+    name: 'food-in-sight',
+    tokens: {
+        colors: {
+            border: {
+                primary: { value: '#F7EED3' },
+                secondary: { value: '#AAB396' },
+                tertiary: { value: '#674636' },
+            },
+        },
+        radii: {
+            small: { value: '2px' },
+            medium: { value: '3px' },
+            large: { value: '4px' },
+            xl: { value: '6px' },
+        },
+    },
+};

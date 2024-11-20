@@ -1,11 +1,9 @@
-// import './LandingPage.css';
+import './LandingPage.css';
 
 const LandingPage= () => {
-    // console.log("landing page rendered called!")
     return (
         <div className="landing-container">
-            <h1>Welcome to Food-in-Sight</h1>
-            <p>Your go-to app for food and ingredient insights.</p>
+            <h1>Upload an Image of Food</h1>
             <main className="main-content">
                 <section className="upload-section">
                     <h2>Upload Food Images</h2>

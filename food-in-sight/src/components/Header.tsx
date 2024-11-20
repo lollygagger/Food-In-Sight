@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import "./Header.css"; // Make sure your CSS file is imported
-import { AuthUser } from "aws-amplify/auth/cognito";
+import "./Header.css";
+import { useAuthenticator } from '@aws-amplify/ui-react';
 
-const Header = ({ user, signOut }: { user: AuthUser; signOut: () => void }) => {
+const Header = () => {
+    const { user, signOut } = useAuthenticator((context) => [context.user]);
+
     return (
         <header>
             <nav className="nav-menu">
