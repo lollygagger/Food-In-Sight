@@ -11,6 +11,7 @@ export const imageUpload = async (imageFile: any, presignedUrl: URL) => {
             body: imageFile,
             headers: {
                 'Content-Type': imageFile.type,
+                'x-amz-date': generateAmzDate()
             },
         });
 
@@ -53,4 +54,20 @@ export const getPresignedUrl =  async (endpoint: string, filename: string) => {
     } catch (error) {
         console.error('Error getting pre-signed URL:', error);
     }
+}
+
+/**
+ * This function generates the current date in the aws x-amz-date format needed to verify that the signed url is unexpired
+ */
+function generateAmzDate() {
+    const now = new Date();
+
+    const year = now.getUTCFullYear();
+    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(now.getUTCDate()).padStart(2, '0');
+    const hours = String(now.getUTCHours()).padStart(2, '0');
+    const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+
+    return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
 }

@@ -9,7 +9,7 @@ resource "aws_s3_bucket_public_access_block" "unblock_file_upload_bucket" {
 
   block_public_acls       = false
   block_public_policy     = false
-  ignore_public_acls      = true
+  ignore_public_acls      = false
   restrict_public_buckets = false
 }
 
