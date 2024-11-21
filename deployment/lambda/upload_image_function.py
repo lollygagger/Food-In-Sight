@@ -105,6 +105,11 @@ def lambda_handler(event, context):
         )
         return {
             "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token",
+            },
             "body": json.dumps({
                 "message": "Image uploaded to S3 and Step Function triggered.",
                 "image_url": image_url,
