@@ -4,7 +4,7 @@ import {useState} from "react";
 import {getPresignedUrl, imageUpload} from "../utils/ImageUploadUtil.ts";
 import {image_data} from "../assets/image_data.tsx"
 import { useNavigate } from 'react-router-dom';
-import { ExpectedResultStructure } from './Types.tsx';
+import { ExpectedResultStructure } from '../utils/Types.tsx';
 import { BeatLoader } from "react-spinners"; // Import spinner
 
 

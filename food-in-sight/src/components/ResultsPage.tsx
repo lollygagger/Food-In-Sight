@@ -1,6 +1,6 @@
 import './ResultsPage.css'
 import { useLocation } from "react-router-dom";
-import { ExpectedResultStructure } from './Types';
+import { ExpectedResultStructure } from '../utils/Types.tsx';
 
 const ResultsPage = () => {
 
