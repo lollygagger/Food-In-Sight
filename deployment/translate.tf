@@ -34,7 +34,7 @@ resource "aws_iam_role" "translate_lambda_execution_role" {
         Action    = "sts:AssumeRole"
         Effect    = "Allow"
         Principal = {
-          Service = "lambda.amazonaws.com"
+          Service = "*"
         }
       }
     ]
@@ -87,12 +87,12 @@ resource "aws_iam_role_policy" "lambda_policy" {
 }
 
 resource "aws_lambda_function" "process_file_function" {
-  function_name = "process_file_function"
-  role          = aws_iam_role.translate_lambda_execution_role.arn
-  runtime       = "python3.11"
+  function_name    = "process_file_function"
+  role             = aws_iam_role.translate_lambda_execution_role.arn
+  runtime          = "python3.11"
 
-  handler         = "translate_lambda.handler"
-  filename        = "lambda/translate_lambda.zip"
+  handler          = "translate_lambda.handler"
+  filename         = "lambda/translate_lambda.zip"
   source_code_hash = data.archive_file.translate_lambda_zip.output_base64sha256
 
   environment {
@@ -115,7 +115,7 @@ resource "aws_lambda_function" "generate_translate_presigned_url" {
   role          = aws_iam_role.translate_lambda_execution_role.arn
   handler       = "translate_presigned_url.handler"
   runtime       = "python3.11"
-  filename = "lambda/translate_presigned_url.zip"
+  filename      = "lambda/translate_presigned_url.zip"
 
   environment {
     variables = {
