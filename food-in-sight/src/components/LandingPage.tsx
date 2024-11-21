@@ -17,7 +17,6 @@ const LandingPage= () => {
     const navigate = useNavigate()
 
     const [translateFile, setTranslateFile] = useState<File | null>(null);
-    const [translateResult, setTranslateResult] = useState<any>("");
 
     async function sendFileKeyToTranslateEndpoint(fileKey: string) {
         try {
@@ -65,8 +64,7 @@ const LandingPage= () => {
                 alert("Image upload failed, please try again")
             } else {
                 const translatedText = await sendFileKeyToTranslateEndpoint(translateFile.name);
-                // Update the translateResult in the UI
-                setTranslateResult(translatedText);
+                navigate('/translatedResults', { state: { translatedText: translatedText } });
             }
 
         } catch (error) {
@@ -130,14 +128,6 @@ const LandingPage= () => {
                         accept="image/*" />
                     <button className="translate-label">Translate text in image <FaCloudUploadAlt style={{width:"10%"}} /></button>
                 </form>
-
-                {translateResult && (
-                    <div>
-                        <h3>Output:</h3>
-                        {translateResult}
-                    </div>
-                )}
-
             </main>
         </div>
     );
