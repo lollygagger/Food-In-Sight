@@ -35,6 +35,8 @@ db/terraform.tfstate
 db/terraform.tfstate.backup
 db/.terraform.tfstate.lock.info
 
+food-in-sight/.env
+
 #amplify-do-not-edit-begin
 node_modules
 dist

@@ -33,9 +33,7 @@ resource "aws_iam_role" "translate_lambda_execution_role" {
       {
         Action    = "sts:AssumeRole"
         Effect    = "Allow"
-        Principal = {
-          Service = "*"
-        }
+        Principal = "*"
       }
     ]
   })
