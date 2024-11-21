@@ -19,6 +19,30 @@ const LandingPage= () => {
     const [translateFile, setTranslateFile] = useState<File | null>(null);
     const [translateResult, setTranslateResult] = useState<any>("");
 
+    async function sendFileKeyToTranslateEndpoint(fileKey: string) {
+        try {
+            const response = await fetch(`${VITE_API_GATEWAY_URL}/translate`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "file_key": fileKey
+                }),
+            });
+
+            if (!response.ok) {
+                console.log("Failed to finish translation: ", response.statusText);
+            }
+
+            return await response.json();
+
+        } catch (error) {
+            console.error('Error sending fileKey:', error);
+        }
+    }
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!translateFile) {
@@ -35,13 +59,15 @@ const LandingPage= () => {
             console.log(`preSignedUrl: ${preSignedUrl}`);
 
             // then send the file using the Pre-signed URL
-            const res = await imageUpload(translateFile, preSignedUrl);
+            const success = await imageUpload(translateFile, preSignedUrl);
 
-            if (res){
-                console.log("Upload successful")
+            if(!success) {
+                alert("Image upload failed, please try again")
+            } else {
+                const translatedText = await sendFileKeyToTranslateEndpoint(translateFile.name);
+                // Update the translateResult in the UI
+                setTranslateResult(translatedText);
             }
-            // Update the translateResult in the UI
-            setTranslateResult(res ? "success": "fail");
 
         } catch (error) {
             console.error("An error occurred during the file upload:", error);

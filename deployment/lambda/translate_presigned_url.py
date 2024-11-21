@@ -17,14 +17,15 @@ def handler(event, context):
     try:
         url = s3_client.generate_presigned_url('put_object',
                                                Params={'Bucket': bucket_name,
-                                                       'Key': file_name},
+                                                       'Key': file_name,
+                                                       'ContentType': 'image/*'},
                                                ExpiresIn=expiration,
                                                HttpMethod='PUT')
         return {
             'statusCode': 200,
              'headers': {
                 "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Methods": "POST",
+                "Access-Control-Allow-Methods": "POST, PUT",
             },
             'body': json.dumps({'url': url})
         }

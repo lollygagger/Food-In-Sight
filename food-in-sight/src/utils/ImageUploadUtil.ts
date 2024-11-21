@@ -10,8 +10,7 @@ export const imageUpload = async (imageFile: any, presignedUrl: URL) => {
             method: 'PUT',
             body: imageFile,
             headers: {
-                'Content-Type': imageFile.type,
-                'x-amz-date': generateAmzDate()
+                'Content-Type': 'image/*', //Needed to manually set this to match the content type when creating the presigned url
             },
         });
 
@@ -59,15 +58,15 @@ export const getPresignedUrl =  async (endpoint: string, filename: string) => {
 /**
  * This function generates the current date in the aws x-amz-date format needed to verify that the signed url is unexpired
  */
-function generateAmzDate() {
-    const now = new Date();
-
-    const year = now.getUTCFullYear();
-    const month = String(now.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(now.getUTCDate()).padStart(2, '0');
-    const hours = String(now.getUTCHours()).padStart(2, '0');
-    const minutes = String(now.getUTCMinutes()).padStart(2, '0');
-    const seconds = String(now.getUTCSeconds()).padStart(2, '0');
-
-    return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
-}
+// function generateAmzDate() {
+//     const now = new Date();
+//
+//     const year = now.getUTCFullYear();
+//     const month = String(now.getUTCMonth() + 1).padStart(2, '0');
+//     const day = String(now.getUTCDate()).padStart(2, '0');
+//     const hours = String(now.getUTCHours()).padStart(2, '0');
+//     const minutes = String(now.getUTCMinutes()).padStart(2, '0');
+//     const seconds = String(now.getUTCSeconds()).padStart(2, '0');
+//
+//     return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+// }
