@@ -189,7 +189,7 @@ resource "aws_api_gateway_integration" "translate_signed_integration" {
   uri                     = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.generate_translate_presigned_url.arn}/invocations"
 }
 
-resource "aws_api_gateway_integration_response" "translate_upload_integration_response" {
+resource "aws_api_gateway_integration_response" "translate_presigned_upload_integration_response" {
   rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
   resource_id = aws_api_gateway_resource.translate_presigned_url.id
   http_method = aws_api_gateway_method.get_translate_presigned_url.http_method
@@ -390,7 +390,7 @@ resource "aws_api_gateway_method_response" "translate_image_options_method_respo
 }
 
 # Integration for the translate OPTIONS method
-resource "aws_api_gateway_integration" "upload_image_options_integration" {
+resource "aws_api_gateway_integration" "translate_options_integration" {
   rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
   resource_id = aws_api_gateway_resource.translate_file_upload_resource.id
   http_method = aws_api_gateway_method.translate_upload_options_method.http_method
@@ -405,7 +405,7 @@ resource "aws_api_gateway_integration" "upload_image_options_integration" {
 }
 
 # Integration Response for CORS for the translate OPTIONS method
-resource "aws_api_gateway_integration_response" "upload_image_options_integration_response" {
+resource "aws_api_gateway_integration_response" "translate_options_integration_response" {
   rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
   resource_id   = aws_api_gateway_resource.translate_file_upload_resource.id
   http_method   = aws_api_gateway_method.translate_upload_options_method.http_method
@@ -419,7 +419,7 @@ resource "aws_api_gateway_integration_response" "upload_image_options_integratio
     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
   }
   depends_on = [
-    aws_api_gateway_integration.upload_image_options_integration
+    aws_api_gateway_integration.translate_options_integration
   ]
 }
 
