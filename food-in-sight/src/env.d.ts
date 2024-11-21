@@ -7,6 +7,7 @@
 
 interface ImportMetaEnv {
     VITE_API_GATEWAY_URL: string;
+    USER_DIET_API_GATEWAY_URL: string;
 }
 
 interface ImportMeta {

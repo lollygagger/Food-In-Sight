@@ -1,8 +1,9 @@
-import {useAuthenticator, AccountSettings, ThemeProvider } from "@aws-amplify/ui-react";
-import {useNavigate} from "react-router-dom";
+import { useAuthenticator, AccountSettings, ThemeProvider } from "@aws-amplify/ui-react";
+import { useNavigate } from "react-router-dom";
 import "./ProfilePage.css";
+import UserDiets from "./UserDiets";
 
-const ProfilePage= () => {
+const ProfilePage = () => {
     const { user } = useAuthenticator((context) => [context.user]);
 
     const navigate = useNavigate();
@@ -13,8 +14,8 @@ const ProfilePage= () => {
 
     const customTheme = {
         name: 'custom-theme',
-      };
-      
+    };
+
 
     return (
         <div className="profile-page">
@@ -29,7 +30,7 @@ const ProfilePage= () => {
                 <div className="password-change">
                     <h3>Change Password</h3>
                     <ThemeProvider theme={customTheme}>
-                        <AccountSettings.ChangePassword onSuccess={handlePasswordUpdate}/>
+                        <AccountSettings.ChangePassword onSuccess={handlePasswordUpdate} />
                     </ThemeProvider>
                 </div>
             </div>
@@ -37,7 +38,7 @@ const ProfilePage= () => {
             <div className="user-info-box">
                 <div className="user-info">
                     <h2>Diet Information</h2>
-
+                    <UserDiets userName={user.username} />
                 </div>
             </div>
 
