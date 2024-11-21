@@ -20,7 +20,10 @@ def api_response(status_code, message, data=None):
     response = {
         'statusCode': status_code,
         'body': json.dumps({'message': message, 'data': data}, cls=DecimalEncoder) if data else json.dumps({'message': message}),
-        'headers': {'Content-Type': 'application/json'}
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
     }
     return response
 
