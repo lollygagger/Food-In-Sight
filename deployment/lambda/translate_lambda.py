@@ -8,15 +8,11 @@ s3 = boto3.client('s3', region_name='us-east-1')
 
 def handler(event, context):
     try:
-        # Debugging: Print the received event to CloudWatch Logs
-        print("Received event:", json.dumps(event))
 
-        # Get bucket name from environment variable
         bucket_name = os.environ.get('BUCKET_NAME')
         if not bucket_name:
             raise ValueError("Environment variable BUCKET_NAME is not set.")
 
-        # Parse the request body to retrieve the file key
         try:
             body = json.loads(event['body'])
             file_key = body.get('file_key')
@@ -80,6 +76,10 @@ def handler(event, context):
         # Return the translated text
         return {
             'statusCode': 200,
+             headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "POST, PUT",
+                },
             'body': json.dumps({'translated_text': translated_text})
         }
 
