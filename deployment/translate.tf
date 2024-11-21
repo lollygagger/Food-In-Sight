@@ -36,11 +36,6 @@ resource "aws_s3_bucket_policy" "file_upload_bucket_policy" {
         Action    = "s3:PutObject"
         Resource  = "${aws_s3_bucket.file_upload_bucket.arn}/*"
         Principal = "*"
-        Condition = {
-          DateLessThan = {
-            "aws:CurrentTime" = "${timestamp()}"
-          }
-        }
       }
     ]
   })
