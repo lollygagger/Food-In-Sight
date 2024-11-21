@@ -233,8 +233,9 @@ resource "aws_api_gateway_integration" "upload_image_options_integration" {
   rest_api_id             = aws_api_gateway_rest_api.Food-In-Sight-API.id
   resource_id             = aws_api_gateway_resource.upload_image_options.id
   http_method             = aws_api_gateway_method.upload_image_options_method.http_method
-  integration_http_method = "NONE"
   type                    = "MOCK"
+  integration_http_method = "NONE"
+
 }
 
 # CORS for /translate (OPTIONS method)
@@ -275,8 +276,8 @@ resource "aws_api_gateway_integration" "translate_options_integration" {
   rest_api_id             = aws_api_gateway_rest_api.Food-In-Sight-API.id
   resource_id             = aws_api_gateway_resource.translate_options.id
   http_method             = aws_api_gateway_method.translate_options_method.http_method
-  integration_http_method = "NONE"
   type                    = "MOCK"
+  integration_http_method = "NONE"
 }
 
 # CORS for /presign-translate-options (OPTIONS method)
@@ -317,8 +318,8 @@ resource "aws_api_gateway_integration" "presign_translate_options_integration" {
   rest_api_id             = aws_api_gateway_rest_api.Food-In-Sight-API.id
   resource_id             = aws_api_gateway_resource.presign_translate_options.id
   http_method             = aws_api_gateway_method.presign_translate_options_method.http_method
-  integration_http_method = "NONE"
   type                    = "MOCK"
+  integration_http_method = "NONE"
 }
 
 
