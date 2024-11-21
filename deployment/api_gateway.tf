@@ -23,6 +23,11 @@ resource "aws_api_gateway_method" "upload_image_method" {
   resource_id   = aws_api_gateway_resource.upload_image.id
   http_method   = "POST"
   authorization = "NONE"
+
+  request_parameters = {
+    "method.request.header.Access-Control-Request-Headers"  = true
+    "method.request.header.Access-Control-Request-Method"   = true
+  }
 }
 
 #API resources for image upload...
@@ -53,6 +58,12 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
   depends_on = [
     aws_api_gateway_integration.upload_image_integration
   ]
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"      = "'*'"
+    "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
+    "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
+  }
 }
 #END Image upload---------------------------------------------------------------------------------------------
 
@@ -414,6 +425,11 @@ resource "aws_api_gateway_integration_response" "presign_translate_options_integ
 #END presign_translate CORS ------------------------------------------------------------------------------------
 
 
+
+
+# @max i got urs to build but im not gonna mess with that, im going to try to get the presigned url to work for the image upload bucket
+
+#presign_image upload CORS ------------------------------------------------------------------------------------
 
 
 
