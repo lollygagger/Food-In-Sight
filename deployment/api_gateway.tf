@@ -65,7 +65,8 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
     aws_api_gateway_integration.upload_image_integration
   ]
 
-  response_parameters = {
+  response_parameters = 
+  {
     "method.response.header.Access-Control-Allow-Origin"      = "'*'"
     "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
@@ -198,7 +199,9 @@ resource "aws_api_gateway_deployment" "deployment" {
     aws_api_gateway_method.upload_image_method,
     aws_api_gateway_method_response.upload_image_response,
     aws_api_gateway_integration_response.upload_image_integration_response,
-    aws_api_gateway_integration.upload_integration
+    aws_api_gateway_integration.upload_integration,
+    aws_api_gateway_method.upload_image_options_method,
+    aws_api_gateway_integration.upload_image_options_integration
   ]
 
   rest_api_id  = aws_api_gateway_rest_api.Food-In-Sight-API.id
@@ -254,9 +257,7 @@ resource "aws_api_gateway_integration" "upload_image_options_integration" {
   integration_http_method = "OPTIONS"
 
   request_templates = {
-    "application/json" = <<EOF
-    {}
-    EOF
+    "application/json" = "{\"statusCode\": 200}"
   }
 
   passthrough_behavior = "WHEN_NO_MATCH"
@@ -269,9 +270,7 @@ resource "aws_api_gateway_integration_response" "upload_image_options_integratio
   http_method   = aws_api_gateway_method.upload_image_options_method.http_method
   status_code   = "200"
   response_templates = {
-    "application/json" = <<EOF
-    {}
-    EOF
+    "application/json" = ""
   }
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin"      = "'*'"
