@@ -3,20 +3,41 @@ body {
     font-family: Arial, sans-serif;
 }
 
+h1 {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+    font-size: 7vw;
+}
+
+@media (min-width: 1024px) {  /* Adjust for larger screens */
+    h1 {
+        text-align: center;
+        font-size: 4vw;
+    }
+}
+
+h2 {
+    margin-top: 0;
+}
+
 .landing-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    
     padding: 20px;
-    background-color: #f8f9fa;
-    padding-top: 4%;
+    padding-top: 71px;
+    height: 100%;
 }
 
 .main-content {
-    display: flex;
-    justify-content: space-around;
+    /* display: flex; */
+    /* justify-content: space-around; */
     width: 100%;
     max-width: 800px;
+    
 }
 
 .upload-section,
@@ -26,23 +47,47 @@ body {
     border: 4px solid #000000;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 40%;
+    width: 100%;
+    margin-bottom: 20px;
+    
 }
 
 .upload-button,
+.translate-label,
 .search-button {
-    background-color: #007bff;
-    color: white;
+    background-color: #674636;
+    color: #F7EED3;
+
     border: none;
-    padding: 20px 20px;
+    text-align: start;
+    padding: 15px 15px;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: 60%;
+    
 }
 
 .upload-button:hover,
 .search-button:hover {
-    background-color: #0056b3;
+    background-color: #3f2a20;
+}
+
+.upload-button:active,
+.search-button:active {
+    background-color: #25150d;
+}
+
+.translate-label:hover {
+    background-color: #3f2a20;
+}
+
+.translate-label:active {
+    background-color: #25150d;
+}
+
+input{
+    margin-bottom: 20px;
 }
 
 /*.footer {*/
