@@ -240,7 +240,7 @@ resource "aws_api_gateway_integration" "upload_image_options_integration" {
   resource_id = aws_api_gateway_resource.upload_image.id
   http_method = aws_api_gateway_method.upload_image_options_method.http_method
   type        = "MOCK"
-  integration_http_method = "NONE"
+  integration_http_method = "OPTIONS"
 
   request_templates = {
     "application/json" = <<EOF
@@ -257,7 +257,7 @@ resource "aws_api_gateway_integration" "translate_options_integration" {
   resource_id = aws_api_gateway_resource.file_upload_resource.id
   http_method = aws_api_gateway_method.translate_options_method.http_method
   type        = "MOCK"
-  integration_http_method = "NONE"
+  integration_http_method = "OPTIONS"
 
   request_templates = {
     "application/json" = <<EOF
@@ -274,7 +274,7 @@ resource "aws_api_gateway_integration" "presign_translate_options_integration" {
   resource_id = aws_api_gateway_resource.translate_presigned_url.id
   http_method = aws_api_gateway_method.presign_translate_options_method.http_method
   type        = "MOCK"
-  integration_http_method = "NONE"
+  integration_http_method = "OPTIONS"
 
   request_templates = {
     "application/json" = <<EOF
