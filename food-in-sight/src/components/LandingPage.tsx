@@ -3,11 +3,15 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import {useState} from "react";
 import {getPresignedUrl, imageUpload} from "../utils/ImageUploadUtil.ts";
 import {image_data} from "../assets/image_data.tsx"
+import { useNavigate } from 'react-router-dom';
+import { ExpectedResultStructure } from './Types.tsx';
 
 
 const LandingPage= () => {
 
     const VITE_API_GATEWAY_URL = import.meta.env.VITE_API_GATEWAY_URL
+
+    const navigate = useNavigate();
 
     const endpoint = "presign-translate";
 
@@ -53,8 +57,7 @@ const LandingPage= () => {
         }),
         })
         .then((response) => response.json())
-        .then((data) => console.log(data))
-        .catch((error) => console.error(error));
+        .then((data: ExpectedResultStructure) => navigate('/results', {state: {data: data}}))
 
     }
 
