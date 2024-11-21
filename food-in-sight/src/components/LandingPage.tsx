@@ -13,6 +13,7 @@ const LandingPage= () => {
     const VITE_API_GATEWAY_URL = import.meta.env.VITE_API_GATEWAY_URL
 
     const [loading, setLoading] = useState(false);
+    const [translateLoading, setTranslateLoading] = useState(false);
 
     const navigate = useNavigate()
 
@@ -48,6 +49,7 @@ const LandingPage= () => {
             alert("Please upload a file first!");
             return;
         }
+        setTranslateLoading(true);
 
         const endpoint = "/presign-translate";
 
@@ -64,6 +66,7 @@ const LandingPage= () => {
                 alert("Image upload failed, please try again")
             } else {
                 const translatedText = await sendFileKeyToTranslateEndpoint(translateFile.name);
+                setTranslateLoading(false);
                 navigate('/translatedResults', { state: { translatedText: translatedText } });
             }
 
@@ -126,7 +129,13 @@ const LandingPage= () => {
                         onChange={(e) => setTranslateFile(e.target.files?.[0] || null)}
                         type="file"
                         accept="image/*" />
-                    <button className="translate-label">Translate text in image <FaCloudUploadAlt style={{width:"10%"}} /></button>
+                    <button className="translate-label">{translateLoading ? (
+                        <BeatLoader size={10} color="#fff" />
+                    ) : (
+                        <>
+                            Translate Label <FaCloudUploadAlt style={{width:"10%"}} />
+                        </>
+                    )}</button>
                 </form>
             </main>
         </div>
