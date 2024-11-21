@@ -14,6 +14,11 @@
       "UserName": "jacob_canedy",
       "Password": "myrealritpassword",
       "Diets": ["peanut-allergy", "tree-nut-allergy"]
+    },
+    {
+      "UserName": "vince",
+      "Password": "lalalalala",
+      "Diets": ["lactose-intolerant", "fish-allergy"]
     }
   ]
 }
