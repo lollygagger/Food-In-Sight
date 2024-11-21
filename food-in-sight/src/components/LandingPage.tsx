@@ -14,9 +14,7 @@ const LandingPage= () => {
 
     const [loading, setLoading] = useState(false);
 
-    const navigate = useNavigate();
-
-    const endpoint = "presign-translate";
+    const navigate = useNavigate()
 
     const [translateFile, setTranslateFile] = useState<File | null>(null);
     const [translateResult, setTranslateResult] = useState<any>("");
@@ -27,6 +25,8 @@ const LandingPage= () => {
             alert("Please upload a file first!");
             return;
         }
+
+        const endpoint = "presign-translate";
 
         try {
             // First grab the pre-signed url used to upload to s3

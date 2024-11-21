@@ -101,7 +101,7 @@ data "archive_file" "translate_lambda_presign_zip" {
 resource "aws_lambda_function" "generate_translate_presigned_url" {
   function_name = "generateTranslatePresignedUrl" #Using pre-existing role
   role          = aws_iam_role.translate_lambda_execution_role.arn
-  handler       = "lambda_function.handler"
+  handler       = "translate_presigned_url.handler"
   runtime       = "python3.11"
   filename = "lambda/translate_presigned_url.zip"
 
