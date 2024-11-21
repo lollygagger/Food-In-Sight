@@ -1,6 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import "./Header.css";
 import { useAuthenticator } from '@aws-amplify/ui-react';
+import { FaHome, FaUser  } from "react-icons/fa";
+
 
 const Header = () => {
     const { user, signOut } = useAuthenticator((context) => [context.user]);
@@ -19,10 +21,10 @@ const Header = () => {
         <header>
             <nav className="nav-menu">
                 <button onClick={handleHomeRedir} className="nav-button">
-                    Home
+                    <FaHome className="nav-icon"/>
                 </button>
                 <button onClick={handleProfileRedir} className="nav-button">
-                    Profile
+                    <FaUser className="nav-icon"/>
                 </button>
 
                 <p className="welcome-text">Welcome {user.username}</p>

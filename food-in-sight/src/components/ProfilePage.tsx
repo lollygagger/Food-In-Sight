@@ -1,4 +1,4 @@
-import {useAuthenticator, AccountSettings} from "@aws-amplify/ui-react";
+import {useAuthenticator, AccountSettings, ThemeProvider } from "@aws-amplify/ui-react";
 import {useNavigate} from "react-router-dom";
 import "./ProfilePage.css";
 
@@ -10,6 +10,11 @@ const ProfilePage= () => {
     const handlePasswordUpdate = () => {
         navigate('/');
     };
+
+    const customTheme = {
+        name: 'custom-theme',
+      };
+      
 
     return (
         <div className="profile-page">
@@ -23,7 +28,9 @@ const ProfilePage= () => {
 
                 <div className="password-change">
                     <h3>Change Password</h3>
-                    <AccountSettings.ChangePassword onSuccess={handlePasswordUpdate}/>
+                    <ThemeProvider theme={customTheme}>
+                        <AccountSettings.ChangePassword onSuccess={handlePasswordUpdate}/>
+                    </ThemeProvider>
                 </div>
             </div>
 

@@ -1,6 +1,8 @@
 import './LandingPage.css';
-import {getPresignedUrl, imageUpload} from "../utils/ImageUploadUtil.ts";
+import { FaCloudUploadAlt } from "react-icons/fa";
 import {useState} from "react";
+import {getPresignedUrl, imageUpload} from "../utils/ImageUploadUtil.ts";
+
 
 const LandingPage= () => {
 
@@ -45,7 +47,7 @@ const LandingPage= () => {
                         type="file"
                         accept="image/*"
                     />
-                    <button className="upload-button">Upload</button>
+                    <button className="upload-button">Upload <FaCloudUploadAlt style={{width: "10%"}}/></button>
                 </form>
 
                 <form onSubmit={handleSubmit} className="translate-section">
@@ -54,7 +56,7 @@ const LandingPage= () => {
                         onChange={(e) => setTranslateFile(e.target.files?.[0] || null)}
                         type="file"
                         accept="image/*" />
-                    <button className="translate-label">Translate text in image</button>
+                    <button className="translate-label">Translate text in image <FaCloudUploadAlt style={{width:"10%"}} /></button>
                 </form>
 
                 {translateResult && (
