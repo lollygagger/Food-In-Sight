@@ -1,5 +1,5 @@
 
-#Image upload---------------------------------------------------------------------------------------------
+#Image upload POST---------------------------------------------------------------------------------------------
 # API Gateway and Integration
 resource "aws_api_gateway_rest_api" "Food-In-Sight-API" {
   name        = "Food-In-Sight-API"
@@ -71,7 +71,7 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
   }
 }
-#END Image upload---------------------------------------------------------------------------------------------
+#END Image upload POST---------------------------------------------------------------------------------------------
 
 #Translate -------------------------------------------------------------------------------------------------------------
 # Create a resource under the API for uploading files
