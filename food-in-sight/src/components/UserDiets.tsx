@@ -19,26 +19,30 @@ const UserDiets: React.FC<ManageDietsProps> = ({ userName }) => {
 
     // Fetch available diets
     useEffect(() => {
-        const fetchDiets = async () => {
+        const fetchAvailableDiets = async () => {
             try {
                 const response = await axios.get<Diet[]>(`${API_BASE_URL}/diets`);
                 const restrictions = response.data.map((diet) => diet.Restriction);
                 setAvailableDiets(restrictions);
             } catch (error) {
-                console.error("Error fetching diets:", error);
+                console.error("Error fetching available diets:", error);
             }
         };
 
-        fetchDiets();
-    }, []);
+        fetchAvailableDiets();
+    }, [API_BASE_URL]);
 
-    // Fetch user's current diets
+    // Fetch user's diets
     useEffect(() => {
         const fetchUserDiets = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/user/diets`, {
-                    params: { username: userName },
-                });
+                const response = await axios.get<{ message: string; data: string[] }>(
+                    `${API_BASE_URL}/user/diets`,
+                    {
+                        params: { username: userName },
+                    }
+                );
+                // Now extracting diets from the `data` field
                 setUserDiets(response.data.data || []);
             } catch (error) {
                 console.error("Error fetching user diets:", error);
@@ -46,7 +50,7 @@ const UserDiets: React.FC<ManageDietsProps> = ({ userName }) => {
         };
 
         fetchUserDiets();
-    }, [userName]);
+    }, [userName, API_BASE_URL]);
 
     // Add diet to user
     const handleAddDiet = async () => {
@@ -58,7 +62,7 @@ const UserDiets: React.FC<ManageDietsProps> = ({ userName }) => {
                 Diet: selectedDiet,
             });
             setUserDiets((prevDiets) => [...prevDiets, selectedDiet]);
-            setSelectedDiet(""); // Clear selection after adding
+            setSelectedDiet(""); // Clear selection
         } catch (error) {
             console.error("Error adding diet:", error);
         }
