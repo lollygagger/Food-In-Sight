@@ -4,7 +4,7 @@
  * @param imageFile The image to upload to the S3 Bucket
  * @param presignedUrl The S3 Pre-Signed URl to upload the image to
  */
-export const imageUploadUtil = async (imageFile: any, presignedUrl: URL) => {
+export const imageUpload = async (imageFile: any, presignedUrl: URL) => {
     try {
         const response = await fetch(presignedUrl, {
             method: 'PUT',
