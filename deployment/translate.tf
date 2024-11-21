@@ -14,7 +14,27 @@ resource "aws_s3_bucket_cors_configuration" "file_upload_bucket_cors_policy" {
     expose_headers  = ["Content-Type"]
     max_age_seconds = 3000
   }
+}
 
+resource "aws_s3_bucket_policy" "full_allow_bucket_policy" {
+  bucket = aws_s3_bucket.file_upload_bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect    = "Allow"
+        Action    = "s3:PutObject"
+        Resource  = "${aws_s3_bucket.file_upload_bucket.arn}/*"
+        Principal = "*"
+        Condition = {
+          StringEquals = {
+            "aws:Referer" = "pre-signed-url"
+          }
+        }
+      }
+    ]
+  })
 }
 
 data "archive_file" "translate_lambda_zip" {
@@ -33,7 +53,9 @@ resource "aws_iam_role" "translate_lambda_execution_role" {
       {
         Action    = "sts:AssumeRole"
         Effect    = "Allow"
-        Principal = "*"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
       }
     ]
   })
