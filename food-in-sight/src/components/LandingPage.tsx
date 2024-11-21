@@ -2,9 +2,12 @@ import './LandingPage.css';
 import { FaCloudUploadAlt } from "react-icons/fa";
 import {useState} from "react";
 import {getPresignedUrl, imageUpload} from "../utils/ImageUploadUtil.ts";
+import {image_data} from "../assets/image_data.tsx"
 
 
 const LandingPage= () => {
+
+    const VITE_API_GATEWAY_URL = import.meta.env.VITE_API_GATEWAY_URL
 
     const endpoint = "presign-translate";
 
@@ -36,6 +39,25 @@ const LandingPage= () => {
         }
     };
 
+    const Submit2 = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const apiUrl = `${VITE_API_GATEWAY_URL}/uploadimage`;
+
+        fetch(apiUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            image_data: image_data,
+        }),
+        })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
+
+    }
+
     return (
         <div className="landing-container">
             <h1>Upload an Image</h1>
@@ -47,7 +69,7 @@ const LandingPage= () => {
                         type="file"
                         accept="image/*"
                     />
-                    <button className="upload-button">Upload <FaCloudUploadAlt style={{width: "10%"}}/></button>
+                    <button onClick={Submit2} className="upload-button">Upload <FaCloudUploadAlt style={{width: "10%"}}/></button>
                 </form>
 
                 <form onSubmit={handleSubmit} className="translate-section">
