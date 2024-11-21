@@ -65,8 +65,7 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
     aws_api_gateway_integration.upload_image_integration
   ]
 
-  response_parameters = 
-  {
+  response_parameters = {
     "method.response.header.Access-Control-Allow-Origin"      = "'*'"
     "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
