@@ -234,7 +234,7 @@ resource "aws_api_gateway_integration" "upload_image_options_integration" {
   resource_id             = aws_api_gateway_resource.upload_image_options.id
   http_method             = aws_api_gateway_method.upload_image_options_method.http_method
   type                    = "MOCK"
-  integration_http_method = "NONE"
+  integration_http_method = "OPTIONS"
 
 }
 
@@ -277,7 +277,7 @@ resource "aws_api_gateway_integration" "translate_options_integration" {
   resource_id             = aws_api_gateway_resource.translate_options.id
   http_method             = aws_api_gateway_method.translate_options_method.http_method
   type                    = "MOCK"
-  integration_http_method = "NONE"
+  integration_http_method = "OPTIONS"
 }
 
 # CORS for /presign-translate-options (OPTIONS method)
@@ -319,7 +319,7 @@ resource "aws_api_gateway_integration" "presign_translate_options_integration" {
   resource_id             = aws_api_gateway_resource.presign_translate_options.id
   http_method             = aws_api_gateway_method.presign_translate_options_method.http_method
   type                    = "MOCK"
-  integration_http_method = "NONE"
+  integration_http_method = "OPTIONS"
 }
 
 
