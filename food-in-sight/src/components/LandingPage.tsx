@@ -5,11 +5,14 @@ import {getPresignedUrl, imageUpload} from "../utils/ImageUploadUtil.ts";
 import {image_data} from "../assets/image_data.tsx"
 import { useNavigate } from 'react-router-dom';
 import { ExpectedResultStructure } from './Types.tsx';
+import { BeatLoader } from "react-spinners"; // Import spinner
 
 
 const LandingPage= () => {
 
     const VITE_API_GATEWAY_URL = import.meta.env.VITE_API_GATEWAY_URL
+
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -45,20 +48,28 @@ const LandingPage= () => {
 
     const Submit2 = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         const apiUrl = `${VITE_API_GATEWAY_URL}/uploadimage`;
 
-        fetch(apiUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            image_data: image_data,
-        }),
-        })
-        .then((response) => response.json())
-        .then((data: ExpectedResultStructure) => navigate('/results', {state: {data: data}}))
+        try{
 
+            const response = await fetch(apiUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    image_data: image_data,
+                }),
+            })
+            const data: ExpectedResultStructure = await response.json();
+            navigate('/results', { state: { data: data } });
+            
+        } catch (error) {
+            console.error(`Error uploading image: ${error}`)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -72,7 +83,15 @@ const LandingPage= () => {
                         type="file"
                         accept="image/*"
                     />
-                    <button onClick={Submit2} className="upload-button">Upload <FaCloudUploadAlt style={{width: "10%"}}/></button>
+                    <button onClick={Submit2} className="upload-button" disabled={loading}>
+                        {loading ? (
+                            <BeatLoader size={10} color="#fff" />
+                        ) : (
+                            <>
+                                Upload <FaCloudUploadAlt style={{ width: "10%" }} />
+                            </>
+                        )}
+                    </button>
                 </form>
 
                 <form onSubmit={handleSubmit} className="translate-section">
