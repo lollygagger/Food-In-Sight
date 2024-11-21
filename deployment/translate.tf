@@ -4,6 +4,19 @@ resource "aws_s3_bucket" "file_upload_bucket" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_cors_configuration" "file_upload_bucket_cors_policy" {
+  bucket = aws_s3_bucket.file_upload_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["PUT", "POST"]
+    allowed_origins = ["*"]
+    expose_headers  = ["Content-Type"]
+    max_age_seconds = 3000
+  }
+
+}
+
 data "archive_file" "translate_lambda_zip" {
   type        = "zip"
   source_file = "${path.module}/lambda/translate_lambda.py"
@@ -78,10 +91,9 @@ resource "aws_lambda_function" "process_file_function" {
   role          = aws_iam_role.translate_lambda_execution_role.arn
   runtime       = "python3.11"
 
-  # These are required for referencing a lambda which is stored locally
   handler         = "translate_lambda.handler"
-  filename        = "lambda/translate_lambda.zip" # Must be a zip file
-  source_code_hash = data.archive_file.translate_lambda_zip.output_base64sha256 # grab the hash from the zipped file
+  filename        = "lambda/translate_lambda.zip"
+  source_code_hash = data.archive_file.translate_lambda_zip.output_base64sha256
 
   environment {
     variables = {

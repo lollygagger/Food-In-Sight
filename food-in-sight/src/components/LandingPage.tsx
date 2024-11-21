@@ -26,14 +26,16 @@ const LandingPage= () => {
             return;
         }
 
-        const endpoint = "presign-translate";
+        const endpoint = "/presign-translate";
 
         try {
             // First grab the pre-signed url used to upload to s3
             const preSignedUrl = await getPresignedUrl(endpoint, translateFile.name);
 
+            console.log(`preSignedUrl: ${preSignedUrl}`);
+            const res = false;
             // then send the file using the Pre-signed URL
-            const res = await imageUpload(translateFile, preSignedUrl);
+            // const res = await imageUpload(translateFile, preSignedUrl);
 
             if (res){
                 console.log("Upload successful")

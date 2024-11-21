@@ -35,6 +35,7 @@ export const imageUpload = async (imageFile: any, presignedUrl: URL) => {
 export const getPresignedUrl =  async (endpoint: string, filename: string) => {
     const baseURI = import.meta.env.VITE_API_GATEWAY_URL
     const uri = baseURI + endpoint;
+    console.log(`uri: ${uri}`)
     try {
         const response = await fetch(uri, {
             method: 'post',
@@ -47,7 +48,8 @@ export const getPresignedUrl =  async (endpoint: string, filename: string) => {
         });
 
         const data = await response.json(); // Assuming the URL is returned in a JSON object
-        return data.presignedUrl;
+        console.log("presigned from the func: ", data['url']);
+        return data['url'];
     } catch (error) {
         console.error('Error getting pre-signed URL:', error);
     }

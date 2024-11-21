@@ -76,7 +76,7 @@ def handler(event, context):
         # Return the translated text
         return {
             'statusCode': 200,
-             headers: {
+            'headers': {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "POST, PUT",
                 },

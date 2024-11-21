@@ -1,4 +1,5 @@
 import json
+import os
 import boto3
 from botocore.exceptions import ClientError
 
@@ -21,7 +22,7 @@ def handler(event, context):
                                                HttpMethod='PUT')
         return {
             'statusCode': 200,
-             headers: {
+             'headers': {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "POST",
             },
