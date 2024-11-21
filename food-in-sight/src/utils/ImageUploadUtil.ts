@@ -4,7 +4,7 @@
  * @param imageFile The image to upload to the S3 Bucket
  * @param presignedUrl The S3 Pre-Signed URl to upload the image to
  */
-export const imageUploadUtil = async (imageFile: any, presignedUrl: URL) => {
+export const imageUpload = async (imageFile: any, presignedUrl: URL) => {
     try {
         const response = await fetch(presignedUrl, {
             method: 'PUT',
@@ -30,13 +30,17 @@ export const imageUploadUtil = async (imageFile: any, presignedUrl: URL) => {
 /**
  * This is a method which sends a request for a Pre-Signed URL for an S3 Bucket
  * @param endpoint The endpoint which will be appended to the base API URI
+ * @param filename The name of the file you will be uploading using the signed url
  */
-export const getPresignedUrl =  async (endpoint: string) => {
+export const getPresignedUrl =  async (endpoint: string, filename: string) => {
     const baseURI = import.meta.env.VITE_API_GATEWAY_URL
     const uri = baseURI + endpoint;
     try {
         const response = await fetch(uri, {
-            method: 'GET',
+            method: 'post',
+            body: JSON.stringify({
+                "fileName": filename
+            }),
             headers: {
                 'Content-Type': 'application/json',
             },

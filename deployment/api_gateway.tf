@@ -59,7 +59,7 @@ resource "aws_api_gateway_integration_response" "upload_image_integration_respon
 resource "aws_api_gateway_resource" "file_upload_resource" {
   rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
   parent_id   = aws_api_gateway_rest_api.Food-In-Sight-API.root_resource_id
-  path_part   = "upload"
+  path_part   = "translate"
 }
 
 # Define the PUT method for the file upload endpoint
@@ -89,6 +89,44 @@ resource "aws_lambda_permission" "api_gateway_permission" {
 }
 #END Translate ---------------------------------------------------------------------------------------------------------
 
+#Translate S3 Signed URL -----------------------------------------------------------------------------------------------
+
+resource "aws_api_gateway_resource" "translate_presigned_url" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  parent_id   = aws_api_gateway_rest_api.Food-In-Sight-API.root_resource_id
+  path_part   = "presign-translate"
+}
+
+resource "aws_api_gateway_method" "get_translate_presigned_url" {
+  rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id   = aws_api_gateway_resource.translate_presigned_url.id
+  http_method   = "POST"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "translate_signed_integration" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.translate_presigned_url.id
+  http_method = aws_api_gateway_method.get_translate_presigned_url.http_method
+  integration_http_method = "POST"
+  type                    = "AWS_PROXY"
+  uri                     = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.generate_translate_presigned_url.arn}/invocations"
+}
+
+resource "aws_lambda_permission" "allow_api_gateway_translate_presign" {
+  action        = "lambda:InvokeFunction"
+  principal     = "apigateway.amazonaws.com"
+  function_name = aws_lambda_function.generate_translate_presigned_url.function_name
+  source_arn    = "${aws_api_gateway_rest_api.Food-In-Sight-API.execution_arn}/*/*"
+}
+
+
+
+
+# END Translate S3 Signed URL ------------------------------------------------------------------------------------------
+
+
+
 # Permissions
 
 # API Gateway IAM Role for Step Function
@@ -113,7 +151,7 @@ resource "aws_iam_role" "apigateway_role" {
 resource "aws_iam_role_policy" "api_gateway_upload_image_lambda_invoke_policy" {
   name   = "api_gateway_upload_image_lambda_invoke_policy"
   role   = aws_iam_role.apigateway_role.id
-  
+
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -154,6 +192,196 @@ resource "aws_api_gateway_deployment" "deployment" {
 #   deployment_id = aws_api_gateway_deployment.deployment.id
 #   stage_name = "dev"  # Specifies the stage name
 # }
+
+#Testing generated coors policy:
+
+# OPTIONS method for CORS handling for the upload_image resource
+resource "aws_api_gateway_method" "upload_image_options_method" {
+  rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id   = aws_api_gateway_resource.upload_image.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+
+  request_parameters = {
+    "method.request.header.Access-Control-Request-Headers"  = true
+    "method.request.header.Access-Control-Request-Method"   = true
+  }
+}
+
+# OPTIONS method for CORS handling for the translate resource
+resource "aws_api_gateway_method" "translate_options_method" {
+  rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id   = aws_api_gateway_resource.file_upload_resource.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+
+  request_parameters = {
+    "method.request.header.Access-Control-Request-Headers"  = true
+    "method.request.header.Access-Control-Request-Method"   = true
+  }
+}
+
+# OPTIONS method for CORS handling for the presign_translate resource
+resource "aws_api_gateway_method" "presign_translate_options_method" {
+  rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id   = aws_api_gateway_resource.translate_presigned_url.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+
+  request_parameters = {
+    "method.request.header.Access-Control-Request-Headers"  = true
+    "method.request.header.Access-Control-Request-Method"   = true
+  }
+}
+
+# Integration for the upload_image OPTIONS method
+resource "aws_api_gateway_integration" "upload_image_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.upload_image.id
+  http_method = aws_api_gateway_method.upload_image_options_method.http_method
+  type        = "MOCK"
+  integration_http_method = "OPTIONS"
+
+  request_templates = {
+    "application/json" = <<EOF
+    {}
+    EOF
+  }
+
+  passthrough_behavior = "WHEN_NO_MATCH"
+}
+
+# Integration for the translate OPTIONS method
+resource "aws_api_gateway_integration" "translate_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.file_upload_resource.id
+  http_method = aws_api_gateway_method.translate_options_method.http_method
+  type        = "MOCK"
+  integration_http_method = "OPTIONS"
+
+  request_templates = {
+    "application/json" = <<EOF
+    {}
+    EOF
+  }
+
+  passthrough_behavior = "WHEN_NO_MATCH"
+}
+
+# Integration for the presign_translate OPTIONS method
+resource "aws_api_gateway_integration" "presign_translate_options_integration" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.translate_presigned_url.id
+  http_method = aws_api_gateway_method.presign_translate_options_method.http_method
+  type        = "MOCK"
+  integration_http_method = "OPTIONS"
+
+  request_templates = {
+    "application/json" = <<EOF
+    {}
+    EOF
+  }
+
+  passthrough_behavior = "WHEN_NO_MATCH"
+}
+
+# Integration Response for CORS for the upload_image OPTIONS method
+resource "aws_api_gateway_integration_response" "upload_image_options_integration_response" {
+  rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id   = aws_api_gateway_resource.upload_image.id
+  http_method   = aws_api_gateway_method.upload_image_options_method.http_method
+  status_code   = "200"
+  response_templates = {
+    "application/json" = <<EOF
+    {}
+    EOF
+  }
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"      = "'*'"
+    "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
+    "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
+  }
+}
+
+# Integration Response for CORS for the translate OPTIONS method
+resource "aws_api_gateway_integration_response" "translate_options_integration_response" {
+  rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id   = aws_api_gateway_resource.file_upload_resource.id
+  http_method   = aws_api_gateway_method.translate_options_method.http_method
+  status_code   = "200"
+  response_templates = {
+    "application/json" = <<EOF
+    {}
+    EOF
+  }
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"      = "'*'"
+    "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
+    "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
+  }
+}
+
+# Integration Response for CORS for the presign_translate OPTIONS method
+resource "aws_api_gateway_integration_response" "presign_translate_options_integration_response" {
+  rest_api_id   = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id   = aws_api_gateway_resource.translate_presigned_url.id
+  http_method   = aws_api_gateway_method.presign_translate_options_method.http_method
+  status_code   = "200"
+  response_templates = {
+    "application/json" = <<EOF
+    {}
+    EOF
+  }
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"      = "'*'"
+    "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
+    "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
+  }
+}
+
+# Method Response for the upload_image OPTIONS method
+resource "aws_api_gateway_method_response" "upload_image_options_method_response" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.upload_image.id
+  http_method = aws_api_gateway_method.upload_image_options_method.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Headers"     = true
+  }
+}
+
+# Method Response for the translate OPTIONS method
+resource "aws_api_gateway_method_response" "translate_options_method_response" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.file_upload_resource.id
+  http_method = aws_api_gateway_method.translate_options_method.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Headers"     = true
+  }
+}
+
+# Method Response for the presign_translate OPTIONS method
+resource "aws_api_gateway_method_response" "presign_translate_options_method_response" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.translate_presigned_url.id
+  http_method = aws_api_gateway_method.presign_translate_options_method.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Headers"     = true
+  }
+}
+
+
 
 output "api_url" {
   value = "${aws_api_gateway_deployment.deployment.invoke_url}/upload"

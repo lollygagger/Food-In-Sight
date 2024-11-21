@@ -28,7 +28,7 @@ resource "aws_iam_role" "translate_lambda_execution_role" {
   })
 }
 
-# Attach policy to Lambda
+# Policy for lambda to access everything needed
 resource "aws_iam_role_policy" "lambda_policy" {
   name = "LambdaS3TextractTranslatePolicy"
   role = aws_iam_role.translate_lambda_execution_role.id
@@ -73,7 +73,6 @@ resource "aws_iam_role_policy" "lambda_policy" {
   })
 }
 
-
 resource "aws_lambda_function" "process_file_function" {
   function_name = "process_file_function"
   role          = aws_iam_role.translate_lambda_execution_role.arn
@@ -91,17 +90,32 @@ resource "aws_lambda_function" "process_file_function" {
   }
 }
 
-# Add the necessary IAM permissions for API Gateway to invoke the Lambda function
-resource "aws_lambda_permission" "allow_api_gateway" {
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.process_file_function.function_name
-  principal     = "apigateway.amazonaws.com"
+#Pre signed URLS -------------------------------------------------------------------------------------------------------
+
+data "archive_file" "translate_lambda_presign_zip" {
+  type        = "zip"
+  source_file = "${path.module}/lambda/translate_presigned_url.py"
+  output_path = "${path.module}/lambda/translate_presigned_url.zip"
 }
+
+resource "aws_lambda_function" "generate_translate_presigned_url" {
+  function_name = "generateTranslatePresignedUrl" #Using pre-existing role
+  role          = aws_iam_role.translate_lambda_execution_role.arn
+  handler       = "lambda_function.handler"
+  runtime       = "python3.11"
+  filename = "lambda/translate_presigned_url.zip"
+
+  environment {
+    variables = {
+      BUCKET_NAME = aws_s3_bucket.file_upload_bucket.bucket
+    }
+  }
+
+  source_code_hash = data.archive_file.translate_lambda_presign_zip.output_base64sha256
+}
+
 
 output "s3_bucket_name" {
   value = aws_s3_bucket.file_upload_bucket.bucket
 }
 
-output "lambda_function_name" {
-  value = aws_lambda_function.process_file_function.function_name
-}
