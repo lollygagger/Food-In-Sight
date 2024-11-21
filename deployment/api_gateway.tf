@@ -31,6 +31,20 @@ resource "aws_api_gateway_method" "upload_image_method" {
 }
 
 #API resources for image upload...
+resource "aws_api_gateway_method_response" "upload_image_response" {
+  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
+  resource_id = aws_api_gateway_resource.upload_image.id
+  http_method = aws_api_gateway_method.upload_image_method.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin"      = true
+    "method.response.header.Access-Control-Allow-Methods"     = true
+    "method.response.header.Access-Control-Allow-Headers"     = true
+  }
+}
+
+#API resources for image upload...
 resource "aws_api_gateway_integration" "upload_image_integration" {
   rest_api_id             = aws_api_gateway_rest_api.Food-In-Sight-API.id
   resource_id             = aws_api_gateway_resource.upload_image.id
@@ -38,14 +52,6 @@ resource "aws_api_gateway_integration" "upload_image_integration" {
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.upload_image_lambda.invoke_arn
-}
-
-#API resources for image upload...
-resource "aws_api_gateway_method_response" "upload_image_response" {
-  rest_api_id = aws_api_gateway_rest_api.Food-In-Sight-API.id
-  resource_id = aws_api_gateway_resource.upload_image.id
-  http_method = aws_api_gateway_method.upload_image_method.http_method
-  status_code = "200"
 }
 
 #API resources for image upload...
