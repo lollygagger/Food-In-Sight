@@ -4,6 +4,15 @@ resource "aws_s3_bucket" "file_upload_bucket" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_public_access_block" "unblock_file_upload_bucket" {
+  bucket = aws_s3_bucket.file_upload_bucket.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket_cors_configuration" "file_upload_bucket_cors_policy" {
   bucket = aws_s3_bucket.file_upload_bucket.id
 
@@ -16,7 +25,7 @@ resource "aws_s3_bucket_cors_configuration" "file_upload_bucket_cors_policy" {
   }
 }
 
-resource "aws_s3_bucket_policy" "full_allow_bucket_policy" {
+resource "aws_s3_bucket_policy" "file_upload_bucket_policy" {
   bucket = aws_s3_bucket.file_upload_bucket.id
 
   policy = jsonencode({
@@ -28,8 +37,8 @@ resource "aws_s3_bucket_policy" "full_allow_bucket_policy" {
         Resource  = "${aws_s3_bucket.file_upload_bucket.arn}/*"
         Principal = "*"
         Condition = {
-          StringEquals = {
-            "aws:Referer" = "pre-signed-url"
+          DateLessThan = {
+            "aws:CurrentTime" = "${timestamp()}"
           }
         }
       }
