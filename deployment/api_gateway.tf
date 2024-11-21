@@ -261,6 +261,9 @@ resource "aws_api_gateway_integration_response" "upload_image_options_integratio
     "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
   }
+  depends_on = [
+    aws_api_gateway_integration.upload_image_options_integration
+  ]
 }
 
 
@@ -332,6 +335,9 @@ resource "aws_api_gateway_integration_response" "translate_options_integration_r
     "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
   }
+  depends_on = [
+    aws_api_gateway_integration.translate_options_integration
+  ]
 }
 
 #END translate CORS ------------------------------------------------------------------------------------
@@ -400,6 +406,9 @@ resource "aws_api_gateway_integration_response" "presign_translate_options_integ
     "method.response.header.Access-Control-Allow-Methods"     = "'GET, POST, PUT, DELETE, OPTIONS'"
     "method.response.header.Access-Control-Allow-Headers"     = "'Content-Type, X-Amz-Date, Authorization, X-Api-Key, X-Amz-Security-Token'"
   }
+  depends_on = [
+    aws_api_gateway_integration.presign_translate_options_integration
+  ]
 }
 
 #END presign_translate CORS ------------------------------------------------------------------------------------
