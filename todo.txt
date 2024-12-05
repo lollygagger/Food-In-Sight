@@ -1,2 +1,0 @@
--auto zip
--ask user for name of image bucket / or use UUID
