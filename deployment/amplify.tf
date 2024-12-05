@@ -17,7 +17,7 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
 
   environment_variables = {
     VITE_USER_DIET_API_GATEWAY_URL = "${aws_api_gateway_deployment.deployment.invoke_url}"
-    VITE_DB_ENDPOINT              = "${aws_api_gateway_deployment.api_deployment.invoke_url}"
+    VITE_API_GATEWAY_URL           = "${aws_api_gateway_deployment.api_deployment.invoke_url}"
   }
 
   depends_on    = [
