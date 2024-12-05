@@ -21,7 +21,7 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
   }
 
   depends_on    = [
-    aws_api_gateway_deployment.deployment.invoke_url,
+    aws_api_gateway_deployment.deployment,
     aws_api_gateway_deployment.api_deployment
   ]
 
