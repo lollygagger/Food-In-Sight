@@ -1,7 +1,7 @@
 resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
   name = "food-in-sight-user-pool"
 
-  alias_attributes = []
+  alias_attributes = ["email"]
   auto_verified_attributes = ["email"]
 
   schema {
@@ -12,17 +12,6 @@ resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
     string_attribute_constraints {
       min_length = 5
       max_length = 50
-    }
-  }
-
-  schema {
-    name     = "username"
-    required = true
-    attribute_data_type = "String"
-
-    string_attribute_constraints {
-      min_length = 3
-      max_length = 25
     }
   }
 }
