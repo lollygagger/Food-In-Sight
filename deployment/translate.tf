@@ -1,6 +1,5 @@
-# Define the S3 Bucket to store uploaded files
 resource "aws_s3_bucket" "file_upload_bucket" {
-  bucket = "translation-files-${uuid()}"
+  bucket        = "translation-files-${uuid()}"
   force_destroy = true
 }
 
@@ -39,6 +38,11 @@ resource "aws_s3_bucket_policy" "file_upload_bucket_policy" {
       }
     ]
   })
+
+  depends_on = [
+    aws_s3_bucket.file_upload_bucket,
+    aws_s3_bucket_public_access_block.unblock_file_upload_bucket
+  ]
 }
 
 data "archive_file" "translate_lambda_zip" {
@@ -47,7 +51,6 @@ data "archive_file" "translate_lambda_zip" {
   output_path = "${path.module}/lambda/translate_lambda.zip"
 }
 
-# IAM role for Lambda for S3, Textract, and Translate
 resource "aws_iam_role" "translate_lambda_execution_role" {
   name = "LambdaExecutionRole"
 
@@ -65,7 +68,6 @@ resource "aws_iam_role" "translate_lambda_execution_role" {
   })
 }
 
-# Policy for lambda to access everything needed
 resource "aws_iam_role_policy" "lambda_policy" {
   name = "LambdaS3TextractTranslatePolicy"
   role = aws_iam_role.translate_lambda_execution_role.id
@@ -150,9 +152,3 @@ resource "aws_lambda_function" "generate_translate_presigned_url" {
 
   source_code_hash = data.archive_file.translate_lambda_presign_zip.output_base64sha256
 }
-
-
-output "s3_bucket_name" {
-  value = aws_s3_bucket.file_upload_bucket.bucket
-}
-
