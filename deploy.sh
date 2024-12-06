@@ -95,6 +95,17 @@ else
   exit 1
 fi
 
+#Finally build so that everything gets brought in!:
+if aws amplify start-job \
+    --app-id  ${AMPLIFY_APP_ID}\
+    --branch-name ${AMPLIFY_BRANCH_NAME} \
+    --job-type RELEASE; then
+      success "Build starting"
+else
+  error "The build was unable to start. Exiting"
+fi
+
+
 # Loop until closed
 info "Terraform apply completed. Press Ctrl+C to exit and clean up resources."
 while :; do sleep 1; done
