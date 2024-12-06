@@ -24,6 +24,7 @@ deployment/layers/
 deployment/.terraform.lock.hcl
 deployment/zipped
 deployment/terraform.tfstate
+deployment/terraform.tfvars
 deployment/terraform.tfstate.backup
 deployment/.terraform.tfstate.lock.info
 
