@@ -2,7 +2,7 @@
 
 # Set project and branch to build
 AMPLIFY_APP_ID="d1c2naelj7l2nf"
-AMPLIFY_BRANCH_NAME="main-${$RANDOM}"
+AMPLIFY_BRANCH_NAME="main${RANDOM}"
 TERRAFORM_RESOURCE="aws_amplify_branch.main"
 
 # Colors for aesthetics
