@@ -1,3 +1,7 @@
+locals {
+  amplify_branch_url = "https://${var.branch_name}.d1c2naelj7l2nf.amplifyapp.com/"
+}
+
 resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
   name = "food-in-sight-user-pool"
 
@@ -10,7 +14,7 @@ resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
     attribute_data_type = "String"
 
     string_attribute_constraints {
-      min_length = 5
+      min_length = 1
       max_length = 50
     }
   }
@@ -20,6 +24,10 @@ resource "aws_cognito_user_pool_client" "food-in-sight-user-pool-client" {
   name            = "food-in-sight-client"
   user_pool_id    = aws_cognito_user_pool.food-in-sight-user-pool.id
   generate_secret = false
+
+  # Callback URLs for redirection
+  callback_urls = [local.amplify_branch_url]
+  logout_urls   = [local.amplify_branch_url]
 }
 
 resource "aws_cognito_identity_pool" "food-in-sight-identity-pool" {
@@ -34,12 +42,8 @@ resource "aws_cognito_identity_pool" "food-in-sight-identity-pool" {
 
 resource "aws_amplify_branch" "main" {
   app_id            = "d1c2naelj7l2nf" # Manually setting the app_id to match the existing deployed amplify app
-  branch_name       = "main"
-
-  lifecycle {
-    prevent_destroy = true
-    ignore_changes = [environment_variables]
-  }
+  branch_name       = var.branch_name
+  enable_auto_build = true
 
   environment_variables = {
     VITE_USER_DIET_API_GATEWAY_URL  = aws_api_gateway_deployment.deployment.invoke_url
@@ -57,5 +61,9 @@ resource "aws_amplify_branch" "main" {
 }
 
 output "amplify_branch_url" {
-  value = "https://${aws_amplify_branch.main.branch_name}.${aws_amplify_branch.main.app_id}.amplifyapp.com/"
+  value = local.amplify_branch_url
+}
+
+output "api_gateway_url" {
+  value = aws_api_gateway_deployment.api_deployment.invoke_url
 }

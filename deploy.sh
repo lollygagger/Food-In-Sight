@@ -2,7 +2,7 @@
 
 # Set project and branch to build
 AMPLIFY_APP_ID="d1c2naelj7l2nf"
-AMPLIFY_BRANCH_NAME="main"
+AMPLIFY_BRANCH_NAME="main${RANDOM}"
 TERRAFORM_RESOURCE="aws_amplify_branch.main"
 
 # Colors for aesthetics
@@ -33,9 +33,6 @@ error() {
 # Run destroy when script is closed
 cleanup() {
   info "Cleaning up: Running terraform destroy..."
-
-  #Need to manually remove this from state since we dont want to delete the branch
-  terraform state rm aws_amplify_branch.main
   terraform destroy -auto-approve
   success "Terraform destroy completed."
 }
@@ -71,15 +68,6 @@ else
     echo -e "${GREEN}terraform.tfvars already exists. Skipping creation.${NC}"
 fi
 
-# Terraform import to access the existing deployed branch
-info "Importing existing Amplify branch into Terraform state..."
-if terraform import $TERRAFORM_RESOURCE $AMPLIFY_APP_ID/$AMPLIFY_BRANCH_NAME; then
-  success "Successfully imported Amplify branch."
-else
-  error "Failed to import Amplify branch. Exiting."
-  exit 1
-fi
-
 # Terraform Plan
 info "Planning Terraform changes..."
 if terraform plan; then
@@ -91,12 +79,23 @@ fi
 
 # Terraform Apply
 info "Applying Terraform changes..."
-if terraform apply -auto-approve; then
+if terraform apply -var="branch_name=${AMPLIFY_BRANCH_NAME}" -auto-approve; then
   success "Terraform apply completed."
 else
   error "Terraform apply failed. Exiting."
   exit 1
 fi
+
+#Finally build so that everything gets brought in!:
+if aws amplify start-job \
+    --app-id  ${AMPLIFY_APP_ID}\
+    --branch-name ${AMPLIFY_BRANCH_NAME} \
+    --job-type RELEASE; then
+      success "Frontend build starting. Please allow 1-3 minutes for it to finish"
+else
+  error "The build was unable to start. Exiting"
+fi
+
 
 # Loop until closed
 info "Terraform apply completed. Press Ctrl+C to exit and clean up resources."
