@@ -49,6 +49,7 @@ resource "aws_amplify_branch" "main" {
 
   lifecycle {
     prevent_destroy = true
+    ignore_changes = [environment_variables]
   }
 
   environment_variables = {
