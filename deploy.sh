@@ -43,19 +43,13 @@ trap cleanup EXIT
 cd "deployment"
 
 # First check if AWS CLI is already configured and if not then prompt
-info "Checking AWS CLI configuration..."
-AWS_CONFIGURED=$(aws configure list 2>&1 | grep -c "<not set>")
-if [ "$AWS_CONFIGURED" -gt 0 ]; then
-  warning "AWS CLI is not fully configured. Starting configuration process..."
-  aws configure
-  if [ $? -ne 0 ]; then
-    error "AWS CLI configuration failed. Exiting."
-    exit 1
-  else
-    success "AWS CLI configured successfully."
-  fi
+# -> we do this by checking to see a default profile exists in ~/.aws/
+echo -e "${BLUE}Checking AWS configuration...${NC}"
+if aws configure list > /dev/null 2>&1; then
+  echo -e "${GREEN}AWS CLI is already configured. Skipping AWS configuration.${NC}"
 else
-  success "AWS CLI is already configured."
+  echo -e "${YELLOW}AWS CLI is not configured. Running 'aws configure'...${NC}"
+  aws configure
 fi
 
 # Terraform import to access the existing deployed branch
