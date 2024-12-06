@@ -1,3 +1,7 @@
+locals {
+  amplify_branch_url = "https://${aws_amplify_branch.main.branch_name}.${aws_amplify_branch.main.app_id}.amplifyapp.com/"
+}
+
 resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
   name = "food-in-sight-user-pool"
 
@@ -26,8 +30,8 @@ resource "aws_cognito_user_pool_client" "food-in-sight-user-pool-client" {
   # allowed_oauth_scopes                 = ["email", "openid", "profile"]
 
   # Callback URLs for redirection
-  callback_urls = [amplify_branch_url]
-  logout_urls   = [amplify_branch_url]
+  callback_urls = [local.amplify_branch_url]
+  logout_urls   = [local.amplify_branch_url]
 }
 
 resource "aws_cognito_identity_pool" "food-in-sight-identity-pool" {
@@ -61,7 +65,7 @@ resource "aws_amplify_branch" "main" {
 }
 
 output "amplify_branch_url" {
-  value = "https://${aws_amplify_branch.main.branch_name}.${aws_amplify_branch.main.app_id}.amplifyapp.com/"
+  value = local.amplify_branch_url
 }
 
 output "userpool_client_id" {
