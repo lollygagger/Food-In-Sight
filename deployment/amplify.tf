@@ -44,14 +44,6 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
     VITE_COGNITO_IDENTITY_POOL_ID   = aws_cognito_identity_pool.food-in-sight-identity-pool.id
   }
 
-  depends_on    = [
-    aws_api_gateway_deployment.deployment,
-    aws_api_gateway_deployment.api_deployment,
-    aws_cognito_user_pool.food-in-sight-user-pool,
-    aws_cognito_user_pool_client.food-in-sight-user-pool-client,
-    aws_cognito_identity_pool.food-in-sight-identity-pool
-  ]
-
   build_spec = <<-EOT
     version: 1
     frontend:
@@ -71,6 +63,20 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
         paths:
           - node_modules/**/*
   EOT
+
+  #Sets up an auto build to the main branch -> without this amplify just doesnt create a deploy
+  auto_branch_creation_config {
+    basic_auth_credentials = null
+    branch_name            = "API-to-Frontend"
+  }
+
+  depends_on    = [
+    aws_api_gateway_deployment.deployment,
+    aws_api_gateway_deployment.api_deployment,
+    aws_cognito_user_pool.food-in-sight-user-pool,
+    aws_cognito_user_pool_client.food-in-sight-user-pool-client,
+    aws_cognito_identity_pool.food-in-sight-identity-pool
+  ]
 }
 
 output "amplify_app_url" {
