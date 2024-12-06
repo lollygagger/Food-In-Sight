@@ -72,3 +72,7 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
           - node_modules/**/*
   EOT
 }
+
+output "amplify_app_url" {
+  value = aws_amplify_app.food-in-sight-deploy.id
+}
