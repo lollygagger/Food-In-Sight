@@ -100,7 +100,7 @@ if aws amplify start-job \
     --app-id  ${AMPLIFY_APP_ID}\
     --branch-name ${AMPLIFY_BRANCH_NAME} \
     --job-type RELEASE; then
-      success "Build starting"
+      success "Frontend build starting. Please allow 1-3 minutes for it to finish"
 else
   error "The build was unable to start. Exiting"
 fi
