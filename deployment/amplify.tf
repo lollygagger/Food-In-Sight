@@ -31,10 +31,54 @@ resource "aws_cognito_identity_pool" "food-in-sight-identity-pool" {
 
 
 # Create the amplify app with environment variables for the APIs and cognito
-resource "aws_amplify_app" "food-in-sight-deploy" {
-  name         = "food-in-sight"
-  repository   = "https://github.com/SWEN-514-FALL-2024/term-project-2241-swen-514-05-team5"
-  access_token = var.github_token
+# resource "aws_amplify_app" "food-in-sight-deploy" {
+#   name         = "food-in-sight"
+#   repository   = "https://github.com/SWEN-514-FALL-2024/term-project-2241-swen-514-05-team5"
+#   access_token = var.github_token
+#
+#   environment_variables = {
+#     VITE_USER_DIET_API_GATEWAY_URL  = aws_api_gateway_deployment.deployment.invoke_url
+#     VITE_API_GATEWAY_URL            = aws_api_gateway_deployment.api_deployment.invoke_url
+#     VITE_COGNITO_USERPOOL_ID        = aws_cognito_user_pool.food-in-sight-user-pool.id
+#     VITE_COGNITO_USERPOOL_CLIENT_ID = aws_cognito_user_pool_client.food-in-sight-user-pool-client.id
+#     VITE_COGNITO_IDENTITY_POOL_ID   = aws_cognito_identity_pool.food-in-sight-identity-pool.id
+#   }
+#
+#   build_spec = <<-EOT
+#     version: 1
+#     frontend:
+#       phases:
+#         preBuild:
+#           commands:
+#             - cd food-in-sight
+#             - npm install
+#         build:
+#           commands:
+#             - npm run build
+#       artifacts:
+#         baseDirectory: food-in-sight/dist
+#         files:
+#           - '**/*'
+#       cache:
+#         paths:
+#           - node_modules/**/*
+#   EOT
+#
+#   depends_on    = [
+#     aws_api_gateway_deployment.deployment,
+#     aws_api_gateway_deployment.api_deployment,
+#     aws_cognito_user_pool.food-in-sight-user-pool,
+#     aws_cognito_user_pool_client.food-in-sight-user-pool-client,
+#     aws_cognito_identity_pool.food-in-sight-identity-pool
+#   ]
+# }
+
+
+resource "aws_amplify_branch" "main" {
+  # app_id     = aws_amplify_app.food-in-sight-deploy.id
+  app_id            = "d1c2naelj7l2nf"
+  branch_name       = "API-to-Frontend"
+  enable_auto_build = true
 
   environment_variables = {
     VITE_USER_DIET_API_GATEWAY_URL  = aws_api_gateway_deployment.deployment.invoke_url
@@ -43,41 +87,6 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
     VITE_COGNITO_USERPOOL_CLIENT_ID = aws_cognito_user_pool_client.food-in-sight-user-pool-client.id
     VITE_COGNITO_IDENTITY_POOL_ID   = aws_cognito_identity_pool.food-in-sight-identity-pool.id
   }
-
-  build_spec = <<-EOT
-    version: 1
-    frontend:
-      phases:
-        preBuild:
-          commands:
-            - cd food-in-sight
-            - npm install
-        build:
-          commands:
-            - npm run build
-      artifacts:
-        baseDirectory: food-in-sight/dist
-        files:
-          - '**/*'
-      cache:
-        paths:
-          - node_modules/**/*
-  EOT
-
-  depends_on    = [
-    aws_api_gateway_deployment.deployment,
-    aws_api_gateway_deployment.api_deployment,
-    aws_cognito_user_pool.food-in-sight-user-pool,
-    aws_cognito_user_pool_client.food-in-sight-user-pool-client,
-    aws_cognito_identity_pool.food-in-sight-identity-pool
-  ]
-}
-
-
-resource "aws_amplify_branch" "main" {
-  app_id     = aws_amplify_app.food-in-sight-deploy.id
-  branch_name = "API-to-Frontend"
-  enable_auto_build = true
 }
 
 output "amplify_app_url" {
