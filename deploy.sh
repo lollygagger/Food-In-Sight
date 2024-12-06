@@ -52,6 +52,22 @@ else
   aws configure
 fi
 
+# Setup terraform variables if they dont exist
+if [[ ! -f terraform.tfvars ]]; then
+    echo -e "${YELLOW}terraform.tfvars file not found.${NC}"
+    read -p "Please provide your AWS Key (awskey): " userAwsKey
+    if [[ -z "$userAwsKey" ]]; then
+        echo -e "${RED}AWS Key is required to proceed. Exiting.${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}Creating terraform.tfvars file with provided AWS Key and default region...${NC}"
+    echo "awskey=\"$userAwsKey\"" > terraform.tfvars
+    echo "region=\"us-east-1\"" >> terraform.tfvars
+    echo -e "${GREEN}terraform.tfvars file created successfully.${NC}"
+else
+    echo -e "${GREEN}terraform.tfvars already exists. Skipping creation.${NC}"
+fi
+
 # Terraform import to access the existing deployed branch
 info "Importing existing Amplify branch into Terraform state..."
 if terraform import $TERRAFORM_RESOURCE $AMPLIFY_APP_ID/$AMPLIFY_BRANCH_NAME; then
