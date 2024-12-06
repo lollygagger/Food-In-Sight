@@ -45,10 +45,6 @@ resource "aws_amplify_branch" "main" {
   branch_name       = "main"
   enable_auto_build = true
 
-  lifecycle {
-    prevent_destroy = true
-  }
-
   environment_variables = {
     VITE_USER_DIET_API_GATEWAY_URL  = aws_api_gateway_deployment.deployment.invoke_url
     VITE_API_GATEWAY_URL            = aws_api_gateway_deployment.api_deployment.invoke_url
