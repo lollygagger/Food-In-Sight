@@ -498,9 +498,3 @@ resource "aws_api_gateway_integration_response" "presign_translate_options_integ
 # @max i got urs to build but im not gonna mess with that, im going to try to get the presigned url to work for the image upload bucket
 
 #presign_image upload CORS ------------------------------------------------------------------------------------
-
-
-
-output "api_url" {
-  value = "${aws_api_gateway_deployment.deployment.invoke_url}/upload"
-}

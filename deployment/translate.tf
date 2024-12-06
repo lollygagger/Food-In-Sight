@@ -152,9 +152,3 @@ resource "aws_lambda_function" "generate_translate_presigned_url" {
 
   source_code_hash = data.archive_file.translate_lambda_presign_zip.output_base64sha256
 }
-
-
-output "s3_bucket_name" {
-  value = aws_s3_bucket.file_upload_bucket.bucket
-}
-
