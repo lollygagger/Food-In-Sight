@@ -67,3 +67,11 @@ resource "aws_amplify_branch" "main" {
 output "amplify_branch_url" {
   value = "https://${aws_amplify_branch.main.branch_name}.${aws_amplify_branch.main.app_id}.amplifyapp.com/"
 }
+
+output "userpool_client_id" {
+  value = aws_cognito_user_pool_client.food-in-sight-user-pool-client.id
+}
+
+output "userpool_client_arn" {
+  value = aws_cognito_user_pool_client.food-in-sight-user-pool-client.user_pool_id
+}
