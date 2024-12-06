@@ -22,7 +22,7 @@ resource "aws_cognito_identity_pool" "food-in-sight-identity-pool" {
 
 resource "aws_amplify_branch" "main" {
   app_id            = "d1c2naelj7l2nf" # Manually setting the app_id to match the existing deployed amplify app
-  branch_name       = "API-to-Frontend"
+  branch_name       = "main"
 
   environment_variables = {
     VITE_USER_DIET_API_GATEWAY_URL  = aws_api_gateway_deployment.deployment.invoke_url
