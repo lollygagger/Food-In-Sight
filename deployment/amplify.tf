@@ -10,7 +10,7 @@ resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
     attribute_data_type = "String"
 
     string_attribute_constraints {
-      min_length = 5
+      min_length = 1
       max_length = 50
     }
   }
@@ -43,10 +43,10 @@ resource "aws_cognito_identity_pool" "food-in-sight-identity-pool" {
 resource "aws_amplify_branch" "main" {
   app_id            = "d1c2naelj7l2nf" # Manually setting the app_id to match the existing deployed amplify app
   branch_name       = "main"
+  enable_auto_build = true
 
   lifecycle {
     prevent_destroy = true
-    ignore_changes = [environment_variables]
   }
 
   environment_variables = {
