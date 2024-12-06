@@ -55,13 +55,13 @@ fi
 # Setup terraform variables if they dont exist
 if [[ ! -f terraform.tfvars ]]; then
     echo -e "${YELLOW}terraform.tfvars file not found.${NC}"
-    read -p "Please provide your AWS Key (awskey): " userAwsKey
+    read -p "Please provide your AWS keypair name (aws_key): " userAwsKey
     if [[ -z "$userAwsKey" ]]; then
         echo -e "${RED}AWS Key is required to proceed. Exiting.${NC}"
         exit 1
     fi
     echo -e "${GREEN}Creating terraform.tfvars file with provided AWS Key and default region...${NC}"
-    echo "awskey=\"$userAwsKey\"" > terraform.tfvars
+    echo "aws_key=\"$userAwsKey\"" > terraform.tfvars
     echo "region=\"us-east-1\"" >> terraform.tfvars
     echo -e "${GREEN}terraform.tfvars file created successfully.${NC}"
 else
