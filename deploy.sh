@@ -33,6 +33,9 @@ error() {
 # Run destroy when script is closed
 cleanup() {
   info "Cleaning up: Running terraform destroy..."
+
+  #Need to manually remove this from state since we dont want to delete the branch
+  terraform state rm aws_amplify_branch.main
   terraform destroy -auto-approve
   success "Terraform destroy completed."
 }

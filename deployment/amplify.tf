@@ -28,7 +28,7 @@ resource "aws_cognito_identity_pool" "food-in-sight-identity-pool" {
 
   cognito_identity_providers {
     client_id     = aws_cognito_user_pool_client.food-in-sight-user-pool-client.id
-    provider_name = aws_cognito_user_pool.food-in-sight-user-pool.arn
+    provider_name = "cognito-idp.${data.aws_region.current.name}.amazonaws.com/${aws_cognito_user_pool.food-in-sight-user-pool.id}"
   }
 }
 
