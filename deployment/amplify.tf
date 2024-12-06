@@ -21,9 +21,9 @@ resource "aws_cognito_user_pool_client" "food-in-sight-user-pool-client" {
   user_pool_id    = aws_cognito_user_pool.food-in-sight-user-pool.id
   generate_secret = false
 
-  allowed_oauth_flows_user_pool_client = true
-  allowed_oauth_flows                  = ["code", "implicit"]
-  allowed_oauth_scopes                 = ["email", "openid", "profile"]
+  # allowed_oauth_flows_user_pool_client = true
+  # allowed_oauth_flows                  = ["code", "implicit"]
+  # allowed_oauth_scopes                 = ["email", "openid", "profile"]
 
   # Callback URLs for redirection
   # callback_urls = ["https://your-app-url.com/callback"]
