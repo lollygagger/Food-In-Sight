@@ -39,6 +39,8 @@ resource "aws_s3_bucket_policy" "file_upload_bucket_policy" {
       }
     ]
   })
+
+  depends_on = [aws_s3_bucket.file_upload_bucket]
 }
 
 data "archive_file" "translate_lambda_zip" {

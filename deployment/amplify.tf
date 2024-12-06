@@ -81,5 +81,5 @@ resource "aws_amplify_branch" "main" {
 }
 
 output "amplify_app_url" {
-  value = aws_amplify_app.food-in-sight-deploy.id
+  value = aws_amplify_branch.main.app_id
 }
