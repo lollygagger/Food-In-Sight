@@ -64,12 +64,6 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
           - node_modules/**/*
   EOT
 
-  #Sets up an auto build to the main branch -> without this amplify just doesnt create a deploy
-  auto_branch_creation_config {
-    basic_auth_credentials = null
-    branch_name            = "API-to-Frontend"
-  }
-
   depends_on    = [
     aws_api_gateway_deployment.deployment,
     aws_api_gateway_deployment.api_deployment,
@@ -77,6 +71,13 @@ resource "aws_amplify_app" "food-in-sight-deploy" {
     aws_cognito_user_pool_client.food-in-sight-user-pool-client,
     aws_cognito_identity_pool.food-in-sight-identity-pool
   ]
+}
+
+
+resource "aws_amplify_branch" "main" {
+  app_id     = aws_amplify_app.food-in-sight-deploy.id
+  branch_name = "API-to-Frontend"
+  enable_auto_build = true
 }
 
 output "amplify_app_url" {
