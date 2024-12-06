@@ -1,5 +1,5 @@
 locals {
-  amplify_branch_url = "https://${var.branch_name}.${aws_amplify_branch.main.app_id}.amplifyapp.com/"
+  amplify_branch_url = "https://${var.branch_name}.d1c2naelj7l2nf.amplifyapp.com/"
 }
 
 resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
@@ -64,10 +64,6 @@ output "amplify_branch_url" {
   value = local.amplify_branch_url
 }
 
-output "userpool_client_id" {
-  value = aws_cognito_user_pool_client.food-in-sight-user-pool-client.id
-}
-
-output "userpool_client_arn" {
-  value = aws_cognito_user_pool_client.food-in-sight-user-pool-client.user_pool_id
+output "api_gateway_url" {
+  value = aws_api_gateway_deployment.api_deployment.invoke_url
 }
