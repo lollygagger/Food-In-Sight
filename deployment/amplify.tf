@@ -24,6 +24,10 @@ resource "aws_amplify_branch" "main" {
   app_id            = "d1c2naelj7l2nf" # Manually setting the app_id to match the existing deployed amplify app
   branch_name       = "main"
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   environment_variables = {
     VITE_USER_DIET_API_GATEWAY_URL  = aws_api_gateway_deployment.deployment.invoke_url
     VITE_API_GATEWAY_URL            = aws_api_gateway_deployment.api_deployment.invoke_url
