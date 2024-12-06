@@ -68,14 +68,14 @@ else
     echo -e "${GREEN}terraform.tfvars already exists. Skipping creation.${NC}"
 fi
 
-# Terraform import to access the existing deployed branch
-info "Importing existing Amplify branch into Terraform state..."
-if terraform import $TERRAFORM_RESOURCE $AMPLIFY_APP_ID/$AMPLIFY_BRANCH_NAME; then
-  success "Successfully imported Amplify branch."
-else
-  error "Failed to import Amplify branch. Exiting."
-  exit 1
-fi
+## Terraform import to access the existing deployed branch
+#info "Importing existing Amplify branch into Terraform state..."
+#if terraform import $TERRAFORM_RESOURCE $AMPLIFY_APP_ID/$AMPLIFY_BRANCH_NAME; then
+#  success "Successfully imported Amplify branch."
+#else
+#  error "Failed to import Amplify branch. Exiting."
+#  exit 1
+#fi
 
 # Terraform Plan
 info "Planning Terraform changes..."

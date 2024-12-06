@@ -26,8 +26,8 @@ resource "aws_cognito_user_pool_client" "food-in-sight-user-pool-client" {
   # allowed_oauth_scopes                 = ["email", "openid", "profile"]
 
   # Callback URLs for redirection
-  # callback_urls = ["https://your-app-url.com/callback"]
-  # logout_urls   = ["https://your-app-url.com/logout"]
+  callback_urls = [amplify_branch_url]
+  logout_urls   = [amplify_branch_url]
 }
 
 resource "aws_cognito_identity_pool" "food-in-sight-identity-pool" {
