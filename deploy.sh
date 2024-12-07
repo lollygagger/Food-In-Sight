@@ -52,6 +52,10 @@ else
   aws configure
 fi
 
+echo -e "${BLUE}Running terraform init...${NC}"
+terraform init || { echo -e "${RED}Error: terraform init failed! Exiting.${NC}"; exit 1; }
+
+
 # Setup terraform variables if they dont exist
 if [[ ! -f terraform.tfvars ]]; then
     echo -e "${YELLOW}terraform.tfvars file not found.${NC}"
