@@ -1,5 +1,7 @@
 locals {
   amplify_branch_url = "https://${var.branch_name}.d1c2naelj7l2nf.amplifyapp.com/"
+  food_api_invoke_url = "https://${aws_api_gateway_rest_api.Food-In-Sight-API.id}.execute-api.${data.aws_region.current.name}.amazonaws.com/prod"
+  user_api_invoke_url = "https://${aws_api_gateway_rest_api.food_api.id}.execute-api.${data.aws_region.current.name}.amazonaws.com/prod/"
 }
 
 resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
@@ -46,8 +48,8 @@ resource "aws_amplify_branch" "main" {
   enable_auto_build = true
 
   environment_variables = {
-    VITE_USER_DIET_API_GATEWAY_URL  = aws_api_gateway_deployment.deployment.invoke_url
-    VITE_API_GATEWAY_URL            = aws_api_gateway_deployment.api_deployment.invoke_url
+    VITE_USER_DIET_API_GATEWAY_URL  = local.user_api_invoke_url
+    VITE_API_GATEWAY_URL            = local.food_api_invoke_url
     VITE_COGNITO_USERPOOL_ID        = aws_cognito_user_pool.food-in-sight-user-pool.id
     VITE_COGNITO_USERPOOL_CLIENT_ID = aws_cognito_user_pool_client.food-in-sight-user-pool-client.id
     VITE_COGNITO_IDENTITY_POOL_ID   = aws_cognito_identity_pool.food-in-sight-identity-pool.id
@@ -62,8 +64,4 @@ resource "aws_amplify_branch" "main" {
 
 output "amplify_branch_url" {
   value = local.amplify_branch_url
-}
-
-output "api_gateway_url" {
-  value = aws_api_gateway_deployment.api_deployment.invoke_url
 }
