@@ -71,6 +71,7 @@ if [[ ! -f terraform.tfvars ]]; then
     echo -e "${GREEN}Creating terraform.tfvars file with provided AWS Key and default region...${NC}"
     echo "aws_key=\"$userAwsKey\"" > terraform.tfvars
     echo "region=\"us-east-1\"" >> terraform.tfvars
+    echo "amplify_id=\"$AMPLIFY_APP_ID\"" >> terraform.tfvars
     echo -e "${GREEN}terraform.tfvars file created successfully.${NC}"
 else
     echo -e "${GREEN}terraform.tfvars already exists. Skipping creation.${NC}"
