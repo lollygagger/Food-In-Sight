@@ -52,8 +52,12 @@ else
   aws configure
 fi
 
-echo -e "${BLUE}Running terraform init...${NC}"
-terraform init || { echo -e "${RED}Error: terraform init failed! Exiting.${NC}"; exit 1; }
+if [ -d ".terraform" ] && [ -f ".terraform.lock.hcl" ]; then
+  echo -e "${YELLOW}Terraform is already initialized. Skipping 'terraform init'.${NC}"
+else
+  echo -e "${YELLOW}Running terraform init...${NC}"
+  terraform init || { echo -e "${RED}Error: terraform init failed! Exiting.${NC}"; exit 1; }
+fi
 
 
 # Setup terraform variables if they dont exist
