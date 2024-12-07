@@ -15,19 +15,19 @@ CYAN="\033[36m"
 
 # Functions to print colored messages
 info() {
-  echo -e "${BLUE}[INFO]${RESET} $1"
+  echo -e "${BLUE}[INFO]    ${RESET} $1"
 }
 
 success() {
-  echo -e "${GREEN}[SUCCESS]${RESET} $1"
+  echo -e "${GREEN}[SUCCESS] ${RESET} $1"
 }
 
 warning() {
-  echo -e "${YELLOW}[WARNING]${RESET} $1"
+  echo -e "${YELLOW}[WARNING] ${RESET} $1"
 }
 
 error() {
-  echo -e "${RED}[ERROR]${RESET} $1"
+  echo -e "${RED}[ERROR]   ${RESET} $1"
 }
 
 # Run destroy when script is closed
@@ -53,7 +53,7 @@ else
 fi
 
 if [ -d ".terraform" ] && [ -f ".terraform.lock.hcl" ]; then
-  echo -e "${YELLOW}Terraform is already initialized. Skipping 'terraform init'.${NC}"
+  echo -e "${GREEN}Terraform is already initialized. Skipping 'terraform init'.${NC}"
 else
   echo -e "${YELLOW}Running terraform init...${NC}"
   terraform init || { echo -e "${RED}Error: terraform init failed! Exiting.${NC}"; exit 1; }
