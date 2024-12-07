@@ -1,7 +1,7 @@
 locals {
   amplify_branch_url = "https://${var.branch_name}.d1c2naelj7l2nf.amplifyapp.com/"
-  food_api_invoke_url = "https://${aws_api_gateway_rest_api.Food-In-Sight-API}.execute-api.${data.aws_region.current.name}.amazonaws.com/prod"
-  user_api_invoke_url = "https://${aws_api_gateway_rest_api.food_api}.execute-api.${data.aws_region.current.name}.amazonaws.com/prod/"
+  food_api_invoke_url = "https://${aws_api_gateway_rest_api.Food-In-Sight-API.id}.execute-api.${data.aws_region.current.name}.amazonaws.com/prod"
+  user_api_invoke_url = "https://${aws_api_gateway_rest_api.food_api.id}.execute-api.${data.aws_region.current.name}.amazonaws.com/prod/"
 }
 
 resource "aws_cognito_user_pool" "food-in-sight-user-pool" {
